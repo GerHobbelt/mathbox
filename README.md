@@ -167,7 +167,7 @@ All mathbox arguments are optional. The following options are available for conf
 ```javascript
 {
   // Whether to allow mouse control of the camera.
-  cameraControls: true, 
+  cameraControls: true,
   // Override the class to use for mouse controls.
   controlClass: ThreeBox.OrbitControls,
   // Whether to show the mouse cursor.
@@ -176,12 +176,12 @@ All mathbox arguments are optional. The following options are available for conf
   // Whether to track resizing of the containing element.
   elementResize: true,
   // Enable fullscreen mode with 'f' (browser support is buggy)
-  fullscreen: true, 
+  fullscreen: true,
   // Render at scaled resolution, e.g. scale 2 is half the width/height.
   // Fractional values allowed.
-  scale: 1, 
+  scale: 1,
   // Enable screenshot taking with 'p'
-  screenshot: true, 
+  screenshot: true,
   // Show FPS stats in the corner
   stats: true,
 }
@@ -264,7 +264,7 @@ Each mathbox scene has an associated viewport. This sets up a specific mathemati
 
 The following viewport types are available:
 
-__Cartesian__  
+__Cartesian__
 Regular linear XYZ.
 
 ```javascript
@@ -277,7 +277,7 @@ Regular linear XYZ.
 })
 ```
 
-__Projective__  
+__Projective__
 Applies a 4x4 homogeneous/projective transform.
 
 ```javascript
@@ -294,7 +294,7 @@ Applies a 4x4 homogeneous/projective transform.
 })
 ```
 
-__Polar__  
+__Polar__
 Polar coordinate grid in radians. X is angle, Y is radius, Z is ordinary depth.
 Also useful for visualizing complex operations in polar representation.
 
@@ -312,7 +312,7 @@ Also useful for visualizing complex operations in polar representation.
 })
 ```
 
-__Sphere__  
+__Sphere__
 Spherical coordinate grid in radians. X is longitude, Y is latitude, Z is radius.
 
 ```javascript
@@ -359,6 +359,7 @@ Axis
   tickScale: 10,     // Integer denoting the base for recursive division. 2 = binary, 10 = decimal
   arrow: true,       // Whether to include an arrow on the axis
   size: .07,         // Size of the arrow relative to the stage
+  formatter: null    // Function which takes index of axis label as argument, and returns text label
 })
 ```
 
@@ -423,6 +424,17 @@ Grid
 })
 ```
 
+Label
+```javascript
+.label({
+  position: [0, 0, 0], // location of label
+  text: 'hello',       // text to be displayed
+  distance: 15,        // text sprite anchor point offset
+  facing: 1,           // which axis tangent direction the label should be facing towards
+  class_name: 'math'   // css class name to use for the labels (leave unset for default 'mathbox-labels')
+})
+```
+
 Surface
 ```javascript
 .surface({
@@ -455,6 +467,13 @@ Vector
   size: .07,                         // Size of the arrowhead relative to the stage
 })
 ```
+
+Dependencies
+------------
+
+* vendor/ThreeBox.js -- https://github.com/unconed/ThreeBox.js (use commit tag ff838075a7bea4ba59719f845f466b9c4b2cbafe)
+* vendor/ThreeRTT.js -- https://github.com/unconed/ThreeRTT.js
+* vendor/ShaderGraph.js -- https://github.com/unconed/ShaderGraph.js
 
 Contributions
 -------------

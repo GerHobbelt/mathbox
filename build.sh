@@ -36,6 +36,7 @@ src/primitives/Vector.js
 src/primitives/Surface.js
 src/primitives/BezierSurface.js
 src/primitives/Platonic.js
+src/primitives/Label.js
 
 src/renderables/Renderable.js
 src/renderables/Mesh.js
@@ -73,18 +74,18 @@ cat $SRC > build/MathBox-core.js
 cat $SHADERS > build/MathBox.glsl.html
 
 if [ -z "$SKIP_MINIFY" ]; then
-curl --data-urlencode "js_code@build/MathBox.js" 	\
-	-d "output_format=text&output_info=compiled_code&compilation_level=SIMPLE_OPTIMIZATIONS&language=ECMASCRIPT5" \
-	http://closure-compiler.appspot.com/compile	\
-	> build/MathBox.min.js
+curl --data-urlencode "js_code@build/MathBox.js"   \
+  -d "output_format=text&output_info=compiled_code&compilation_level=SIMPLE_OPTIMIZATIONS&language=ECMASCRIPT5" \
+  http://closure-compiler.appspot.com/compile  \
+  > build/MathBox.min.js
 
-curl --data-urlencode "js_code@build/MathBox-core.js" 	\
-	-d "output_format=text&output_info=compiled_code&compilation_level=SIMPLE_OPTIMIZATIONS&language=ECMASCRIPT5" \
-	http://closure-compiler.appspot.com/compile	\
-	> build/MathBox-core.min.js
+curl --data-urlencode "js_code@build/MathBox-core.js"   \
+  -d "output_format=text&output_info=compiled_code&compilation_level=SIMPLE_OPTIMIZATIONS&language=ECMASCRIPT5" \
+  http://closure-compiler.appspot.com/compile  \
+  > build/MathBox-core.min.js
 
-curl --data-urlencode "js_code@build/MathBox-bundle.js" 	\
-	-d "output_format=text&output_info=compiled_code&compilation_level=SIMPLE_OPTIMIZATIONS&language=ECMASCRIPT5" \
-	http://closure-compiler.appspot.com/compile	\
-	> build/MathBox-bundle.min.js
+curl --data-urlencode "js_code@build/MathBox-bundle.js"   \
+  -d "output_format=text&output_info=compiled_code&compilation_level=SIMPLE_OPTIMIZATIONS&language=ECMASCRIPT5" \
+  http://closure-compiler.appspot.com/compile  \
+  > build/MathBox-bundle.min.js
 fi
