@@ -1,0 +1,41 @@
+{
+  "name": "lim-mathbox",
+  "version": "0.1.0",
+  "description": "Library for rendering presentation-quality math diagrams in a browser using WebGL. Forked from https://github.com/unconed/MathBox.js.",
+  "main": "build/MathBox-bundle.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "scripts/tests.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@forge.lim:mathbox.git"
+  },
+  "keywords": [
+    "mathbox",
+    "maths",
+    "3D",
+    "diagrams",
+    "charts",
+    "bezier",
+    "webGL",
+    "threeJS"
+  ],
+  "authors": [
+    "unconed",
+    "Soares",
+    "johan",
+    "waldir",
+    "fourplusone",
+    "hugoferreira",
+    "EvgenyAgafonchikov"
+  ],
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "phantomjs": "1.9.x"
+  }
+}
