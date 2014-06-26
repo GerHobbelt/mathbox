@@ -39,6 +39,7 @@
     "examples",
     "node_modules",
     "resources",
+    "scripts",
     "test",
     "vendor"
   ]
