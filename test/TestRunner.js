@@ -6,7 +6,7 @@
 // Run with $ phantomjs TestRunner.js
 //
 var page = require('webpage').create();
-page.open('./test.html', function() {
+page.open('test/test.html', function() {
 
     // get an array, with as the first element the test strings and second the test results
     var testOutput = page.evaluate(function () {
