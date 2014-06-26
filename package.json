@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "start": "scripts/web-server.js"
     "test": "scripts/tests.sh"
   },
   "repository": {
