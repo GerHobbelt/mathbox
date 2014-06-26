@@ -475,6 +475,15 @@ Dependencies
 * vendor/ThreeRTT.js -- https://github.com/unconed/ThreeRTT.js
 * vendor/ShaderGraph.js -- https://github.com/unconed/ShaderGraph.js
 
+Development dependencies
+------------------------
+
+You can install them with [node package manager](http://nodejs.org/download/)
+
+```bash
+npm install
+```
+
 Building from source
 --------------------
 
@@ -500,17 +509,21 @@ $ export SKIP_MINIFICATION=true
 Tests
 -----
 
-1. You can run them using the web-server:
+You can run them using the web-server:
 
-    `npm start`
+```bash
+npm start
+```
 
-    then go to `localhost:8000/test/test.html`
+then go to `localhost:8000/test/test.html`
 
-2. or if you're feeling lazy :
+Or if you're feeling lazy :
 
-    `npm test`
+```bash
+npm test
+```
 
-    (You will need to have phantomjs installed, please run `npm install` first)
+You will need to have phantomjs installed, see **Development dependencies**
 
 Contributions
 -------------
