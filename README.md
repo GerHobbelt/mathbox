@@ -497,6 +497,20 @@ Or export it to disable it for the rest of the session
 ```bash
 $ export SKIP_MINIFICATION=true
 ```
+Tests
+-----
+
+1. You can run them using the web-server:
+
+    `npm start`
+
+    then go to `localhost:8000/test/test.html`
+
+2. or if you're feeling lazy :
+
+    `npm test`
+
+    (You will need to have phantomjs installed, please run `npm install` first)
 
 Contributions
 -------------
