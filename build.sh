@@ -2,8 +2,11 @@
 VENDOR="
 vendor/domready.js
 vendor/underscore.js
-vendor/tquery-bundle.js
 vendor/jquery.min.js
+"
+
+TQUERY="
+vendor/tquery-bundle.js
 "
 
 GLVENDOR="
@@ -68,8 +71,8 @@ pushd vendor/ThreeRTT.js
 ./build.sh
 popd
 
-cat $VENDOR $GLVENDOR $SRC > build/MathBox-bundle.js
-cat $GLVENDOR $SRC > build/MathBox.js
+cat $VENDOR $TQUERY $GLVENDOR $SRC > build/MathBox-bundle.js
+cat $TQUERY $GLVENDOR $SRC > build/MathBox.js
 cat $SRC > build/MathBox-core.js
 cat $SHADERS > build/MathBox.glsl.html
 
