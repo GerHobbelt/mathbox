@@ -497,14 +497,14 @@ Build using
 $ ./build.sh
 ```
 
-To build without minification set SKIP\_MINICATION
+To build without minification set SKIP\_MINIFY
 ```bash
-$ SKIP_MINIFICATION=true ./build.sh
+$ SKIP_MINIFY=true ./build.sh
 ```
 
 Or export it to disable it for the rest of the session
 ```bash
-$ export SKIP_MINIFICATION=true
+$ export SKIP_MINIFY=true
 ```
 Tests
 -----
