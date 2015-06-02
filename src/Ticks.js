@@ -38,7 +38,7 @@ MathBox.Ticks = function (min, max, n, unit, scale, inclusive, bias) {
   n = Math.ceil((max - min) / step) + 1;
 
   var ticks = [];
-  _.loop(n, function (x) {
+  MathBox.loop(n, function (x) {
     ticks.push(min + x * step);
   });
 

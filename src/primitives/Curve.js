@@ -49,7 +49,7 @@ MathBox.Curve.prototype = _.extend(new MathBox.Primitive(null), {
     var vertices = this.vertices = [];
 
     // Allocate vertices.
-    _.loop(n, function () {
+    MathBox.loop(n, function () {
       vertices.push(new THREE.Vector3());
     });
 
@@ -81,7 +81,7 @@ MathBox.Curve.prototype = _.extend(new MathBox.Primitive(null), {
         step = (domain[1] - x) / (n - 1);
 
     var p;
-    _.loop(n, function (i) {
+    MathBox.loop(n, function (i) {
       if (data && (data[i] !== undefined)) {
         // Use data if available
         p = data[i];

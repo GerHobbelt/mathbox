@@ -60,8 +60,8 @@ MathBox.BezierSurface.prototype = _.extend(new MathBox.Surface(null), {
 
     // Collect control points into uniform vec3 array.
     var points = [], p;
-    _.loop(order + 1, function (j) {
-      _.loop(order + 1, function (i) {
+    MathBox.loop(order + 1, function (j) {
+      MathBox.loop(order + 1, function (i) {
         if (data && (data[j] !== undefined) && (data[j][i] !== undefined)) {
           // Use data if available
           p = data[j][i];
@@ -130,9 +130,9 @@ MathBox.BezierSurface.prototype = _.extend(new MathBox.Surface(null), {
         stepX = (domain[0][1] - x) / (n[0] - 1),
         stepY = (domain[1][1] - y) / (n[1] - 1);
     var o = 0;
-    _.loop(n[1], function (j) {
+    MathBox.loop(n[1], function (j) {
       x = domain[0][0];
-      _.loop(n[0], function (i) {
+      MathBox.loop(n[0], function (i) {
         vertices[o].set(x, y, 0);
 
         x += stepX;

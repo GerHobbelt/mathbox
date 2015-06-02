@@ -38,6 +38,11 @@ MathBox.getShader = function (id) {
   return elem && elem.textContent || id;
 };
 
+// FIXME: Don't pollute other namespaces.
 Math.sign = function (x) {
   return x > 0 ? 1 : x < 0 ? -1 : 0;
+};
+
+MathBox.loop = function (n, callback) {
+  for (var i = 0; i < n; ++i) callback(i);
 };

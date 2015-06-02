@@ -85,7 +85,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
     add.set.apply(add, offset);
 
     // Place uniformly spaced points for axis.
-    _.loop(n, function (x) {
+    MathBox.loop(n, function (x) {
       p[axis] = min + x * inv;
 
       points[x].set.apply(points[x], p);
@@ -168,13 +168,13 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
         epsilon = this.epsilon = new THREE.Vector3();
 
     // Prepare arrays of vertices.
-    _.loop(n, function (x) {
+    MathBox.loop(n, function (x) {
       points.push(new THREE.Vector3());
     });
-    _.loop(ticks * 4, function (i) {
+    MathBox.loop(ticks * 4, function (i) {
       labelPoints.push(new THREE.Vector3());
     });
-    _.loop(ticks * 8, function (i) {
+    MathBox.loop(ticks * 8, function (i) {
       tickPoints.push(new THREE.Vector3());
       tickSigns.push(1);
     });

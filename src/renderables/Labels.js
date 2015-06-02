@@ -40,7 +40,7 @@ MathBox.Renderable.Labels.prototype = _.extend(new MathBox.Renderable(null), {
     element.className = 'mathbox-labels';
 
     // Make sprites for all labels
-    _.loop(n, function (i) {
+    MathBox.loop(n, function (i) {
       // Nested div to allow for relative positioning for centering
       var element = document.createElement('div');
       var inner = document.createElement('div');

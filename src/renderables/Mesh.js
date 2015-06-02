@@ -28,7 +28,7 @@ MathBox.Renderable.Mesh.prototype = _.extend(new MathBox.Renderable(null), {
 
     // Decide on THREE renderable.
     var klass = {
-      points: THREE.ParticleSystem,
+      points: THREE.PointCloud,
       line: THREE.Line,
       mesh: THREE.Mesh//,
     }[type];

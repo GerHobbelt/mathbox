@@ -85,7 +85,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
         p[b.axis] = b.min + offset[b.axis];
 
         // N equally spaced line segments
-        _.loop(n - 1, function (x) {
+        MathBox.loop(n - 1, function (x) {
           points[i].set.apply(points[i], p);
           i++;
 
@@ -129,7 +129,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     _.each(ticks, function (tick, i) {
       i = 1 - i;
       limit[i] = tick * 4;
-      _.loop(limit[i] * (n[i] - 1) * 2, function (x) {
+      MathBox.loop(limit[i] * (n[i] - 1) * 2, function (x) {
         points[i].push(new THREE.Vector3());
       });
     });

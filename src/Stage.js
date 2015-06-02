@@ -594,4 +594,3 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
     }.bind(this));
   },
 });
-

@@ -77,7 +77,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
     // Allocate vertices for line segments.
     // Allocate arrowheads if arrows requested.
     var i = 0;
-    _.loop(n, function () {
+    MathBox.loop(n, function () {
       vertices.push(new THREE.Vector3());
       vertices.push(new THREE.Vector3());
       points.push(new THREE.Vector3());
@@ -111,7 +111,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
 
     // Find necessary foreshortening factors so line does not stick out through the arrowhead.
     var j = 0, k = 0;
-    _.loop(n * 2, function (i) {
+    MathBox.loop(n * 2, function (i) {
       if (data && (data[i] !== undefined)) {
         // Use data if available
         p = data[i];

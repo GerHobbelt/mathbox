@@ -82,8 +82,8 @@ var π = Math.PI,
     if (!window[i]) throw "Error: ThreeBox requires " + deps[i];
   }
 })({
-  'THREE': 'Three.js',
-  'tQuery': 'tQuery.js (bundle)'//,
+  'THREE':  "Three.js",
+  'tQuery': "tQuery.js (bundle)"
 });
 
 // Namespace.
@@ -649,8 +649,7 @@ ThreeRTT.getShader = function (id) {
   return elem && elem.innerText || id;
 };
 
-// Simple loop helper
-_.loop = function (n, callback) {
+ThreeRTT.loop = function (n, callback) {
   for (var i = 0; i < n; ++i) callback(i);
 };
 
@@ -798,10 +797,10 @@ ThreeRTT.Stage.prototype = {
 
   // Render virtual render target.
   render: function () {
-	  this.target.clear();
+    this.target.clear();
 
     _.each(this.passes, function (n, i) {
-      _.loop(n, function (j) {
+      ThreeRTT.loop(n, function (j) {
         this.target.render(this.scenes[i], this.camera);
       }.bind(this));
     }.bind(this));
@@ -1013,7 +1012,7 @@ ThreeRTT.RenderTarget.prototype = {
 
     // Allocate/Refresh real render targets
     var targets = this.targets = [];
-    _.loop(n, function (i) {
+    ThreeRTT.loop(n, function (i) {
 
       targets.push(new THREE.WebGLRenderTarget(
         this.width,
@@ -1034,7 +1033,7 @@ ThreeRTT.RenderTarget.prototype = {
 
     // Keep virtual targets around if possible.
     if (n > virtuals.length) {
-      _.loop(n - virtuals.length, function () {
+      ThreeRTT.loop(n - virtuals.length, function () {
         virtuals.push(original.clone());
       }.bind(this));
     }
@@ -1069,7 +1068,7 @@ ThreeRTT.RenderTarget.prototype = {
     this.index = index = (index + 1) % n;
 
     // Point virtual render targets to last rendered frame(s) in order.
-    _.loop(v, function (i) {
+    ThreeRTT.loop(v, function (i) {
       var dst = virtuals[i],
           src = targets[(v - i + index) % n];
 
@@ -1127,7 +1126,7 @@ ThreeRTT.RenderTarget.prototype = {
     if (n) {
       // Expose frame history as array of textures.
       var textures = [];
-      _.loop(n + 1, function (j) {
+      ThreeRTT.loop(n + 1, function (j) {
         textures.push(this.read(-j));
       }.bind(this));
       return {
@@ -3100,8 +3099,13 @@ MathBox.getShader = function (id) {
   return elem && elem.textContent || id;
 };
 
+// FIXME: Don't pollute other namespaces.
 Math.sign = function (x) {
   return x > 0 ? 1 : x < 0 ? -1 : 0;
+};
+
+MathBox.loop = function (n, callback) {
+  for (var i = 0; i < n; ++i) callback(i);
 };
 MathBox.Attributes = function () {
 };
@@ -3525,7 +3529,7 @@ MathBox.Animator.Animation.prototype = {
           }
           if (to.constructor == Array) {
             out = [];
-            _.loop(from.length, function (i) {
+            MathBox.loop(from.length, function (i) {
               out[i] = process(from[i], to[i]);
             })
             return out;
@@ -4184,7 +4188,6 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
     }.bind(this));
   },
 });
-
 /**
  * Material manager. Generates custom ShaderMaterials that perform
  * all the right transforms and stylings.
@@ -4499,7 +4502,7 @@ MathBox.Ticks = function (min, max, n, unit, scale, inclusive, bias) {
   n = Math.ceil((max - min) / step) + 1;
 
   var ticks = [];
-  _.loop(n, function (x) {
+  MathBox.loop(n, function (x) {
     ticks.push(min + x * step);
   });
 
@@ -4535,7 +4538,7 @@ tQuery.World.registerInstance('mathBox', function (element, options) {
   this.tScene().add(mathbox);
 
   // White background
-	this._renderer.setClearColorHex( 0xFFFFFF, 1 );
+  this._tRenderer.setClearColor(0xFFFFFF, 1);
 
   // Hook into rendering loop
   mathbox.unhook = function () {
@@ -5524,7 +5527,7 @@ MathBox.Curve.prototype = _.extend(new MathBox.Primitive(null), {
     var vertices = this.vertices = [];
 
     // Allocate vertices.
-    _.loop(n, function () {
+    MathBox.loop(n, function () {
       vertices.push(new THREE.Vector3());
     });
 
@@ -5556,7 +5559,7 @@ MathBox.Curve.prototype = _.extend(new MathBox.Primitive(null), {
         step = (domain[1] - x) / (n - 1);
 
     var p;
-    _.loop(n, function (i) {
+    MathBox.loop(n, function (i) {
       if (data && (data[i] !== undefined)) {
         // Use data if available
         p = data[i];
@@ -5635,7 +5638,7 @@ MathBox.Bezier.prototype = _.extend(new MathBox.Curve(null), {
 
     // Collect control points into uniform vec3 array.
     var points = [], p;
-    _.loop(order + 1, function (i) {
+    MathBox.loop(order + 1, function (i) {
       if (data && (data[i] !== undefined)) {
         // Use data if available
         p = data[i];
@@ -5671,7 +5674,7 @@ MathBox.Bezier.prototype = _.extend(new MathBox.Curve(null), {
     // Write out vertices in interpolation domain.
     var x = domain[0],
         step = (domain[1] - x) / (n - 1);
-    _.loop(n, function (i) {
+    MathBox.loop(n, function (i) {
       vertices[i].set(x, 0, 0);
       x += step;
     });
@@ -5782,7 +5785,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
     add.set.apply(add, offset);
 
     // Place uniformly spaced points for axis.
-    _.loop(n, function (x) {
+    MathBox.loop(n, function (x) {
       p[axis] = min + x * inv;
 
       points[x].set.apply(points[x], p);
@@ -5865,13 +5868,13 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
         epsilon = this.epsilon = new THREE.Vector3();
 
     // Prepare arrays of vertices.
-    _.loop(n, function (x) {
+    MathBox.loop(n, function (x) {
       points.push(new THREE.Vector3());
     });
-    _.loop(ticks * 4, function (i) {
+    MathBox.loop(ticks * 4, function (i) {
       labelPoints.push(new THREE.Vector3());
     });
-    _.loop(ticks * 8, function (i) {
+    MathBox.loop(ticks * 8, function (i) {
       tickPoints.push(new THREE.Vector3());
       tickSigns.push(1);
     });
@@ -5994,7 +5997,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
         p[b.axis] = b.min + offset[b.axis];
 
         // N equally spaced line segments
-        _.loop(n - 1, function (x) {
+        MathBox.loop(n - 1, function (x) {
           points[i].set.apply(points[i], p);
           i++;
 
@@ -6038,7 +6041,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     _.each(ticks, function (tick, i) {
       i = 1 - i;
       limit[i] = tick * 4;
-      _.loop(limit[i] * (n[i] - 1) * 2, function (x) {
+      MathBox.loop(limit[i] * (n[i] - 1) * 2, function (x) {
         points[i].push(new THREE.Vector3());
       });
     });
@@ -6131,7 +6134,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
     // Allocate vertices for line segments.
     // Allocate arrowheads if arrows requested.
     var i = 0;
-    _.loop(n, function () {
+    MathBox.loop(n, function () {
       vertices.push(new THREE.Vector3());
       vertices.push(new THREE.Vector3());
       points.push(new THREE.Vector3());
@@ -6165,7 +6168,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
 
     // Find necessary foreshortening factors so line does not stick out through the arrowhead.
     var j = 0, k = 0;
-    _.loop(n * 2, function (i) {
+    MathBox.loop(n * 2, function (i) {
       if (data && (data[i] !== undefined)) {
         // Use data if available
         p = data[i];
@@ -6321,7 +6324,7 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
     // Prepare tangent arrays for shading
     if (options.shaded) {
       var tangents = this.tangents = [[], []];
-      _.loop(n[0] * n[1], function () {
+      MathBox.loop(n[0] * n[1], function () {
         tangents[0].push(new THREE.Vector3());
         tangents[1].push(new THREE.Vector3());
       });
@@ -6357,9 +6360,9 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
 
     // Calculate positions of vertices
     var p, o = 0;
-    _.loop(n[1], function (j) {
+    MathBox.loop(n[1], function (j) {
       x = domain[0][0];
-      _.loop(n[0], function (i) {
+      MathBox.loop(n[0], function (i) {
         if (data && (data[j] !== undefined) && (data[j][i] !== undefined)) {
           // Use data if available
           p = data[j][i];
@@ -6402,13 +6405,13 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
       var stride = n[0],
           epsilon = 0.01;
 
-      _.loop(n[1], function (j) {
+      MathBox.loop(n[1], function (j) {
         x = domain[0][0];
 
         var up = j ? j - 1 : 0,
             down = Math.min(n[1] - 1, j + 1);
 
-        _.loop(n[0], function (i) {
+        MathBox.loop(n[0], function (i) {
 
           var left = i ? i - 1 : 0,
               right = Math.min(n[0] - 1, i + 1);
@@ -6424,14 +6427,16 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
 
           /* low quality */
           if (right == i) {
-            tangents[0][o].sub(v, vertices[left + j * stride]).addSelf(v);
+            // This looks like we should just be setting the negation?
+            tangents[0][o].subVectors(v, vertices[left + j * stride]).add(v);
           }
           else {
             tangents[0][o].copy(vertices[right + j * stride]);
           }
 
           if (down == j) {
-            tangents[1][o].sub(v, vertices[i + up * stride]).addSelf(v);
+            // This looks like we should just be setting the negation?
+            tangents[1][o].subVectors(v, vertices[i + up * stride]).add(v);
           }
           else {
             tangents[1][o].copy(vertices[i + down * stride]);
@@ -6520,8 +6525,8 @@ MathBox.BezierSurface.prototype = _.extend(new MathBox.Surface(null), {
 
     // Collect control points into uniform vec3 array.
     var points = [], p;
-    _.loop(order + 1, function (j) {
-      _.loop(order + 1, function (i) {
+    MathBox.loop(order + 1, function (j) {
+      MathBox.loop(order + 1, function (i) {
         if (data && (data[j] !== undefined) && (data[j][i] !== undefined)) {
           // Use data if available
           p = data[j][i];
@@ -6590,9 +6595,9 @@ MathBox.BezierSurface.prototype = _.extend(new MathBox.Surface(null), {
         stepX = (domain[0][1] - x) / (n[0] - 1),
         stepY = (domain[1][1] - y) / (n[1] - 1);
     var o = 0;
-    _.loop(n[1], function (j) {
+    MathBox.loop(n[1], function (j) {
       x = domain[0][0];
-      _.loop(n[0], function (i) {
+      MathBox.loop(n[0], function (i) {
         vertices[o].set(x, y, 0);
 
         x += stepX;
@@ -6779,20 +6784,21 @@ MathBox.Renderable.prototype = {
   },
 
   composeTransform: function (position, rotation, scale) {
-		var mRotation = THREE.Matrix4.__m1;
-		var mScale = THREE.Matrix4.__m2;
+    var mRotation = new THREE.Matrix4();
+    var mScale = new THREE.Matrix4();
 
     mRotation.identity();
-		mRotation.setRotationFromEuler(rotation, this.object.eulerOrder);
+    var euler = new THREE.Euler(rotation.x, rotation.y, rotation.z, this.object.rotation.order);
+    mRotation.makeRotationFromEuler(euler);
 
-		mScale.makeScale(scale.x, scale.y, scale.z);
+    mScale.makeScale(scale.x, scale.y, scale.z);
 
-		this.mathTransform.multiply(mRotation, mScale);
+    this.mathTransform.multiplyMatrices(mRotation, mScale);
 
     var te = this.mathTransform.elements;
-		te[12] = position.x;
-		te[13] = position.y;
-		te[14] = position.z;
+    te[12] = position.x;
+    te[13] = position.y;
+    te[14] = position.z;
   },
 
   refreshStyle: function (changed) {
@@ -6910,7 +6916,7 @@ MathBox.Renderable.Mesh.prototype = _.extend(new MathBox.Renderable(null), {
 
     // Decide on THREE renderable.
     var klass = {
-      points: THREE.ParticleSystem,
+      points: THREE.PointCloud,
       line: THREE.Line,
       mesh: THREE.Mesh//,
     }[type];
@@ -7192,7 +7198,7 @@ MathBox.Renderable.Labels.prototype = _.extend(new MathBox.Renderable(null), {
     element.className = 'mathbox-labels';
 
     // Make sprites for all labels
-    _.loop(n, function (i) {
+    MathBox.loop(n, function (i) {
       // Nested div to allow for relative positioning for centering
       var element = document.createElement('div');
       var inner = document.createElement('div');

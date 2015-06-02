@@ -1,9 +1,9 @@
 #!/bin/bash
 VENDOR="
 vendor/domready.js
-vendor/underscore.js
-vendor/tquery-bundle.js
-vendor/jquery.min.js
+bower_components/underscore/underscore.js
+vendor/tquery/build/tquery-bundle.js
+bower_components/jquery/dist/jquery.js
 "
 
 GLVENDOR="
@@ -54,6 +54,10 @@ SHADERS="
 shaders/snippets.glsl.html
 vendor/ThreeRTT.js/build/ThreeRTT.glsl.html
 "
+
+pushd vendor/tquery
+make build
+popd
 
 pushd vendor/ShaderGraph.js
 ./build.sh

@@ -54,20 +54,21 @@ MathBox.Renderable.prototype = {
   },
 
   composeTransform: function (position, rotation, scale) {
-		var mRotation = THREE.Matrix4.__m1;
-		var mScale = THREE.Matrix4.__m2;
+    var mRotation = new THREE.Matrix4();
+    var mScale = new THREE.Matrix4();
 
     mRotation.identity();
-		mRotation.setRotationFromEuler(rotation, this.object.eulerOrder);
+    var euler = new THREE.Euler(rotation.x, rotation.y, rotation.z, this.object.rotation.order);
+    mRotation.makeRotationFromEuler(euler);
 
-		mScale.makeScale(scale.x, scale.y, scale.z);
+    mScale.makeScale(scale.x, scale.y, scale.z);
 
-		this.mathTransform.multiply(mRotation, mScale);
+    this.mathTransform.multiplyMatrices(mRotation, mScale);
 
     var te = this.mathTransform.elements;
-		te[12] = position.x;
-		te[13] = position.y;
-		te[14] = position.z;
+    te[12] = position.x;
+    te[13] = position.y;
+    te[14] = position.z;
   },
 
   refreshStyle: function (changed) {

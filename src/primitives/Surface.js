@@ -84,7 +84,7 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
     // Prepare tangent arrays for shading
     if (options.shaded) {
       var tangents = this.tangents = [[], []];
-      _.loop(n[0] * n[1], function () {
+      MathBox.loop(n[0] * n[1], function () {
         tangents[0].push(new THREE.Vector3());
         tangents[1].push(new THREE.Vector3());
       });
@@ -120,9 +120,9 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
 
     // Calculate positions of vertices
     var p, o = 0;
-    _.loop(n[1], function (j) {
+    MathBox.loop(n[1], function (j) {
       x = domain[0][0];
-      _.loop(n[0], function (i) {
+      MathBox.loop(n[0], function (i) {
         if (data && (data[j] !== undefined) && (data[j][i] !== undefined)) {
           // Use data if available
           p = data[j][i];
@@ -165,13 +165,13 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
       var stride = n[0],
           epsilon = 0.01;
 
-      _.loop(n[1], function (j) {
+      MathBox.loop(n[1], function (j) {
         x = domain[0][0];
 
         var up = j ? j - 1 : 0,
             down = Math.min(n[1] - 1, j + 1);
 
-        _.loop(n[0], function (i) {
+        MathBox.loop(n[0], function (i) {
 
           var left = i ? i - 1 : 0,
               right = Math.min(n[0] - 1, i + 1);
@@ -187,14 +187,16 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
 
           /* low quality */
           if (right == i) {
-            tangents[0][o].sub(v, vertices[left + j * stride]).addSelf(v);
+            // This looks like we should just be setting the negation?
+            tangents[0][o].subVectors(v, vertices[left + j * stride]).add(v);
           }
           else {
             tangents[0][o].copy(vertices[right + j * stride]);
           }
 
           if (down == j) {
-            tangents[1][o].sub(v, vertices[i + up * stride]).addSelf(v);
+            // This looks like we should just be setting the negation?
+            tangents[1][o].subVectors(v, vertices[i + up * stride]).add(v);
           }
           else {
             tangents[1][o].copy(vertices[i + down * stride]);

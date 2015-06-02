@@ -41,7 +41,7 @@ MathBox.Bezier.prototype = _.extend(new MathBox.Curve(null), {
 
     // Collect control points into uniform vec3 array.
     var points = [], p;
-    _.loop(order + 1, function (i) {
+    MathBox.loop(order + 1, function (i) {
       if (data && (data[i] !== undefined)) {
         // Use data if available
         p = data[i];
@@ -77,7 +77,7 @@ MathBox.Bezier.prototype = _.extend(new MathBox.Curve(null), {
     // Write out vertices in interpolation domain.
     var x = domain[0],
         step = (domain[1] - x) / (n - 1);
-    _.loop(n, function (i) {
+    MathBox.loop(n, function (i) {
       vertices[i].set(x, 0, 0);
       x += step;
     });
