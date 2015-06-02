@@ -2,16 +2,16 @@
 VENDOR="
 vendor/domready.js
 bower_components/underscore/underscore.js
-vendor/tquery/build/tquery-bundle.js
+bower_components/davinci-tquery/build/tquery-bundle.js
 bower_components/jquery/dist/jquery.js
 "
 
 GLVENDOR="
-vendor/ThreeBox.js/vendor/microevent.js
-vendor/ThreeBox.js/vendor/microajax.js
-vendor/ThreeBox.js/build/ThreeBox-core.js
-vendor/ThreeRTT.js/build/ThreeRTT-core-tquery.js
-vendor/ShaderGraph.js/build/ShaderGraph-core.js
+vendor/microevent.js
+vendor/microajax.js
+bower_components/davinci-threebox/build/ThreeBox-core.js
+bower_components/davinci-threertt/build/ThreeRTT-core-tquery.js
+bower_components/davinci-shadergraph/build/ShaderGraph-core.js
 "
 
 SRC="
@@ -52,24 +52,8 @@ src/viewports/ViewportSphere.js
 
 SHADERS="
 shaders/snippets.glsl.html
-vendor/ThreeRTT.js/build/ThreeRTT.glsl.html
+bower_components/davinci-threertt/build/ThreeRTT.glsl.html
 "
-
-pushd vendor/tquery
-make build
-popd
-
-pushd vendor/ShaderGraph.js
-./build.sh
-popd
-
-pushd vendor/ThreeBox.js
-./build.sh
-popd
-
-pushd vendor/ThreeRTT.js
-./build.sh
-popd
 
 cat $VENDOR $GLVENDOR $SRC > build/MathBox-bundle.js
 cat $GLVENDOR $SRC > build/MathBox.js

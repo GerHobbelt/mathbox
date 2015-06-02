@@ -1,4 +1,3065 @@
 /**
+ * MicroEvent - to make any js object an event emitter (server or browser)
+ * 
+ * - pure javascript - server compatible, browser compatible
+ * - dont rely on the browser doms
+ * - super simple - you get it immediatly, no mistery, no magic involved
+ *
+ * - create a MicroEventDebug with goodies to debug
+ *   - make it safer to use
+*/
+
+var MicroEvent	= function(){}
+MicroEvent.prototype	= {
+	bind	: function(event, fct){
+		this._events = this._events || {};
+		this._events[event] = this._events[event]	|| [];
+		this._events[event].push(fct);
+	},
+	unbind	: function(event, fct){
+		this._events = this._events || {};
+		if( event in this._events === false  )	return;
+		this._events[event].splice(this._events[event].indexOf(fct), 1);
+	},
+	trigger	: function(event /* , args... */){
+		this._events = this._events || {};
+		if( event in this._events === false  )	return;
+		for(var i = 0; i < this._events[event].length; i++){
+			this._events[event][i].apply(this, Array.prototype.slice.call(arguments, 1))
+		}
+	}
+};
+
+/**
+ * mixin will delegate all MicroEvent.js function in the destination object
+ *
+ * - require('MicroEvent').mixin(Foobar) will make Foobar able to use MicroEvent
+ *
+ * @param {Object} the object which will support MicroEvent
+*/
+MicroEvent.mixin	= function(destObject){
+	var props	= ['bind', 'unbind', 'trigger'];
+	for(var i = 0; i < props.length; i ++){
+		destObject.prototype[props[i]]	= MicroEvent.prototype[props[i]];
+	}
+}
+
+// export in common js
+if( typeof module !== "undefined" && ('exports' in module)){
+	module.exports	= MicroEvent
+}/*
+Copyright (c) 2008 Stefan Lange-Hegermann
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+function microAjax(B,A){this.bindFunction=function(E,D){return function(){return E.apply(D,[D])}};this.stateChange=function(D){if(this.request.readyState==4){this.callbackFunction(this.request.responseText)}};this.getRequest=function(){if(window.ActiveXObject){return new ActiveXObject("Microsoft.XMLHTTP")}else{if(window.XMLHttpRequest){return new XMLHttpRequest()}}return false};this.postBody=(arguments[2]||"");this.callbackFunction=A;this.url=B;this.request=this.getRequest();if(this.request){var C=this.request;C.onreadystatechange=this.bindFunction(this.stateChange,this);if(this.postBody!==""){C.open("POST",B,true);C.setRequestHeader("X-Requested-With","XMLHttpRequest");C.setRequestHeader("Content-type","application/x-www-form-urlencoded");C.setRequestHeader("Connection","close")}else{C.open("GET",B,true)}C.send(this.postBody)}};/**
+ * ThreeBox.js. More flexible tQuery boilerplate.
+ */
+
+// Math!
+var π = Math.PI,
+    τ = π * 2;
+
+// Check dependencies.
+(function (deps) {
+  for (var i in deps) {
+    if (!window[i]) throw "Error: ThreeBox requires " + deps[i];
+  }
+})({
+  'THREE':  "Three.js",
+  'tQuery': "tQuery.js (bundle)"
+});
+
+// Namespace.
+window.ThreeBox = {};
+
+// Shortcut static call.
+window.threeBox = function (element, options) {
+  // Omit element (use body)
+  if (element && !(element instanceof Node)) {
+    options = element;
+    element = null;
+  }
+
+  return tQuery.createWorld(options).threeBox(element, options);
+};
+
+// Make microevent methods chainable.
+MicroEvent.prototype.on   = function () { MicroEvent.prototype.bind.apply(this, arguments);    return this; }
+MicroEvent.prototype.emit = function () { MicroEvent.prototype.trigger.apply(this, arguments); return this; }
+MicroEvent.mixin	= function(destObject){
+	var props	= ['bind', 'unbind', 'trigger', 'on', 'emit'];
+	for(var i = 0; i < props.length; i ++){
+		destObject.prototype[props[i]]	= MicroEvent.prototype[props[i]];
+	}
+}
+
+// Make world microevents nicer.
+tQuery.World.prototype.on = tQuery.World.prototype.addEventListener;
+tQuery.World.prototype.emit = tQuery.World.prototype.dispatchEvent;
+/**
+ * World.threeBox() – Create a renderer inside a DOM element.
+ *
+ * Based on tQuery boilerplate.
+ */
+tQuery.World.registerInstance('threeBox', function (element, options) {
+
+  // Shorthand, omit element.
+  if (element && !(element instanceof Node)) {
+    options = element;
+    element = null;
+  }
+
+  // Use body by default
+  element = element || document.body;
+
+  // Place renderer in element.
+  var domElement  = element;
+
+  if (element == document.body) {
+    // Remove margins/padding on body.
+    domElement.style.margin   = 0;
+    domElement.style.padding  = 0;
+    domElement.style.overflow = 'hidden';
+  }
+  else {
+    // Ensure container acts as a reference frame for children.
+    var style = getComputedStyle(element);
+    if (element.position == 'static') {
+      element.position = 'relative';
+    }
+  }
+
+  // Insert into DOM.
+  this.appendTo(domElement);
+
+  // Set up ThreeBox
+  this.addThreeBox(element, options || {});
+
+  // Chained API
+  return this;
+});
+
+/**
+ * World.addThreeBox – Set up threebox.
+ */
+tQuery.World.registerInstance('addThreeBox', function (element, options) {
+  // Sanity check
+  console.assert(this.hasThreeBox() !== true);
+
+  // Handle parameters  
+  options  = tQuery.extend(options, {
+    cameraControls: false,
+    cursor:         true,
+    controlClass:   ThreeBox.OrbitControls,
+    elementResize:  true,
+    fullscreen:     true,
+    screenshot:     true,
+    stats:          true,
+    scale:          1//,
+  });
+
+  // Make tRenderer.domElement style "display: block" - by default it is inline-block
+  // - so it is affected by line-height and create a white line at the bottom
+  this.tRenderer().domElement.style.display = "block"
+
+  // Create the context
+  var ctx  = {};
+  tQuery.data(this, '_threeBoxContext', ctx);
+
+  // Get some variables
+  var tCamera  = this.tCamera();
+  var tRenderer  = this.tRenderer();
+
+  // Add Stats.js.
+  if (options.stats) {
+    ctx.stats  = new Stats();
+    ctx.stats.domElement.style.position = 'absolute';
+    ctx.stats.domElement.style.left     = '10px';
+    ctx.stats.domElement.style.top      = '10px';
+    element && element.appendChild(ctx.stats.domElement);
+    ctx.loopStats  = function () {
+      ctx.stats.update();
+    };
+    this.loop().hook(ctx.loopStats);
+  }
+
+  // Create camera controls.
+  if (options.cameraControls) {
+    var loop = this.loop(), render = this.render.bind(this);
+
+    ctx.cameraControls = new options.controlClass(tCamera, element, options);
+    if (ctx.cameraControls.on) {
+      ctx.cameraControls.on('change', function () {
+        // If not looping, ensure view is updated on interaction.
+        if (!loop._timerId) {
+          render();
+        }
+      });
+    }
+    this.setCameraControls(ctx.cameraControls);
+  }
+
+  // Track element / window resizes.
+  if (options.elementResize) {
+    ctx.elementResize = ThreeBox.ElementResize.bind(tRenderer, tCamera, element, options)
+                        .on('resize', function (width, height) {
+                          // Update tQuery world dimensions.
+                          this._opts.renderW = width;
+                          this._opts.renderH = height;
+
+                          // Forward resize events to world.
+                          this.emit('resize', width, height);
+                        }.bind(this));
+  }
+
+  // Contextual mouse cursor
+  if (options.cursor !== null) {
+    ctx.cursor = ThreeBox.Cursor.bind(element, options);
+  }
+
+  // Allow 'p' to make screenshot.
+  if (THREEx && THREEx.Screenshot && options.screenshot) {
+    ctx.screenshot = THREEx.Screenshot.bindKey(tRenderer);
+  }
+
+  // Allow 'f' to go fullscreen where this feature is supported.
+  if (THREEx && THREEx.FullScreen && options.fullscreen && THREEx.FullScreen.available()) {
+    ctx.fullscreen = THREEx.FullScreen.bindKey();
+  }
+
+  // Bind 'destroy' event on tQuery.world.
+  ctx._$onDestroy = this.bind('destroy', function () {
+    if (this.hasThreeBox() === false) return;
+    this.removeThreeBox();
+  });
+
+  // Chained API
+  return this;
+});
+
+tQuery.World.registerInstance('hasThreeBox', function () {
+  // Get threeBox context.
+  var ctx  = tQuery.data(this, "_threeBoxContext")
+  return ctx === undefined ? false : true;
+});
+
+tQuery.World.registerInstance('removeThreeBox', function () {
+  // Get threeBox context.
+  var ctx  = tQuery.data(this, '_threeBoxContext');
+  if (ctx === undefined) return this;
+
+  // Remove the context from the world.
+  tQuery.removeData(this, '_threeBoxContext');
+
+  // Unbind 'destroy' for tQuery.World
+  this.unbind('destroy', this._$onDestroy);
+
+  // remove stats.js
+  if (ctx.stats) {
+    document.body.removeChild(ctx.stats.domElement);
+    this.loop().unhook(ctx.loopStats);
+  }
+
+  // Remove camera controls.
+  ctx.cameraControls && this.removeCameraControls()
+                     && ctx.cameraControls.stop();
+
+  // Stop elementResize.
+  ctx.elementResize  && ctx.elementResize.unbind();
+
+  // Stop cursor tracking.
+  ctx.cursor         && ctx.cursor.unbind();
+
+  // Unbind screenshot
+  ctx.screenshot     && ctx.screenshot.unbind();
+
+  // Unbind fullscreen
+  ctx.fullscreen     && ctx.fullscreen.unbind();
+});
+/**
+ * Update renderer and camera when the element is resized
+ * 
+ * @param {Object} renderer The renderer to update
+ * @param {Object} camera The camera to update
+ * @param {Object} element The DOM element to size to
+ *
+ * Based on THREEx.WindowResize.
+ */
+ThreeBox.ElementResize = function (renderer, camera, domElement, options) {
+  this.scale = options.scale || 1;
+
+  var callback = this.callback = function () {
+    var width = Math.floor(domElement.offsetWidth),
+        height = Math.floor(domElement.offsetHeight);
+
+    // Size renderer appropriately.
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.width = width + "px";
+    renderer.domElement.style.height = height + "px";
+
+    // Scale
+    var ws = Math.floor(width/this.scale),
+        hs = Math.floor(height/this.scale);
+
+    // Notify the renderer of the size change.
+    renderer.setSize(ws, hs);
+
+    // Update the camera aspect and ortho extents
+    camera.aspect = width / height;
+    if (camera instanceof THREE.OrthographicCamera) {
+      var dy = (camera.top - camera.bottom) / 2;
+      var cx = (camera.left + camera.right) / 2;
+      camera.left  = cx - dy * camera.aspect;
+      camera.right = cx + dy * camera.aspect;
+    }
+    camera.updateProjectionMatrix();
+
+    // Notify of change.
+    this.emit('resize', ws, hs);
+  }.bind(this);
+
+  // Bind the resize event on the window and element.
+  window.addEventListener('resize', callback, false);
+  domElement.addEventListener('resize', callback, false);
+
+  // Update size immediately.
+  setTimeout(callback, 0);
+}
+
+ThreeBox.ElementResize.bind  = function (renderer, camera, element, options) {
+  return new ThreeBox.ElementResize(renderer, camera, element, options);
+}
+
+/**
+ * Change resize scale.
+ */
+ThreeBox.ElementResize.prototype.scale = function (scale) {
+  this.scale = scale;
+}
+
+/**
+ * Stop watching window resize
+ */
+ThreeBox.ElementResize.prototype.unbind = function () {
+  window.removeEventListener('resize', callback);
+  domElement.removeEventListener('resize', callback);
+}
+
+MicroEvent.mixin(ThreeBox.ElementResize);/**
+ * Click-and-drag mouse controls with Euler angles, yaw and pitch.
+ */
+ThreeBox.OrbitControls = function (camera, domElement, options) {
+  this.element = domElement;
+  this.camera = camera;
+
+  this.options = tQuery.extend(options, {
+    phi: τ/4,
+    theta: 0.3,
+    orbit: 2,
+    lookAt: [0, 0, 0],
+    speed: 2//,
+  });
+
+  this.init();
+  this.start();
+  this.update();
+};
+
+ThreeBox.OrbitControls.prototype = {
+
+  init: function () {
+    this.width = this.element && this.element.offsetWidth,
+    this.height = this.element && this.element.offsetHeight;
+    this.phi = this.options.phi;
+    this.theta = this.options.theta;
+    this.orbit = this.options.orbit;
+    this.speed = this.options.speed;
+
+    this.lookAt = new THREE.Vector3();
+    this.lookAt.set.apply(this.lookAt, this.options.lookAt || []);
+  },
+
+  start: function () {
+    var that = this;
+
+    this._mouseDown = function (event) {
+      that.width = that.element && that.element.offsetWidth,
+      that.height = that.element && that.element.offsetHeight;
+
+      that.drag = true;
+      that.lastHover = that.origin = { x: event.pageX, y: event.pageY };
+
+      event.preventDefault();
+    };
+
+    this._mouseUp = function () {
+      that.drag = false;
+    };
+
+    this._mouseMove = function (event) {
+      if (that.drag) {
+        var relative = { x: event.pageX - that.origin.x, y: event.pageY - that.origin.y },
+            delta = { x: event.pageX - that.lastHover.x, y: event.pageY - that.lastHover.y };
+        that.lastHover = { x: event.pageX, y: event.pageY };
+        that.moved(that.origin, relative, delta);
+      }
+    };
+
+    if (this.element) {
+      this.element.addEventListener('mousedown', this._mouseDown, false);
+      document.addEventListener('mouseup', this._mouseUp, false);
+      document.addEventListener('mousemove', this._mouseMove, false);
+    }
+  },
+
+  stop: function () {
+    if (this.element) {
+      this.element.removeEventListener('mousedown', this._mouseDown);
+      document.removeEventListener('mouseup', this._mouseUp);
+      document.removeEventListener('mousemove', this._mouseMove);
+    }
+  },
+
+  moved: function (origin, relative, delta) {
+    this.phi = this.phi + delta.x * this.speed / this.width;
+    this.theta = Math.min(π/2, Math.max(-π/2, this.theta + delta.y * this.speed / this.height));
+
+    this.emit('change');
+  },
+
+  update: function () {
+    this.camera.position.x = Math.cos(this.phi) * Math.cos(this.theta) * this.orbit;
+    this.camera.position.y = Math.sin(this.theta) * this.orbit;
+    this.camera.position.z = Math.sin(this.phi) * Math.cos(this.theta) * this.orbit;
+
+    if (this.camera.position.addSelf) {
+      this.camera.position.addSelf(this.lookAt);
+    }
+    else {
+      this.camera.position.add(this.lookAt);
+    }
+    this.camera.lookAt(this.lookAt);
+  }//,
+
+};
+
+ThreeBox.OrbitControls.bind  = function (camera, domElement, options) {
+  return new ThreeBox.OrbitControls(camera, domElement, options);
+}
+
+MicroEvent.mixin(ThreeBox.OrbitControls);
+/**
+ * Set cursor shape and auto-hide with timer.
+ * 
+ * @param {Object} element DOM element to track mouse movement on.
+ * @param {Object} options Options for ThreeBox.
+ */
+ThreeBox.Cursor = function (element, options) {
+  // Use move cursor if controls are active.
+  var cursor = options.cameraControls ? 'move' : 'default';
+
+  // Timer state
+  var timer = null, ignore = false, delay = 2000;
+
+  // Cursor auto-hiding
+  function moved() {
+    ignore || show();
+    clearTimeout(timer);
+    ignore = false;
+
+    timer = setTimeout(function () {
+      ignore = true;
+      hide();
+    }, delay);
+  }
+
+  function show() { element.style.cursor = cursor; }
+  function hide() { element.style.cursor = 'none'; }
+
+  // Update cursor on mouse move
+  if (!options.cursor) {
+    element.addEventListener('mousemove', moved);
+    hide();
+  }
+  else {
+    show();
+  }
+
+  // Return .unbind() the function to stop watching window resize.
+  return {
+    /**
+     * Stop watching window resize
+     */
+    unbind: function () {
+      element.removeEventListener('mousemove', moved);
+    }
+  };
+}
+
+ThreeBox.Cursor.bind  = function (element, options) {
+  return ThreeBox.Cursor(element, options);
+}
+// Quick'n'dirty loader for additional .html content
+ThreeBox.preload = function (files, callback) {
+  // Only callback passed.
+  if (files instanceof Function) {
+    callback = files;
+    files = [];
+  }
+
+  // Allow single file.
+  files = typeof files == 'string' ? [files] : files;
+
+  // Completion counter
+  var remaining = files.length;
+  var accumulate = {};
+  var ping = function (data) {
+    // Collect objects
+    _.extend(accumulate, data || {});
+
+    // Call callback if done.
+    if (--remaining == 0) {
+      callback(accumulate);
+    };
+  }
+
+  // Prepare extensions
+  var l = ThreeBox.preload;
+  var regexps = {},
+      exts = {
+        'html': l.html,
+        'jpg': l.image,
+        'png': l.image,
+        'gif': l.image,
+        'mp3': l.audio,
+      };
+  _.each(exts, function (handler, ext) {
+    regexps[ext] = new RegExp('\\.' + ext + '$');
+  });
+
+  // Load individual file
+  _.each(files, function (file) {
+    // Use appropriate handler based on extension
+    _.each(exts, function (handler, ext) {
+      if (file.match(regexps[ext])) {
+        var path = file.split(/\//g);
+        var name = path.pop().replace(/\.[A-Za-z0-9]+$/, '');
+
+        handler(file, name, ping);
+      }
+    });
+  });
+};
+
+ThreeBox.preload.html = function (file, name, callback) {
+  new microAjax(file, function (res) {
+    var match;
+
+    // Insert javascript directly
+    while (match = res.match(/^(<script\s*>|<script[^>]*type=['"]text\/javascript['"][^>]*>)([\s\S]+?)<\/script>$/m)) {
+      try {
+        /*
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.innerHTML = match[2];
+        document.body.appendChild(script);
+        */
+        eval('(function () {' + match[2] + '})()');
+      }
+      catch (e) {
+        console.error(e);
+        console.error('While evaluating: ' + match[2]);
+      }
+
+      res = res.replace(match[0], '');
+    }
+
+    // Insert HTML via div
+    if (res.replace(/\s*/g) != '') {
+      var div = document.createElement('div');
+      div.innerHTML = res;
+      document.body.appendChild(div);
+    }
+
+    console.log('Loaded HTML ', file);
+    callback();
+  });
+};
+
+ThreeBox.preload.image = function (file, name, callback) {
+  THREE.ImageUtils.loadTexture(file, null, function (texture) {
+    var ret = {};
+    ret[name] = texture;
+
+    console.log('Loaded texture ', file);
+    callback(ret);
+  });
+};
+
+ThreeBox.preload.audio = function (file, name, callback) {
+  // Load binary file via AJAX
+  var request = new XMLHttpRequest();
+  request.open("GET", file, true);
+  request.responseType = "arraybuffer";
+
+  request.onload = function () {
+    var ret = {};
+    ret[name] = request.response;
+
+    console.log('Loaded audio ', file);
+    callback(ret);
+  };
+
+  request.send();
+}
+// Check dependencies.
+;(function (deps) {
+  for (var i in deps) {
+    if (!window[i]) throw "Error: ThreeRTT requires " + deps[i];
+  }
+})({
+  'THREE': 'Three.js'//,
+});
+
+// Namespace
+window.ThreeRTT = window.ThreeRTT || {};
+ThreeRTT.World = function () {};
+
+// Fetch shader from <script> tag by id
+// or pass through string if not exists.
+ThreeRTT.getShader = function (id) {
+  var elem = document.getElementById(id);
+  return elem && elem.innerText || id;
+};
+
+ThreeRTT.loop = function (n, callback) {
+  for (var i = 0; i < n; ++i) callback(i);
+};
+
+// Fetch shader from <script> tag by id
+ThreeRTT.getShader = function (id) {
+  var elem = document.getElementById(id);
+  return elem && (elem.innerText || elem.textContent) || id;
+};
+// Check for a power of two.
+ThreeRTT.isPowerOfTwo = function (value) {
+  return (value & (value - 1)) === 0;
+};
+
+// Convert World/Stage into RenderTarget if necessary.
+ThreeRTT.toTarget = function (rtt) {
+  // Stage object
+  if (ThreeRTT.Stage && (rtt instanceof ThreeRTT.Stage)) return rtt.target;
+  // tQuery world
+  if (ThreeRTT.World && (rtt instanceof ThreeRTT.World)) return rtt.target();
+  // RenderTarget or texture
+  return rtt;
+}
+
+// Convert World/Stage/RenderTarget into texture uniform.
+ThreeRTT.toTexture = function (rtt, i) {
+  // Convert World/Stage
+  rtt = ThreeRTT.toTarget(rtt);
+  // Convert virtual RenderTarget object to uniform
+  if (ThreeRTT.RenderTarget && (rtt instanceof ThreeRTT.RenderTarget)) return rtt.read();
+  return rtt;
+}
+
+// Make microevent methods chainable.
+MicroEvent.prototype.on   = function () { MicroEvent.prototype.bind.apply(this, arguments);    return this; }
+MicroEvent.prototype.emit = function () { MicroEvent.prototype.trigger.apply(this, arguments); return this; }
+MicroEvent.mixin	= function(destObject){
+  var props	= ['bind', 'unbind', 'trigger', 'on', 'emit'];
+  for(var i = 0; i < props.length; i ++){
+    destObject.prototype[props[i]] = MicroEvent.prototype[props[i]];
+  }
+}
+/**
+ * Render-to-texture stage. Contains scene/camera/target + optional full screen quad.
+ */
+ThreeRTT.Stage = function (renderer, options) {
+  options = _.extend({
+    history:  0,
+    camera:   {},
+    scene:    null,
+  }, options);
+
+  // Prefill aspect ratio.
+  options.camera.aspect = options.camera.aspect || (options.width / options.height);
+
+  // Create internal scene and default camera.
+  this.camera = ThreeRTT.Camera(options.camera);
+
+  // Create virtual render target, passthrough options.
+  this.target = new ThreeRTT.RenderTarget(renderer, options);
+
+  // Prepare data structures.
+  this.reset();
+
+  // Set size and aspect
+  this.size(options.width, options.height);
+}
+
+ThreeRTT.Stage.prototype = {
+
+  options: function () {
+    return this.target.options;
+  },
+
+  reset: function () {
+    this.scenes   = [];
+    this.passes   = [];
+  },
+
+  // Add object render pass
+  paint: function (object, empty) {
+
+    // Create root to hold all objects for this pass
+    var root = new THREE.Scene();
+
+    // Create a surface to render the last frame
+    if (!empty) {
+      var material = new ThreeRTT.FragmentMaterial(this, 'generic-fragment-texture');
+      var surface = this._surface(material);
+      root.add(surface);
+    }
+
+    // Add object
+    root.add(object);
+
+    // Add root to scene and insert into pass list
+    this.scenes.push(root);
+    this.passes.push(1);
+  },
+
+  // Add iteration pass
+  iterate: function (n, material) {
+
+    // Create a surface to render the pass with
+    var surface = this._surface(material);
+
+    // Create root to hold all objects for this pass
+    var root = new THREE.Scene();
+    root.add(surface);
+
+    // Add surface to scene and insert into pass list
+    this.scenes.push(root);
+    this.passes.push(n);
+
+    return this;
+  },
+
+  // Add regular fragment pass
+  fragment: function (material) {
+    this.iterate(1, material);
+
+    return this;
+  },
+
+  // Resize render-to-texture
+  size: function (width, height) {
+    width = Math.floor(width);
+    height = Math.floor(height);
+
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+
+    this.target.size(width, height);
+    return this;
+  },
+
+  // Get texture for render-to-texture output delayed by n frames.
+  read: function (n) {
+    return this.target.read(n);
+  },
+
+  // Return uniform for reading from this render target
+  uniform: function () {
+    return this.target.uniform();
+  },
+
+  // Render virtual render target.
+  render: function () {
+    this.target.clear();
+
+    _.each(this.passes, function (n, i) {
+      ThreeRTT.loop(n, function (j) {
+        this.target.render(this.scenes[i], this.camera);
+      }.bind(this));
+    }.bind(this));
+
+    return this;
+  },
+
+  // Clear virtual render target.
+  clear: function () {
+    this.target.clear();
+    return this;
+  },
+
+  // Cleanup resources.
+  destroy: function () {
+    this.target.deallocate();
+
+    this.scenes = [];
+    this.passes = [];
+    this.camera = null;
+    this.target = null;
+  },
+
+  // Generate full screen surface with default properties.
+  _surface: function (material) {
+    var surface = new THREE.Mesh(new ThreeRTT.ScreenGeometry(), {});
+    surface.frustumCulled = false;
+    surface.material = material;
+    surface.renderDepth = Infinity;
+
+    return surface;
+  },
+
+}
+/**
+ * Compose render-to-textures into a scene by adding a full screen quad
+ * that uses the textures as inputs.
+ */
+ThreeRTT.Compose = function (rtts, fragmentShader, textures, uniforms) {
+  THREE.Object3D.call(this);
+
+  // Create full screen quad.
+  var material = new ThreeRTT.FragmentMaterial(rtts, fragmentShader, textures, uniforms);
+  var geometry = new ThreeRTT.ScreenGeometry();
+  var mesh = this.mesh = new THREE.Mesh(geometry, material);
+  mesh.frustumCulled = false;
+
+  this.add(mesh);
+}
+
+ThreeRTT.Compose.prototype = new THREE.Object3D();
+// Handy Camera factory
+ThreeRTT.Camera = function (options) {
+  // Camera passthrough
+  if (options instanceof THREE.Camera) return options;
+
+  // Defaults
+  options = _.extend({
+    aspect: 1,
+    far: 10000,
+    fov: 85,
+    near: .01,
+    ortho: false,
+    scale: 1//,
+  }, options);
+
+  if (options.ortho) {
+    // Note: aspect ratio is applied after.
+    var s = options.scale, a = options.aspect;
+    return new THREE.OrthographicCamera(
+                      -s * a,
+                       s * a,
+                      -s,
+                       s,
+                       options.near,
+                       options.far);
+  }
+  else {
+    return new THREE.PerspectiveCamera(
+                       options.fov,
+                       options.aspect,
+                       options.near,
+                       options.far);
+  }
+};
+/**
+ * Virtual render target for complex render-to-texture usage.
+ *
+ * Contains multiple buffers for rendering from/to itself transparently
+ * and/or remembering multiple frames of history.
+ * 
+ * Set options.history to the number of frames of history needed (default 0).
+ *
+ * Render a frame:
+ * .render(scene, camera)
+ *
+ * Clear the frame:
+ * .clear(color, depth, stencil)
+ *
+ * Retrieve a virtual render target/texture to read from past frames:
+ * .read()/.read(0), .read(-1), .read(-2), ..
+ *
+ * Set dimensions:
+ * .size(width, height)
+ *
+ * Retrieve render target for manually rendering into:
+ * .write()
+ *
+ * Advanced cyclic buffer manually:
+ * .advance()
+ */
+ThreeRTT.RenderTarget = function (renderer, options) {
+  this.options = options = _.extend({
+    width:         256,
+    height:        256,
+    texture:       {},
+    clear:         { color: false, depth: false, stencil: false },
+    clearColor:    0xFFFFFF,
+    clearAlpha:    1,
+    history:       0,
+    scene:         null,
+    camera:        null,
+    autoAdvance:   true//,
+  }, options);
+  this.renderer = renderer;
+
+  // Make sure mip-mapping is disabled for non-power-of-two targets.
+  if (!ThreeRTT.isPowerOfTwo(options.width) ||
+      !ThreeRTT.isPowerOfTwo(options.height)) {
+    if (!options.texture.minFilter) {
+      options.texture.minFilter = THREE.LinearFilter;
+    }
+  }
+
+  // Number of buffers = history + read/write
+  this.history(this.options.history, true);
+
+  // Set size and allocate render targets.
+  this.size(options.width, options.height);
+
+  // Clear buffer
+  this.clear();
+},
+
+ThreeRTT.RenderTarget.prototype = {
+
+  // Retrieve virtual target for reading from, n frames back.
+  read: function (n) {
+    // Clamp history to available buffers minus write buffer.
+    n = Math.max(0, Math.min(this.options.history, Math.abs(n || 0)));
+    return this.virtuals[n];
+  },
+
+  // Retrieve real render target for writing/rendering to.
+  write: function () {
+    return this.targets[this.index];
+  },
+
+  // Retrieve / change history count
+  history: function (history, ignore) {
+    if (history !== undefined) {
+      this._history = history;
+      this.buffers = history + 2;
+
+      // Refresh/allocate targets.
+      ignore || this.allocate();
+    }
+    return this._history;
+  },
+
+  // Retrieve / change size
+  size: function (width, height) {
+    if (width !== undefined && height !== undefined) {
+      // Round floats to ints to help with half/quarter derived sizes.
+      this.width = width = Math.max(1, Math.floor(width));
+      this.height = height = Math.max(1, Math.floor(height));
+
+      // Refresh/allocate targets.
+      this.allocate();
+    }
+
+    return { width: this.width, height: this.height };
+  },
+
+  // Reallocate all targets.
+  deallocate: function () {
+    this.deallocateTargets();
+  },
+
+  // Reallocate all targets.
+  allocate: function () {
+    this.deallocateTargets();
+    this.allocateTargets();
+    this.allocateVirtuals();
+  },
+
+  // (Re)allocate render targets
+  deallocateTargets: function () {
+    // Deallocate real targets that were used in rendering.
+    _.each(this.targets || [], function (target) {
+      target.dispose && target.dispose();
+    }.bind(this));
+  },
+
+  // (Re)allocate render targets
+  allocateTargets: function () {
+    var options = this.options;
+              n = this.buffers;
+
+    // Allocate/Refresh real render targets
+    var targets = this.targets = [];
+    ThreeRTT.loop(n, function (i) {
+
+      targets.push(new THREE.WebGLRenderTarget(
+        this.width,
+        this.height,
+        options.texture
+      ));
+      targets[i].__index = i;
+    }.bind(this));
+  },
+
+  // Prepare virtual render targets for reading/writing.
+  allocateVirtuals: function () {
+    var original = this.targets[0],
+        virtuals  = this.virtuals || [];
+        n = Math.max(1, this.buffers - 1);
+        // One buffer reserved for writing at any given time,
+        // unless there is no history.
+
+    // Keep virtual targets around if possible.
+    if (n > virtuals.length) {
+      ThreeRTT.loop(n - virtuals.length, function () {
+        virtuals.push(original.clone());
+      }.bind(this));
+    }
+    else {
+      virtuals = virtuals.slice(0, n);
+    }
+
+    // Set sizes of virtual render targets.
+    _.each(virtuals, function (target, i) {
+      target.width = this.width;
+      target.height = this.height;
+      target.__index = i;
+    }.bind(this));
+
+    this.virtuals = virtuals;
+
+    // Reset index and re-init targets.
+    this.index = -1;
+    this.advance();
+  },
+
+  // Advance through buffers.
+  advance: function () {
+    var options  = this.options,
+        targets  = this.targets,
+        virtuals = this.virtuals,
+        index    = this.index,
+        n        = this.buffers,
+        v        = virtuals.length;
+
+    // Advance cyclic index.
+    this.index = index = (index + 1) % n;
+
+    // Point virtual render targets to last rendered frame(s) in order.
+    ThreeRTT.loop(v, function (i) {
+      var dst = virtuals[i],
+          src = targets[(v - i + index) % n];
+
+      dst.__webglTexture      = src.__webglTexture;
+      dst.__webglFramebuffer  = src.__webglFramebuffer;
+      dst.__webglRenderbuffer = src.__webglRenderbuffer;
+      dst.__index             = src.__index;
+    });
+
+  },
+
+  // Clear render target.
+  clear: function () {
+    var options = this.options,
+        clear   = options.clear,
+        renderer = this.renderer;
+
+    // Read old clearing state
+    var color = renderer.getClearColor().clone();
+    var alpha = renderer.getClearAlpha();
+
+    // Apple new clearing color
+    renderer.setClearColor(options.clearColor, options.clearAlpha);
+    renderer.clearTarget(this.write(), clear.color, clear.depth, clear.stencil);
+
+    // Reset state
+    renderer.setClearColor(color, alpha);
+  },
+
+  // Render to render target using given renderer.
+  render: function (scene, camera) {
+    // Make sure materials are given a chance to update their uniforms.
+    this.emit('render', scene, camera);
+
+    // Disable autoclear.
+    var autoClear = this.renderer.autoClear;
+    this.renderer.autoClear = false;
+
+    // Clear manually (with correct flags).
+    this.clear();
+
+    // Render scene.
+    this.renderer.render(scene, camera, this.write());
+
+    // Restore autoclear to previous state.
+    this.renderer.autoClear = autoClear;
+
+    // Advance render buffers so newly rendered frame is at .read(0).
+    this.options.autoAdvance && this.advance();
+  },
+
+  // Return uniform for reading from this renderTarget.
+  uniform: function (i) {
+    var n = this.history();
+    if (n) {
+      // Expose frame history as array of textures.
+      var textures = [];
+      ThreeRTT.loop(n + 1, function (j) {
+        textures.push(this.read(-j));
+      }.bind(this));
+      return {
+        type: 'tv',
+        value: textures,
+        count: n + 1//,
+      };
+    }
+    else {
+      // No history, expose a single read texture.
+      return {
+        type: 't',
+        value: i,
+        texture: this.read(),
+        count: 1//,
+      };
+    }
+  }//,
+
+};
+
+// Microeventable
+MicroEvent.mixin(ThreeRTT.RenderTarget);
+/**
+ * Geometry for drawing a full screen quad for raytracing / render-to-texture purposes.
+ */
+ThreeRTT.ScreenGeometry = function () {
+  return new THREE.PlaneGeometry(2, 2, 1, 1);
+};
+/**
+ * Helper for making ShaderMaterials that read from textures and write out processed fragments.
+ */
+ThreeRTT.ShaderMaterial = function (renderTargets, vertexShader, fragmentShader, textures, uniforms) {
+
+  // Autoname texture uniforms as texture1, texture2, ...
+  function textureName(j) {
+    return 'texture' + (j + 1);
+  }
+
+  // Allow for array of textures.
+  if (textures instanceof Array) {
+    var object = {};
+    _.each(textures, function (texture, j) {
+      object[textureName(i)] = texture;
+    });
+    textures = object;
+  }
+  // Allow passing single texture/object
+  else if (textures instanceof THREE.Texture
+        || textures instanceof ThreeRTT.World
+        || textures instanceof THREE.WebGLRenderTarget) {
+    textures = { texture1: textures };
+  }
+
+  // Accept one or more render targets as input for reading.
+  if (!(renderTargets instanceof Array)) {
+    renderTargets = [renderTargets];
+  }
+
+  // Accept World/Stage/RenderTarget classes
+  renderTargets = _.map(renderTargets, function (target) {
+    return ThreeRTT.toTarget(target);
+  });
+
+  // Add sample step uniform.
+  uniforms = _.extend(uniforms || {}, {
+    sampleStep: {
+      type: 'v2',
+      value: new THREE.Vector2()//,
+    }//,
+  });
+
+  // Make uniforms for input textures.
+  _.each(textures, function (texture, key) {
+    uniforms[key] = {
+      type: 't',
+      value: ThreeRTT.toTexture(texture)//,
+    };
+  });
+
+  // Use render targets as input textures unless overridden.
+  _.each(renderTargets, function (target, j) {
+    // Create texture1, texture2, ... uniforms.
+    var key = textureName(j);
+    if (target.read && !uniforms[key]) {
+      uniforms[key] = {
+        type: 't',
+        value: target.read()//,
+      };
+    }
+  });
+
+  // Alias 'texture1' to 'texture'.
+  if (uniforms.texture1 && !uniforms.texture) {
+    uniforms.texture = uniforms.texture1;
+  }
+
+  // Update sampleStep uniform on render of source.
+  var callback;
+  renderTargets[0].on('render', callback = function () {
+    var texture = renderTargets[0].options.texture;
+    var wrapS = texture.wrapS;
+    var wrapT = texture.wrapT;
+
+    var offset = {
+      1000: 0, // repeat
+      1001: 1, // clamp
+      1002: 0, // mirrored
+    };
+
+    var value = uniforms.sampleStep.value;
+
+    value.x = 1 / (renderTargets[0].width - (offset[wrapS]||0));
+    value.y = 1 / (renderTargets[0].height - (offset[wrapT]||0));
+  });
+
+  // Lookup shaders and build material
+  var material = new THREE.ShaderMaterial({
+    uniforms:       uniforms,
+    vertexShader:   ThreeRTT.getShader(vertexShader || 'generic-vertex'),
+    fragmentShader: ThreeRTT.getShader(fragmentShader || 'generic-fragment-texture')//,
+  });
+
+  return material;
+};
+/**
+ * Helper for making ShaderMaterials that read from textures and write out processed fragments.
+ */
+ThreeRTT.FragmentMaterial = function (renderTargets, fragmentShader, textures, uniforms) {
+
+  var material = new ThreeRTT.ShaderMaterial(
+                  renderTargets, 'generic-vertex-screen', fragmentShader, textures, uniforms);
+
+  // Disable depth buffer for RTT fragment operations by default.
+  material.side = THREE.DoubleSide;
+  material.depthTest = false;
+  material.depthWrite = false;
+  material.transparent = true;
+  material.blending = THREE.NoBlending;
+
+  return material;
+};
+/**
+ * Specialized ShaderMaterial for up/downsampling a texture by a factor of 2 with anti-aliasing.
+ */
+ThreeRTT.ScaleMaterial = function (renderTargetFrom, renderTargetTo, scale) {
+  var uniforms = {};
+
+  // Accept both Stage and RenderTarget classes
+  renderTargetFrom = ThreeRTT.toTarget(renderTargetFrom);
+  renderTargetTo = ThreeRTT.toTarget(renderTargetTo);
+
+  // Add uniforms.
+  uniforms = _.extend(uniforms, {
+    sampleAlignment: {
+      type: 'v2',
+      value: new THREE.Vector2()//,
+    },
+    texture: {
+      type: 't',
+      value: renderTargetFrom.read()//,
+    }//,
+  });
+
+  // Update uniforms on render.
+  renderTargetTo.on('render', function () {
+    var from = renderTargetFrom,
+        to = renderTargetTo;
+
+    // Correction for odd downsample.
+    var dx = (to.width * scale) / from.width,
+        dy = (to.height * scale) / from.height;
+
+    var value = uniforms.sampleAlignment.value;
+    value.x = dx;
+    value.y = dy;
+  });
+
+  // Lookup shaders and build material
+  var material = new THREE.ShaderMaterial({
+    uniforms:       uniforms,
+    vertexShader:   ThreeRTT.getShader('rtt-vertex-downsample'),
+    fragmentShader: ThreeRTT.getShader('generic-fragment-texture')//,
+  });
+
+  // Disable depth buffer for RTT operations by default.
+  material.side = THREE.DoubleSide;
+  material.depthTest = false;
+  material.depthWrite = false;
+  material.transparent = true;
+  material.blending = THREE.NoBlending;
+
+  return material;
+};
+
+/**
+ * Helper classes
+ */
+ThreeRTT.DownsampleMaterial = function (renderTargetFrom, renderTargetTo) {
+  return new ThreeRTT.ScaleMaterial(renderTargetFrom, renderTargetTo, 2);
+}
+ThreeRTT.UpsampleMaterial = function (renderTargetFrom, renderTargetTo) {
+  return new ThreeRTT.ScaleMaterial(renderTargetFrom, renderTargetTo, 0.5);
+}
+/**
+ * Helper for making ShaderMaterials that raytrace in camera space per pixel.
+ */
+ThreeRTT.RaytraceMaterial = function (renderTargets, camera, fragmentShader, textures, uniforms) {
+
+  // Accept one or more render targets as input for reading.
+  if (!(renderTargets instanceof Array)) {
+    renderTargets = [renderTargets];
+  }
+
+  var material = new ThreeRTT.ShaderMaterial(
+                  renderTargets, 'raytrace-vertex-screen', fragmentShader, textures, uniforms);
+
+  // Add camera uniforms.
+  uniforms = _.extend(material.uniforms || {}, {
+    raytraceViewport: {
+      type: 'v2',
+      value: new THREE.Vector2(),
+    },
+    raytracePosition: {
+      type: 'v3',
+      value: new THREE.Vector3(),
+    },
+    raytraceMatrix: {
+      type: 'm4',
+      value: new THREE.Matrix4(),
+    },
+  });
+
+  // Update camera uniforms on render.
+  var renderTarget = ThreeRTT.toTarget(renderTargets[0]);
+  var zero = new THREE.Vector3();
+  renderTarget.on('render', function (scene) {
+    camera.updateMatrixWorld();
+    if (camera.fov) {
+      var tan = Math.tan(camera.fov * π / 360);
+      uniforms.raytraceViewport.value.set(tan * camera.aspect, tan);
+    }
+    if (camera.matrixWorld) {
+      uniforms.raytraceMatrix.value.copy(camera.matrixWorld);
+      uniforms.raytraceMatrix.value.setPosition(zero);
+      uniforms.raytracePosition.value.getPositionFromMatrix(camera.matrixWorld);
+    }
+  });
+
+  // Lookup shaders and build material
+  return material;
+};/**
+ * Debug/testing helper that displays the given rendertargets in a grid
+ */
+ThreeRTT.Display = function (targets, gx, gy) {
+  if (!(targets instanceof Array)) {
+    targets = [targets];
+  }
+
+  this.gx = gx || targets.length;
+  this.gy = gy || 1;
+  this.targets = targets;
+  this.n = targets.length;
+
+  THREE.Object3D.call(this);
+  this.make();
+}
+
+ThreeRTT.Display.prototype = _.extend(new THREE.Object3D(), {
+
+  make: function () {
+    var n = this.n,
+        gx = this.gx,
+        gy = this.gy,
+        targets = this.targets;
+
+    var igx = (gx - 1) / 2,
+        igy = (gy - 1) / 2;
+
+    var geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
+    var i = 0;
+    for (var y = 0; i < n && y < gy; ++y) {
+      for (var x = 0; i < n && x < gx; ++x, ++i) {
+        var material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          map: ThreeRTT.toTexture(targets[i]),
+          fog: false
+        });
+        material.side = THREE.DoubleSide;
+
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.renderDepth = 10000 + Math.random();
+        this.add(mesh);
+
+        if (gx > 1) mesh.position.x = -igx + x;
+        if (gy > 1) mesh.position.y =  igy - y;
+      }
+    }
+  }
+
+});/**
+ * Handle a world for rendering to texture (tQuery).
+ *
+ * @param world (object) World to sync rendering to.
+ */
+ThreeRTT.World  = function (world, options) {
+  // Handle parameters.
+  options = options || {};
+  options = _.extend({
+    autoRendering: true,
+    autoSize:      !(options.width && options.height), // Default to autosize if no size specified
+    order:         ++ThreeRTT.World.sequence,
+    scale:         1//,
+  }, options);
+
+  // Inherit size from world
+  options.width  = (!options.autoSize && options.width)
+                   || ((world._opts && world._opts.renderW || 256) / options.scale);
+  options.height = (!options.autoSize && options.height)
+                   || ((world._opts && world._opts.renderH || 256) / options.scale);
+
+  // Bind to world resize event for ThreeBox.js auto-resize.
+  world.on('resize', function (width, height) {
+    if (!options.autoSize) return;
+
+    width /= options.scale;
+    height /= options.scale;
+
+    // Resize render target
+    this.size(width, height);
+  }.bind(this));
+
+  // Remember creation state.
+  this._options = options;
+  this._world   = world;
+  this._autoRendering  = options.autoRendering;
+
+  // Copy renderer.
+  this._renderer = world.tRenderer();
+
+  // Create an RTT stage, pass-thru options.
+  this._stage = new ThreeRTT.Stage(this._renderer, options);
+
+  // Expose scene and camera
+  this._tScene  = this._stage.scene;
+  this._tCamera = this._stage.camera;
+
+  // Add to RTT queue at specified order.
+  this.queue = ThreeRTT.RenderQueue.bind(world);
+  if (options.autoRendering) this.queue.add(this);
+
+  // Update sizing state
+  this.size(options.width, options.height, true);
+};
+
+// All non-ordered passes go last, in order of addition.
+ThreeRTT.World.sequence = 100000;
+
+ThreeRTT.World.prototype = _.extend(new THREE.Object3D(), tQuery.World.prototype, {
+
+  // Return the stage object.
+  stage: function () {
+    return this._stage;
+  },
+
+  // Return the virtual render target object.
+  target: function () {
+    return this._stage.target;
+  },
+
+  // Change the autosize behavior.
+  autoSize: function (autoSize) {
+    if (autoSize !== undefined) {
+      this._options.autoSize = autoSize;
+    }
+    return this._options.autoSize;
+  },
+
+  // Adjust in response to size changes
+  adjust: function (ignore) {
+    var scale = this._options.scale;
+    var width = this._options.width,
+        height = this._options.height;
+
+    if (this._options.autoSize) {
+      // Resize immediately based off parent scale.
+      var opts = this._world._opts;
+      width = opts.renderW,
+      height = opts.renderH;
+    }
+
+    width /= scale;
+    height /= scale;
+
+    // Compatibility with tQuery world
+    this._opts = {
+      renderW: width ,
+      renderH: height//,
+    };
+
+    // Ignore on init.
+    ignore || this._stage.size(width, height)
+  },
+
+  // Change the autoscale factor
+  scale: function (scale) {
+    if (scale) {
+      this._options.scale = scale;
+      this.adjust();
+      return this;
+    }
+
+    return this._options.scale;
+  },
+
+  // Resize the RTT texture.
+  size: function (width, height, ignore) {
+    if (width && height) {
+      this._options.width = width;
+      this._options.height = height;
+
+      // Ignore on init.
+      this.adjust(ignore);
+      return this;
+    }
+
+    return { width: this._options.width, height: this._options.height };
+  },
+
+  // Get stage options
+  options: function () {
+    return this._stage.options();
+  },
+
+  // Reset all passes
+  reset: function () {
+    this._stage.reset();
+    return this;
+  },
+
+  // Add a painting rendering pass
+  paint: function (object, empty) {
+    this._stage.paint(object, empty);
+    return this;
+  },
+
+  // Add an iterated rendering pass
+  iterate: function (n, fragmentShader, textures, uniforms) {
+    var material = fragmentShader instanceof THREE.Material
+                 ? fragmentShader
+                 : tQuery.createFragmentMaterial(
+                    this, fragmentShader, textures, uniforms);
+
+    this._stage.iterate(n, material);
+    return this;
+  },
+
+  // Add a shader rendering pass
+  shader: function (vertexShader, fragmentShader, textures, uniforms) {
+    var material = vertexShader instanceof THREE.Material
+                 ? vertexShader
+                 : tQuery.createShaderMaterial(
+                    this, vertexShader, fragmentShader, textures, uniforms);
+
+    this._stage.fragment(material);
+    return this;
+  },
+
+  // Add a fragment rendering pass
+  fragment: function (fragmentShader, textures, uniforms) {
+    var material = fragmentShader instanceof THREE.Material
+                 ? fragmentShader
+                 : tQuery.createFragmentMaterial(
+                    this, fragmentShader, textures, uniforms);
+
+    this._stage.fragment(material);
+    return this;
+  },
+
+  // Add a raytrace rendering pass
+  raytrace: function (camera, fragmentShader, textures, uniforms) {
+    var material = fragmentShader instanceof THREE.Material
+                 ? fragmentShader
+                 : tQuery.createRaytraceMaterial(
+                    this, camera, fragmentShader, textures, uniforms);
+
+    this._stage.fragment(material);
+    return this;
+  },
+
+  // Add a downsample rendering pass
+  downsample: function (worldFrom) {
+    // Force this world to right size now if not autosizing
+    if (!worldFrom.autoSize()) {
+      var size = worldFrom.size();
+      this._options.width = size.width;
+      this._options.height = size.height;
+    }
+
+    // Force this world to right scale (will autosize)
+    var scale = worldFrom.scale();
+    this.scale(scale * 2);
+
+    var material = tQuery.createDownsampleMaterial(worldFrom, this);
+    this._stage.fragment(material);
+
+    return this;
+  },
+
+  // Add an upsample rendering pass
+  upsample: function (worldFrom) {
+    // Force this world to right size now if not autosizing
+    if (!worldFrom.autoSize()) {
+      var size = worldFrom.size();
+      this._options.width = size.width;
+      this._options.height = size.height;
+    }
+
+    // Force this world to right scale (will autosize)
+    var scale = worldFrom.scale();
+    this.scale(scale * 0.5);
+
+    var material = tQuery.createUpsampleMaterial(worldFrom, this);
+    this._stage.fragment(material);
+
+    return this;
+  },
+
+  // Return the virtual texture for reading from this RTT stage.
+  read: function (n) {
+    return this._stage.read(n);
+  },
+
+  // Return uniform for reading from this render target
+  uniform: function () {
+    return this._stage.uniform();
+  },
+
+  // Render this world.
+  render: function () {
+    // Render to write target.
+    this._stage.render();
+
+    return this;
+  },
+
+  // Destroy/unlink this world.
+  destroy: function () {
+    // Remove stage.
+    this._stage.destroy();
+    this._stage = null;
+
+  	// Remove self from rendering queue.
+    this.queue.remove(this);
+
+  	// Microevent.js notification
+  	this.trigger('destroy');
+
+    return this;
+  }
+});
+
+// Make it pluginable.
+tQuery.pluginsInstanceOn(ThreeRTT.World);
+
+// Make it eventable.
+tQuery.MicroeventMixin(ThreeRTT.World.prototype)
+/**
+ * Priority queue for render-to-texture stages (tQuery).
+ *
+ * Attach a weighted queue to the given world, rendered before the world itself.
+ */
+ThreeRTT.RenderQueue = function (world) {
+  this.world = world;
+  this.queue = [];
+  this.callback = null;
+
+  this.renderer = world.tRenderer();
+};
+
+ThreeRTT.RenderQueue.prototype = {
+  // Add render stage to queue
+  add: function (stage) {
+    this.queue.push(stage);
+    this.sort();
+    this.init();
+  },
+
+  // Remove render stage from queue.
+  remove: function (stage) {
+    this.queue.splice(this.queue.indexOf(stage), 1);
+    this.cleanup();
+  },
+
+  // Ensure we are hooked into the world's rendering pipeline.
+  init: function () {
+    var queue = this.queue,
+        world = this.world;
+
+    if (queue.length && !this.callback) {
+      world.loop().hookPreRender(this.callback = function () {
+        _.each(queue, function (stage) {
+          stage.render();
+        });
+      });
+    }
+  },
+
+  // Unhook from world if no longer needed.
+  cleanup: function () {
+    var queue = this.queue,
+        world = this.world;
+
+    if (!queue.length && this.callback) {
+      world.loop().unhookPreRender(this.callback);
+      this.callback = null;
+    }
+  },
+
+  // Sort queue by given order.
+  sort: function () {
+    this.queue.sort(function (a, b) {
+      return a.order - b.order;
+    });
+  }
+};
+
+/**
+ * Helper to return the single RenderQueue associated with a world.
+ */
+ThreeRTT.RenderQueue.bind = function (world) {
+  var key = '__rttRenderQueue';
+
+  // Singleton attached to world.
+  if (world[key]) {
+    return world[key];
+  }
+  return (world[key] = new ThreeRTT.RenderQueue(world));
+}
+/**
+ * Create a render-to-texture world for this world.
+ */
+tQuery.World.registerInstance('rtt', function (options) {
+  return tQuery.createRTT(this, options);
+});
+
+/**
+ * Add a surface composing a render-to-texture to the screen.
+ */
+tQuery.World.registerInstance('compose', function (rtts, fragmentShader, textures, uniforms) {
+  var compose = tQuery.createComposeRTT(rtts, fragmentShader, textures, uniforms);
+  this.add(compose);
+  return compose;
+});
+
+/**
+ * Add a surface showing a render-to-texture surface to this world.
+ */
+tQuery.World.registerInstance('display', function (targets, gx, gy) {
+  var display = tQuery.createDisplayRTT(targets, gx, gy);
+  this.add(display);
+  return display;
+});
+
+/**
+ * Create a render-to-texture world (static).
+ */
+tQuery.registerStatic('createRTT', function (world, options) {
+  // Create new RTT world.
+  return new ThreeRTT.World(world, options);
+});
+
+/**
+ * Composite a render-to-texture image full screen
+ */
+tQuery.registerStatic('createComposeRTT', function (rtts, fragmentShader, textures, uniforms) {
+  return new ThreeRTT.Compose(rtts, fragmentShader, textures, uniforms);
+});
+
+/**
+ * Create a display surface showing one or more textures in a grid.
+ */
+tQuery.registerStatic('createDisplayRTT', function (targets, gx, gy) {
+  return new ThreeRTT.Display(targets, gx, gy);
+});
+
+/**
+ * Create a ShaderMaterial.
+ */
+tQuery.registerStatic('createShaderMaterial', function (worlds, vertexShader, fragmentShader, textures, uniforms) {
+  return new ThreeRTT.FragmentMaterial(worlds, vertexShader, fragmentShader, textures, uniforms);
+});
+
+/**
+ * Create a FragmentMaterial.
+ */
+tQuery.registerStatic('createFragmentMaterial', function (worlds, fragmentShader, textures, uniforms) {
+  return new ThreeRTT.FragmentMaterial(worlds, fragmentShader, textures, uniforms);
+});
+
+/**
+ * Create a RaytraceMaterial.
+ */
+tQuery.registerStatic('createRaytraceMaterial', function (world, camera, fragmentShader, textures, uniforms) {
+  return new ThreeRTT.RaytraceMaterial(world, camera, fragmentShader, textures, uniforms);
+});
+
+/**
+ * Create a DownsampleMaterial.
+ */
+tQuery.registerStatic('createDownsampleMaterial', function (worldFrom, worldTo) {
+  return new ThreeRTT.DownsampleMaterial(worldFrom, worldTo);
+});
+
+/**
+ * Create a UpsampleMaterial.
+ */
+tQuery.registerStatic('createUpsampleMaterial', function (worldFrom, worldTo) {
+  return new ThreeRTT.UpsampleMaterial(worldFrom, worldTo);
+});
+
+/**
+ * Create a ScaleMaterial.
+ */
+tQuery.registerStatic('createScaleMaterial', function (worldFrom, worldTo, scale) {
+  return new ThreeRTT.DownsampleMaterial(worldFrom, worldTo, scale);
+});
+/**
+ * ShaderGraph.js. Assemble GLSL shaders on the fly.
+ */
+
+// Check dependencies.
+;(function (deps) {
+  for (var i in deps) {
+    if (!window[i]) throw "Error: ShaderGraph requires " + deps[i];
+  }
+})({
+  'THREE': 'Three.js'//,
+});
+
+// Namespace.
+window.ShaderGraph = {};
+
+// Fetch shader from <script> tag by id
+ShaderGraph.getShader = function (id) {
+  var elem = document.getElementById(id);
+  return elem && (elem.innerText || elem.textContent) || id;
+};(function ($) {
+
+/**
+ * Building block for effects, wraps a shader node, guides compilation.
+ */
+$.Block = function (node) {
+  node = node || new $.Node();
+  this.node(node);
+
+  this.children = [];
+  this.parent = null;
+  this.properties = {};
+  this.index = ++$.Block.index;
+
+  this.refresh();
+};
+
+$.Block.index = 0;
+
+$.Block.prototype = {
+
+  node: function (node) {
+    if (node !== undefined) {
+      this._node = node;
+      return this;
+    }
+    return this._node;
+  },
+
+  refresh: function () {
+    this._node.owner(this);
+    this._node.outlets(this.outlets());
+  },
+
+  fetch: function (program, phase, outlet, priority) {
+    // Add outlet output code to program
+  },
+
+  id: function (program, phase, outlet, priority) {
+    // Lookup inouts further up the chain
+    if (outlet.meta.inout) {
+      var input = outlet.node.get(outlet.name, $.IN).input;
+      if (input) {
+        return input.node.owner().fetch(program, phase, input, priority + 1);
+      }
+    }
+
+    // Use this outlet's ID as intermediate variable name
+    return outlet.id();
+  },
+
+};
+
+/**
+ * Building block for a GLSL shader
+ */
+$.Block.Snippet = function (code) {
+  this.snippet = new $.Snippet(code);
+
+  $.Block.call(this);
+};
+
+$.Block.Snippet.prototype = _.extend({}, $.Block.prototype, {
+
+  insert: function (program, phase, priority) {
+    // Compile code into program.
+    $.Block.Snippet.compileCall(program, phase, this.node(), this.snippet, priority);
+  },
+
+  fetch: function (program, phase, outlet, priority) {
+    // Ensure code is included in program.
+    if (!program.include(this, phase)) {
+      this.insert(program, phase, priority);
+    }
+
+    // Use this outlet's ID as intermediate variable name.
+    return this.id(program, phase, outlet, priority);
+  },
+
+  outlets: function () {
+    return $.Block.Snippet.makeOutlets(this.snippet);
+  },
+
+});
+
+/**
+ * Building block for a renderable material
+ */
+$.Block.Material = function (vertex, fragment) {
+  this.vertex = new $.Snippet(vertex);
+  this.fragment = new $.Snippet(fragment);
+
+  $.Block.call(this);
+};
+
+$.Block.Material.prototype = _.extend({}, $.Block.prototype, {
+
+  compile: function () {
+    if (this.node().outputs.length > 0) throw "Can't compile material with outputs";
+
+    var node = this.node();
+    var program = new $.Program();
+
+    this.insert(program, 'vertex', 0);
+    this.insert(program, 'fragment', 0);
+
+    program.compile();
+
+    return program;
+  },
+
+  insert: function (program, phase, priority) {
+    $.Block.Snippet.compileCall(program, phase, this.node(), this[phase], priority);
+  },
+
+  fetch: function (program, phase, outlet, priority) {
+    // Ensure code is included only once in program.
+    if (!program.include(this, phase)) {
+      this.insert(program, phase, priority);
+    }
+
+    // Ensure vertex shader is added to program even if vertex outputs are not used.
+    if (phase == 'fragment') {
+      if (!program.include(this, 'vertex')) {
+        this.insert(program, 'vertex', 0);
+      }
+    }
+
+    // Use this outlet's ID as intermediate variable name.
+    return this.id(program, phase, outlet, priority);
+  },
+
+  outlets: function () {
+    var vertex   = $.Block.Snippet.makeOutlets(this.vertex);
+    var fragment = $.Block.Snippet.makeOutlets(this.fragment);
+
+    return _.union(vertex, fragment);
+  },
+
+});
+
+/**
+ * Make outlets based on a given signature.
+ */
+$.Block.Snippet.makeOutlets = function (snippet) {
+  var outlets = [];
+
+  // Since snippets are cached, cache outlets too.
+  if (snippet.outlets) {
+    return snippet.outlets;
+  }
+
+  var args = snippet.arguments();
+
+  _.each(args.parameters, function (arg) {
+    // Strip in/out suffix and set meta data
+    arg = _.extend({}, arg);
+    arg.meta = { required: true };
+    arg.hint = arg.name.replace(/(In|Out)$/, '');
+    arg.category = 'parameter';
+
+    // Split inout args into two separate outlets
+    if (arg.inout == $.INOUT) {
+      arg.meta.inout = true;
+
+      var input = _.extend({}, arg);
+      input.inout = $.IN;
+      outlets.push(input);
+
+      arg.inout = $.OUT;
+    }
+    outlets.push(arg);
+  });
+
+  _.each(args.uniforms, function (arg) {
+    // Strip in/out suffix and set meta data
+    arg.meta = { };
+    arg.hint = arg.name.replace(/(In|Out)$/, '');
+    arg.category = 'uniform';
+    arg.inout = $.IN;
+    outlets.push(arg);
+  });
+
+  snippet.outlets = outlets;
+
+  return outlets;
+}
+
+/**
+ * Compile a GLSL snippet call by tracing inputs across the graph.
+ */
+$.Block.Snippet.compileCall = function (program, phase, node, snippet, priority) {
+  var signature = snippet.arguments();
+  var args = [];
+
+  // Assign intermediate variables.
+  _.each(signature.parameters, function (arg) {
+
+    var fetch = arg.inout == $.INOUT ? $.IN : arg.inout;
+    var outlet = node.get(arg.name, fetch);
+
+    // Fetch code to calculate this input
+    if (arg.inout == $.IN || arg.inout == $.INOUT) {
+      if (outlet.input) {
+        var owner = outlet.input.node.owner();
+
+        var variable = owner.fetch(program, phase, outlet.input, priority + 1);
+        program.variable(phase, variable, arg);
+        args.push(variable);
+      }
+      else {
+        console.log('Outlet', arg, input);
+        throw ["Missing connection on outlet for " + arg.name];
+      }
+    }
+
+    // Add output to call arguments
+    else if (arg.inout == $.OUT) {
+      var variable = outlet.id();
+      program.variable(phase, variable, arg);
+      args.push(variable);
+    }
+  });
+
+  // Add uniforms
+  var replaced = [];
+  _.each(signature.uniforms, function (arg) {
+    var outlet = node.get(arg.name);
+
+    // Replace uniform with argument
+    if (outlet.input) {
+      var owner = outlet.input.node.owner();
+
+      var variable = owner.fetch(program, phase, outlet.input, priority + 1);
+      program.variable(phase, variable, arg);
+      args.push(variable);
+      replaced.push(arg.name);
+    }
+    // Pass through uniform
+    else {
+      program.external('uniform', arg);
+    }
+  });
+
+  // Add attributes
+  _.each(signature.attributes, function (arg) {
+    program.external('attribute', arg);
+  });
+
+  // Add varyings
+  _.each(signature.varyings, function (arg) {
+    program.external('varying', arg);
+  });
+
+  // Compile snippet and add to program.
+  var name = ['', 'sg', phase, snippet.name, node.owner().index ].join('_');
+  var code = snippet.compile(name, replaced, true);
+  program.add(phase, name, args, code, priority);
+};
+
+
+})(ShaderGraph);(function ($) {
+
+/**
+ * Helps build graphs of blocks/nodes with chainable API.
+ */
+$.Factory = function () {
+  this.end();
+};
+
+$.Factory.prototype = {
+
+  snippet: function (code, op) {
+    op = op || 'append';
+
+    var block = new $.Block.Snippet(ShaderGraph.getShader(code));
+    this[op](block.node());
+
+    return this;
+  },
+
+  material: function (vertex, fragment, op) {
+    op = op || 'append';
+
+    var block = new $.Block.Material(ShaderGraph.getShader(vertex), ShaderGraph.getShader(fragment));
+    this[op](block.node());
+
+    return this;
+  },
+
+  snippetBefore: function (code) {
+    this.snippet(code, 'prepend');
+    return this;
+  },
+
+
+  materialBefore: function (vertex, fragment) {
+    this.material(code, 'prepend');
+    return this;
+  },
+
+  append: function (node) {
+    if (!node.graph) this.graph.add(node);
+
+    var context = this.stack[0];
+
+    _.each(context.end, function (end) {
+      end.connect(node);
+    });
+    if (!context.start.length) {
+      context.start = [node];
+    }
+    context.end = [node];
+
+    return this;
+  },
+
+  prepend: function (node) {
+    if (!node.graph) this.graph.add(node);
+
+    var context = this.stack[0];
+
+    _.each(context.start, function (start) {
+      node.connect(start);
+    });
+    if (!context.end.length) {
+      context.end = [node];
+    }
+    context.start = [node];
+
+    return this;
+  },
+
+  group: function () {
+    // Inner var holds working state, outer var holds accumulated state.
+    this.stack.unshift({ start: [], end: [] });
+    this.stack.unshift({ start: [], end: [] });
+
+    return this;
+  },
+
+  pass: function () {
+    this.next();
+
+    var sub = this.stack[0];
+    sub.start.push(null);
+
+    return this.combine();
+  },
+
+  next: function () {
+    var sub = this.stack.shift();
+    var main = this.stack[0];
+
+    main.start = main.start.concat(sub.start);
+    main.end   = main.end.concat(sub.end);
+
+    this.stack.unshift({ start: [], end: [] });
+
+    return this;
+  },
+
+  combine: function () {
+    if (this.stack.length <= 2) throw "Popping factory stack too far.";
+
+    this.next();
+    this.stack.shift();
+
+    var sub = this.stack.shift(),
+        main = this.stack[0];
+
+    if (sub.start.length) {
+      _.each(sub.start, function (to) {
+        // Passthrough all outlets to other side
+        if (!to) {
+          sub.end = sub.end.concat(main.end);
+        }
+        // Normal destination
+        else _.each(main.end, function (from) {
+          from.connect(to, true);
+        });
+      });
+      main.end = sub.end;
+    }
+
+    return this;
+  },
+
+  end: function () {
+    var graph = this.graph;
+
+    this.graph = new $.Graph();
+    this.stack = [];
+    this.group();
+
+    // Add compile shortcut.
+    if (graph) {
+      graph.compile = function () {
+        return graph.tail().owner().compile();
+      };
+    }
+
+    return graph;
+  }//,
+};
+
+
+})(ShaderGraph);
+(function ($) {
+
+/**
+ * Model of a shader program as it's being built.
+ *
+ * Is passed around and accumulates data, after which .compile() is called to finalize.
+ */
+$.Program = function () {
+  this.calls = { vertex: {}, fragment: {} };
+  this.variables = { vertex: {}, fragment: {} };
+  this.externals = {};
+
+  this.compiled = false;
+  this.attributes = {};
+  this.uniforms = {};
+  this.vertexShader = '';
+  this.fragmentShader = '';
+
+  this.includes = { vertex: [], fragment: [] };
+}
+
+// TODO Add support for array types.
+$.Program.types = {
+  'f':  'float',
+  'v2': 'vec2',
+  'v3': 'vec3',
+  'v4': 'vec4',
+  'm3': 'mat3',
+  'm4': 'mat4',
+  't':  'sampler2D'//,
+};
+
+$.Program.prototype = {
+
+  include: function (object, phase) {
+    if (this.includes[phase].indexOf(object) >= 0) {
+      return true;
+    }
+    this.includes[phase].push(object);
+    return false;
+  },
+
+  external: function (category, arg) {
+    arg = _.extend({ category: category }, arg);
+    this.externals[arg.name] = arg;
+  },
+
+  variable: function (phase, name, arg) {
+    arg = _.extend({}, arg, { name: name });
+    this.variables[phase][name] = arg;
+  },
+
+  add: function (phase, name, args, code, priority) {
+    var call = this.calls[phase][name];
+    if (call) {
+      call.priority = Math.min(call.priority, priority);
+    }
+    else {
+      this.calls[phase][name] = { name: name, args: args, code: code, priority: priority };
+    }
+  },
+
+  compile: function () {
+    // Prepare uniform/attribute definitions for Three.js
+    _.each(this.externals, function (e) {
+      if (e.category == 'uniform') {
+        this.uniforms[e.name] = {
+          type: e.type,
+          value: e.value//,
+        };
+      }
+      if (e.category == 'attribute') {
+        this.attributes[e.name] = {
+          type: e.type,
+          value: []//,
+        };
+      }
+    }.bind(this));
+
+    // Prepare vertex and fragment bodies.
+    _.each([ 'vertex', 'fragment' ], function (phase) {
+
+      // Build combined header without redundant definitions.
+      var header = [];
+      _.each(this.externals, function (e) {
+        // Exclude vertex attributes from fragment shader.
+        if (e.category == 'attribute' && phase == 'fragment') return;
+
+        // Add definition
+        header.push([e.category, e.signature, ';'].join(' '));
+      }.bind(this));
+      header = header.join("\n");
+
+      var sorted = _.toArray(this.calls[phase]);
+      var library = [ header ];
+
+      // Start main function.
+      var main = [ 'void main() {'];
+
+      // Add variable definitions.
+      _.each(this.variables[phase], function (variable) {
+        main.push([ $.Program.types[variable.type], variable.name, ';' ].join(' '));
+      });
+
+      // Add calls.
+      sorted.sort(function (a, b) {
+        return b.priority - a.priority;
+      });
+      _.each(sorted, function (call) {
+        library.push(call.code);
+        main.push([ call.name, '(', call.args.join(','), ');' ].join(''))
+      });
+      main.push('}');
+
+      // Build shader body
+      this[phase + 'Shader'] = [ library.join("\n"), main.join("\n") ].join("\n");
+    }.bind(this));
+
+    this.compiled = true;
+  },
+
+  material: function () {
+    if (!this.compiled) throw "Fetching material from uncompiled program.";
+    return new THREE.ShaderMaterial({
+      uniforms: this.uniforms,
+      vertexShader: this.vertex,
+      fragmentShader: this.fragment//,
+    });
+  }//,
+
+};
+
+})(ShaderGraph);(function ($) {
+
+/**
+ * Parse a snippet of GLSL code so it can be composed into a shader.
+ *
+ * Must contain a single function with in/out parameters, returning void.
+ */
+$.Snippet = function (code) {
+
+  // Only need to parse each snippet once.
+  if ($.Snippet.cache[code]) {
+    return $.Snippet.cache[code];
+  }
+  else {
+    $.Snippet.cache[code] = this;
+  }
+
+  this.code = code;
+
+  this.attributes = [];
+  this.uniforms   = [];
+  this.varyings   = [];
+  this.parameters = [];
+  this.signature  = '';
+  this.body       = '';
+
+  this.parseCode(code);
+}
+
+$.Snippet.cache = {};
+
+$.Snippet.types = {
+  'float':       'f',
+  'vec2':        'v2',
+  'vec3':        'v3',
+  'vec4':        'v4',
+  'mat3':        'm3',
+  'mat4':        'm4',
+  'sampler2D':   't',
+  'samplerCube': 't'//,
+};
+
+$.Snippet.defaults = {
+  'float':       0,
+  'vec2':        new THREE.Vector3(),
+  'vec3':        new THREE.Vector3(),
+  'vec4':        new THREE.Vector4(),
+  'mat4':        new THREE.Matrix4(),
+  'sampler2D':   0,
+  'samplerCube': 0//,
+};
+
+$.Snippet.prototype = {
+
+  compile: function (name, replaced, bodyOnly) {
+    // Build updated function signature.
+    var signature = this.signature.slice();
+    var header = [];
+    replaced = replaced || [];
+
+    // Prepare uniforms
+    _.each(this.uniforms, function (item) {
+      if (replaced.indexOf(item.name) >= 0) {
+        signature.push(item.signature);
+      }
+      else if (!bodyOnly) {
+        header.push(['uniform', item.signature].join(' '));
+      }
+    });
+
+    // Prepare attributes
+    !bodyOnly && _.each(this.attributes, function (item) {
+      header.push(['attribute', item.signature].join(' '));
+    });
+
+    // Prepare varyings
+    !bodyOnly && _.each(this.varyings, function (item) {
+      header.push(['varying', item.signature].join(' '));
+    });
+
+    // Insert new signature into body
+    var body = this.body.replace(/\s*void\s+([A-Za-z0-9]+)\s*\([^\)]*\)/g, ['void', name + '(', signature.join(', '), ')'].join(' '));
+
+    // Assemble code
+    header.push(body);
+    return header.join(';\n')
+  },
+
+  arguments: function () {
+    return {
+      uniforms: this.uniforms,
+      varyings: this.varyings,
+      attributes: this.attributes,
+      parameters: this.parameters//,
+    };
+  },
+
+  type: function (type, array) {
+    type = ($.Snippet.types[type] || 'f') + (array ? 'v' : '');
+    type = type == 'fv' ? 'fv1' : type;
+    return type;
+  },
+
+  parseAttribute: function (match) {
+    var signature = match[1],
+        type = match[2],
+        name = match[3],
+        array = match[4];
+
+    this.attributes.push({
+      name: name,
+      type: this.type(type, array),
+      signature: signature//,
+    });
+  },
+
+  parseUniform: function (match) {
+    var signature = match[1],
+        type = match[2],
+        name = match[3],
+        array = match[4];
+
+    this.uniforms.push({
+      name: name,
+      type: this.type(type, array),
+      value: $.Snippet.defaults[type] || 0,
+      signature: signature//,
+    });
+  },
+
+  parseVarying: function (match) {
+    var signature = match[1],
+        type = match[2],
+        name = match[3],
+        array = match[4];
+
+    this.varyings.push({
+      name: name,
+      type: this.type(type, array),
+      signature: signature//,
+    });
+  },
+
+  parseSignature: function (match) {
+    this.name = match[1];
+
+    // Ignore empty signature
+    var signature = match[2].replace(/^\s*$/g, '');
+    if (signature.length == 0) {
+      this.signature = [];
+      return;
+    }
+
+    // Parse out arguments.
+    var arguments = this.signature = signature.split(',');
+    _.each(arguments, function (definition) {
+      var match = /((?:(in|out|inout)\s+)?([A-Za-z0-9]+)\s+([A-Za-z0-9_]+)\s*(?:\[([^\]]+)\])?)(?:$|(?=;))/.exec(definition);
+
+      var signature = match[1],
+          inout = match[2],
+          type = match[3],
+          name = match[4],
+          array = match[5];
+
+      var inouts = {
+        'in': $.IN,
+        'out': $.OUT,
+        'inout': $.INOUT//,
+      };
+
+      this.parameters.push({
+        inout: inouts[inout || 'in'],
+        name: name,
+        type: this.type(type, array),
+        signature: signature//,
+      });
+    }.bind(this));
+  },
+
+  parseCode: function (code) {
+    function findAll(re, string) {
+      if (!re.global) throw "Can't findAll non-global regexp";
+      var match, all = [];
+      while (match = re.exec(string)) {
+        all.push(match);
+      };
+      return all;
+    }
+
+    // Remove all comments and normalize newlines
+    code = code.replace(/\r\n?/g, '\n').replace(/\/\/[^\n]*\n/g, ' ').replace(/\/\*(.|\n)*?\*\//g, ' ');
+
+    // Find all attributes/uniforms/varying + function signature
+    var attributes = findAll(/(?:^|;)\s*attribute\s+(([A-Za-z0-9]+)\s+([A-Za-z0-9_]+)\s*(?:\[([^\]]+)\])?)(?:$|(?=;))/g, code);
+    var uniforms = findAll(/(?:^|;)\s*uniform\s+(([A-Za-z0-9]+)\s+([A-Za-z0-9_]+)\s*(?:\[([^\]]+)\])?)(?:$|(?=;))/g, code);
+    var varyings = findAll(/(?:^|;)\s*varying\s+(([A-Za-z0-9]+)\s+([[A-Za-z0-9_]+)\s*(?:\[([^\]]+)\])?)(?:$|(?=;))/g, code);
+    var signature = findAll(/(?:^|;)\s*void\s+([A-Za-z0-9]+)\s*\(([^\)]*)\)\s*{/g, code);
+
+    if (!signature[0]) throw "Could not parse shader snippet. Must contain a void-returning function with in/outs: " + code;
+
+    // Process uniforms/varyings and remove from source.
+    var matches = {
+      parseAttribute: attributes,
+      parseUniform:   uniforms,
+      parseVarying:   varyings//,
+    };
+    var body = code;
+    _.each(matches, function (set, key) {
+      _.each(set, function (item) {
+        this[key](item);
+        body = body.replace(item[0], '');
+      }.bind(this));
+    }.bind(this));
+    body = body.replace(/^\s*;/, '');
+
+    // Process function signature.
+    this.parseSignature(signature[0]);
+    this.body = body;
+  }//,
+
+};
+
+})(ShaderGraph);
+(function ($) {
+
+/**
+ * Graph of shader nodes.
+ */
+$.Graph = function (nodes, parent) {
+  this.parent = parent || null;
+  this.nodes = [];
+  nodes && this.add(nodes);
+};
+
+$.Graph.prototype = {
+
+  iterate: function (callback) {
+    _.each(this.nodes, function (node) {
+      callback(node, node._owner);
+    });
+  },
+
+  exposed: function () {
+    var exposed = [];
+    this.iterate(function (node) {
+      _.each(node.outlets(), function (outlet) {
+        if (outlet.exposed) {
+          exposed.push(outlet);
+        }
+      });
+    });
+    return exposed;
+  },
+
+  inputs: function () {
+    var inputs = [];
+    this.iterate(function (node) {
+      _.each(node.inputs, function (outlet) {
+        if (outlet.input == null) {
+          inputs.push(outlet);
+        }
+      });
+    });
+    return inputs;
+  },
+
+  outputs: function () {
+    var outputs = [];
+    this.iterate(function (node) {
+      _.each(node.outputs, function (outlet) {
+        if (outlet.output.length == 0) {
+          outputs.push(outlet);
+        }
+      });
+    });
+    return outputs;
+  },
+
+  tail: function () {
+    return this.nodes[this.nodes.length - 1];
+  },
+
+  add: function (node) {
+
+    // Array syntax.
+    if (node.constructor == Array) return _.each(node, function (node) { this.add(node); }.bind(this));
+
+    // Sanity check.
+    if (node.graph) throw "Adding node to two graphs at once";
+
+    // Link node to graph.
+    node.link(this);
+
+    // Add node to list
+    this.nodes.push(node);
+  },
+
+  remove: function (node, ignore) {
+    // Array syntax.
+    var that = this;
+    if (node.constructor == Array) return _.each(node, function (node) { that.remove(node); });
+
+    // Sanity check.
+    if (node.graph != this) throw "Removing node from wrong graph.";
+
+    // Disconnect all outlets
+    ignore || node.disconnect();
+
+    // Remove node from list.
+    this.nodes.splice(this.nodes.indexOf(node), 1);
+  }//,
+};
+
+$.IN = 0;
+$.OUT = 1;
+$.INOUT = 2;
+
+})(ShaderGraph);
+(function ($) {
+
+/**
+ * Node in shader graph.
+ */
+$.Node = function (owner, outlets) {
+  this.graph = null;
+  this.inputs = [];
+  this.outputs = [];
+  this._outlets = {};
+
+  this.owner(owner);
+  this.outlets(outlets);
+};
+
+$.Node.prototype = {
+
+  // Set/get object represented by the node.
+  owner: function (owner) {
+    if (owner !== undefined) {
+      // Setter
+      this._owner = owner;
+
+      // Chain
+      return this;
+    }
+    // Getter
+    return this._owner;
+  },
+
+  // Notify: become part of the given graph
+  link: function (graph) {
+    this.graph = graph;
+  },
+
+  // Retrieve input
+  getIn: function (name) {
+    return this.get(name, $.IN);
+  },
+
+  // Retrieve output
+  getOut: function (name) {
+    return this.get(name, $.OUT);
+  },
+
+  // Find outlet by name.
+  get: function (name, inout) {
+    if (inout === undefined) {
+      return this.get(name, $.IN) || this.get(name, $.OUT);
+    }
+    return this._outlets[[name, inout].join('-')];
+  },
+
+  // Return hash key for outlet
+  key: function (outlet) {
+    return [outlet.name, outlet.inout].join('-');
+  },
+
+  // Set new outlet definition
+  outlets: function (outlets) {
+    if (outlets !== undefined) {
+      // Return new/old outlet matching hash key
+      function hash(outlet) {
+        // Match by name, direction and type.
+        return [outlet.name, outlet.inout, outlet.type].join('-');
+      };
+
+      // Build hash of new outlets
+      var keys = {};
+      _.each(outlets, function (outlet) {
+        keys[hash(outlet)] = true;
+      }.bind(this));
+
+      // Remove missing outlets
+      _.each(this._outlets, function (outlet) {
+        if (!keys[hash(outlet)]) this.remove(outlet);
+      }.bind(this));
+
+      // Insert new outlets.
+      _.each(outlets, function (outlet) {
+        // Find match by type/name/direction
+        var existing = this.get(outlet.name, outlet.inout);
+        if (!existing) {
+          // Spawn new outlet
+          outlet = new $.Outlet(outlet);
+          this.add(outlet);
+        }
+        else {
+          // Update existing outlets in place to retain connections.
+          existing.morph(outlet);
+        }
+      }.bind(this));
+
+      // Chain
+      return this;
+    }
+    return this._outlets;
+  },
+
+  // Add outlet object to node.
+  add: function (outlet) {
+    var key = this.key(outlet);
+        outlets = this._outlets,
+        _in = this.inputs,
+        _out = this.outputs;
+
+    // Sanity checks.
+    if (outlet.node) throw "Adding outlet to two nodes at once.";
+    if (outlets[key]) throw "Adding two identical outlets to same node.";
+
+    // Link back outlet.
+    outlet.link(this);
+
+    // Add to name list and inout list.
+    outlets[key] = outlet;
+    (outlet.inout == $.IN ? _in : _out).push(outlet);
+
+    // Chain
+    return this;
+  },
+
+  // Remove outlet object from node.
+  remove: function (outlet) {
+    var outlets = this._outlets,
+        key = this.key(outlet),
+        inout = outlet.inout,
+        set = outlet.inout == $.IN ? this.inputs : this.outputs;
+
+    // Sanity checks
+    if (outlet.node != this) throw "Removing outlet from wrong node.";
+
+    // Disconnect outlet.
+    outlet.disconnect();
+
+    // Unlink outlet.
+    outlet.link(null);
+
+    // Remove from name list and inout list.
+    delete outlets[key];
+    set.splice(set.indexOf(outlet), 1);
+
+    // Chain
+    return this;
+  },
+
+  // Connect to the target node by matching up inputs and outputs.
+  connect: function (node, empty, force) {
+    var outlets = {},
+        hints = {},
+        counters;
+
+    // Keep track of how often a particular type has been encountered.
+    function track(match) {
+      return counters[match] = (counters[match] || 0) + 1;
+    }
+    function reset() {
+      counters = {};
+    }
+
+    // Build hash keys of target outlets.
+    reset();
+    _.each(node.inputs, function (outlet) {
+      // Only autoconnect if not already connected.
+      if (!force && outlet.input) {
+        return;
+      }
+
+      // Match outlets by type/name hint, then type/position key.
+      var type = outlet.type,
+          hint = [type, outlet.hint].join('-');
+
+      if (!hints[hint]) hints[hint] = outlet;
+      outlets[type] = outlets[type] || [];
+      outlets[type].push(outlet);
+    });
+
+    // Build hash keys of source outlets.
+    reset();
+    _.each(this.outputs, function (outlet) {
+      // Ignore this outlet if only matching empties.
+      if (empty && outlet.output.length) return;
+
+      // Match outlets by type and name.
+      var type = outlet.type,
+          hint = [type, outlet.hint].join('-');
+
+      // Connect if found.
+      if (hints[hint]) {
+        hints[hint].connect(outlet);
+
+        delete hints[hint];
+        outlets[type].splice(outlets[type].indexOf(outlet), 1);
+        return;
+      }
+
+      // Match outlets by type and order.
+      // Link up corresponding outlets.
+      if (outlets[type] && outlets[type].length) {
+        outlets[type].shift().connect(outlet);
+      }
+    });
+
+    // Chain
+    return this;
+  },
+
+  // Disconnect entire node
+  disconnect: function (node) {
+    _.each(this.inputs, function (outlet) {
+      outlet.disconnect();
+    });
+
+    _.each(this.outputs, function (outlet) {
+      outlet.disconnect();
+    });
+
+    // Chain
+    return this;
+  }//,
+
+};
+
+})(ShaderGraph);
+(function ($) {
+$.Outlets = 0;
+
+$.Outlet = function (inout, name, hint, type, category, exposed, meta) {
+
+  // Object constructor syntax
+  if (typeof inout == 'object') {
+    var object = inout;
+    return new $.Outlet(object.inout, object.name, object.hint, object.type, object.category, object.exposed, object.meta);
+  }
+
+  this.node     = null;
+  this.inout    = inout;
+  this.name     = name;
+  this.hint     = hint || name;
+  this.type     = type;
+  this.category = category;
+  this.exposed  = !!exposed;
+  this.meta     = meta || {};
+  this.index    = ++$.Outlets;
+  this.key      = null;
+
+  this.input = null;
+  this.output = [];
+};
+
+$.Outlet.prototype = {
+  // Unique ID for this outlet.
+  id: function () {
+    return ['', 'sg', this.name, this.index].join('_');
+  },
+
+  // Set exposed flag
+  expose: function (exposed) {
+    this.exposed = exposed;
+  },
+
+  // Change into given outlet without touching connections.
+  morph: function (outlet) {
+    this.inout    = outlet.inout;
+    this.name     = outlet.name;
+    this.type     = outlet.type;
+    this.category = outlet.category;
+    this.exposed  = outlet.exposed;
+    this.meta     = outlet.meta || {};
+  },
+
+  // Connect to given outlet.
+  connect: function (outlet) {
+    // Connect input from the other side.
+    if (this.inout == $.IN && outlet.inout == $.OUT) {
+      return outlet.connect(this);
+    }
+
+    // Disallow bad combinations.
+    if (this.inout != $.OUT || outlet.inout != $.IN) {
+      console.log(this, outlet)
+      throw "Can't connect out/out or in/in outlets.";
+    }
+
+    // Check for existing connection.
+    if (outlet.input == this) return;
+
+    // Disconnect existing connections.
+    outlet.disconnect();
+
+    // Add new connection.
+    outlet.input = this;
+    this.output.push(outlet);
+  },
+
+  // Disconnect given outlet (or all).
+  disconnect: function (outlet) {
+    if (this.inout == $.IN) {
+      // Disconnect input from the other side.
+      if (this.input) {
+        this.input.disconnect(this);
+      }
+    }
+    else {
+      if (outlet) {
+        // Remove one outgoing connection.
+        var index = this.output.indexOf(outlet);
+        if (index >= 0) {
+          this.output.splice(index, 1);
+          outlet.input = null
+        }
+      }
+      else {
+        // Remove all outgoing connections.
+        _.each(this.output, function (outlet) {
+          outlet.input = null
+        });
+        this.output = [];
+      }
+    }
+  },
+
+  // Link to given node.
+  link: function (node) {
+    this.node = node;
+  }//,
+};
+
+})(ShaderGraph);/**
  * MathBox.js. Math plotting tool for three.js / webgl.
  */
 
