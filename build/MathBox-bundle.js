@@ -57311,9 +57311,12 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         current.sub(last).multiplyScalar(scale);
 
         var l = current.length();
-
+        console.log("l=" + l);
+        console.log("size=" + size);
         var clipped = Math.min(1, l * .5 / size);
+        console.log("clipped=" + clipped);
         clipped = (1 - (1 - clipped) * (1 - clipped)) * size;
+        console.log("clipped=" + clipped);
 
         // Foreshorten line
         var f = l - clipped;
@@ -57324,7 +57327,6 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         vertices[i].copy(current);
 
         // Set arrowhead size
-      console.log("2. clipped=" + clipped);
         arrows[k].set({ size: clipped });
       }
 
