@@ -49,16 +49,16 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     var options = this.get();
     var offset = options.offset;
 
-    // Calculate arrow in world space
+    // Calculate arrow in world space.
     var from = this._from.copy(this.from);
     var to = this._to.copy(this.to);
-    this.mathTransform.multiplyVector3(from);
-    this.mathTransform.multiplyVector3(to);
+    from.applyProjection(this.mathTransform);
+    to.applyProjection(this.mathTransform);
     viewport.to(from);
     viewport.to(to);
 
     // Calculate axis of arrowhead.
-    var diff = this.diff.sub(from, to);
+    var diff = this.diff.subVectors(from, to);
     if (diff.length() < .001) {
       this.object.visible = false;
       return;

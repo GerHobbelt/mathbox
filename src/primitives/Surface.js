@@ -181,8 +181,8 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
 
           /* high quality */
           /*
-          tangents[0][o].sub(vertices[right + j * stride], vertices[left + j * stride]).multiplyScalar(epsilon).add(v);
-          tangents[1][o].sub(vertices[i + down * stride], vertices[i + up * stride]).multiplyScalar(epsilon).add(v);
+          tangents[0][o].subVectors(vertices[right + j * stride], vertices[left + j * stride]).multiplyScalar(epsilon).add(v);
+          tangents[1][o].subVectors(vertices[i + down * stride], vertices[i + up * stride]).multiplyScalar(epsilon).add(v);
           */
 
           /* low quality */

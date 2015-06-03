@@ -1,5 +1,5 @@
 /**
- * Generic viewport base class
+ * Generic viewport base class.
  */
 MathBox.Viewport = function (options) {
   if (options === null) return;
@@ -49,7 +49,7 @@ MathBox.Viewport.prototype = {
   },
 
   validateRotation: function (v) {
-    if (v.constructor == Array) {
+    if (v.constructor === Array) {
       v = v.concat([0, 0, 0]);
       return v.slice(0, 3);
     }
@@ -57,12 +57,12 @@ MathBox.Viewport.prototype = {
   },
 
   validatePosition: function (v) {
-    if (v.constructor == Array) {
+    if (v.constructor === Array) {
       v = v.concat([0, 0, 0]);
       return v.slice(0, 3);
     }
     return this.get('position');
-  },
+  }
 
 };
 
@@ -77,4 +77,3 @@ MathBox.Viewport.make = function (options) {
            || MathBox.Viewport;
   return new klass(options);
 };
-

@@ -83,13 +83,13 @@ MathBox.Renderable.Labels.prototype = _.extend(new MathBox.Renderable(null), {
     // Update labels
     _.each(sprites, function (sprite, i) {
 
-      // Transform anchor point
+      // Transform anchor point.
       sprite.position.copy(points[i]);
       viewport.to(sprite.position);
-      stage.matrix.multiplyVector3(sprite.position);
+      sprite.position.applyProjection(stage.matrix);
       sprite.distance = options.distance;
 
-      // Set opacity
+      // Set opacity.
       sprite.opacity = opacity;
 
       // Set content

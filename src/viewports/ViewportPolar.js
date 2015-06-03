@@ -67,8 +67,8 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
       vector.y = (Math.cos(x) * radius - focus) / aspect;
     }
 
-    // Apply viewport
-    this.transform.multiplyVector3(vector);
+    // Apply viewport.
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
@@ -79,10 +79,10 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
         power = this._uniforms.polarPower,
         helix = this._uniforms.polarHelix;
 
-    // Apply inverse viewport
-    this.inverse.multiplyVector3(vector);
+    // Apply inverse viewport.
+    vector.applyProjection(this.inverse);
 
-    // Polar to cartesian
+    // Polar to cartesian.
     if (alpha > 0.0001) {
       var x = vector.x,
           y = vector.y * aspect + focus;

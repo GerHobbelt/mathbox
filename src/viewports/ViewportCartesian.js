@@ -29,11 +29,11 @@ MathBox.ViewportCartesian.prototype = _.extend(new MathBox.Viewport(null), {
   },
 
   to: function (vector) {
-    this.transform.multiplyVector3(vector);
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
-    this.inverse.multiplyVector3(vector);
+    vector.applyProjection(this.inverse);
   },
 
   axis: function (axis) {
@@ -106,7 +106,7 @@ MathBox.ViewportCartesian.prototype = _.extend(new MathBox.Viewport(null), {
     }
 
     return scale;
-  }//,
+  }
 
 });
 

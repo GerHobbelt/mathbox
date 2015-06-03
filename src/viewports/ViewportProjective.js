@@ -30,19 +30,19 @@ MathBox.ViewportProjective.prototype = _.extend(new MathBox.ViewportCartesian(nu
   },
 
   to: function (vector) {
-    // Apply projective transform
-    this._uniforms.projectiveTransform.multiplyVector3(vector);
+    // Apply projective transform.
+    vector.applyProjection(this._uniforms.projectiveTransform);
 
-    // Apply viewport
-    this.transform.multiplyVector3(vector);
+    // Apply viewport.
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
-    // Apply inverse viewport
-    this.inverse.multiplyVector3(vector);
+    // Apply inverse viewport.
+    vector.applyProjection(this.inverse);
 
-    // Apply inverse projective transform
-    this._uniforms.projectiveInverse.multiplyVector3(vector);
+    // Apply inverse projective transform.
+    vector.applyProjection(this._uniforms.projectiveInverse);
   },
 
   update: function (stage) {

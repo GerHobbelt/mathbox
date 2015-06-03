@@ -1,11 +1,11 @@
 MathBox.Renderable = function (options, style) {
-  // Allow inheritance constructor
+  // Allow inheritance constructor.
   if (options === null) return;
 
   // Unique renderable ID.
   this.id = ++MathBox.Renderable.id;
 
-  // Apply defaults
+  // Apply defaults.
   var defaults = this.defaults();
   if (options) {
     options = _.extend(defaults, options || {});

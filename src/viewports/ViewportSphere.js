@@ -57,8 +57,8 @@ MathBox.ViewportSphere.prototype = _.extend(new MathBox.ViewportCartesian(null),
       vector.z = (Math.cos(x) * c - focus) / aspectX;
     }
 
-    // Apply viewport
-    this.transform.multiplyVector3(vector);
+    // Apply viewport.
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
@@ -68,10 +68,10 @@ MathBox.ViewportSphere.prototype = _.extend(new MathBox.ViewportCartesian(null),
         focus = this._uniforms.sphereFocus,
         alpha = this._uniforms.sphereAlpha;
 
-    // Apply inverse viewport
-    this.inverse.multiplyVector3(vector);
+    // Apply inverse viewport.
+    vector.applyProjection(this.inverse);
 
-    // Spherical coords to cartesian
+    // Spherical coords to cartesian.
     if (alpha > 0.0001) {
       var x = vector.x,
           y = vector.y / aspectY,
