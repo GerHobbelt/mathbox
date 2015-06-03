@@ -6077,6 +6077,7 @@ MathBox.Vector = function (options) {
   this.on('change', function (changed) {
     if (changed.size !== undefined) {
       _.each(this.arrows, function (arrow) {
+        console.log("1. size=" + changed.size);
         arrow.set('size', changed.size);
       });
     }
@@ -6096,7 +6097,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
       expression: function () { return 0; },
       live: true,
       style: {},
-      size: .07//,
+      size: .07
     };
   },
 
@@ -6134,6 +6135,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
 
     var lineOptions = { dynamic: options.live, type: 'line', strip: false };
     var arrowOptions = { size: options.size };
+    console.log("2. options.size=" + options.size);
 
     // Allocate vertices for line segments.
     // Allocate arrowheads if arrows requested.
@@ -6169,6 +6171,8 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         n = options.n,
         size = options.size,
         scale = this.style.get('mathScale');
+
+    console.log("3. size=" + size);
 
     // Find necessary foreshortening factors so line does not stick out through the arrowhead.
     var j = 0, k = 0;
@@ -6228,6 +6232,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         vertices[i].copy(current);
 
         // Set arrowhead size
+      console.log("2. clipped=" + clipped);
         arrows[k].set({ size: clipped });
       }
 
