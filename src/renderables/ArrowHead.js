@@ -97,6 +97,9 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     if (matrix.determinant() === 0) {
       throw new Error("Matrix is singular!!!");
     }
+    if (isNaN(size)) {
+      throw new Error("size is NaN: " + size);
+    }
     matrix.scale(new THREE.Vector3(size, size, size));
     if (matrix.determinant() === 0) {
       throw new Error("Matrix is singular!!!");

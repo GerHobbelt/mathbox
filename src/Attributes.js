@@ -39,7 +39,7 @@ MathBox.Attributes.prototype = {
     if (object === undefined || object === null) {
       return;
     }
-    else if (object.constructor == String) {
+    else if (object.constructor === String) {
       set(object, value);
     }
     else {
