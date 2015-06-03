@@ -3990,20 +3990,38 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     // Prepare object matrix to place arrowhead.
     var size = options.size;
     var matrix = new THREE.Matrix4();
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
     matrix.set(
       bi.x, diff.x, normal.x, to.x,
       bi.y, diff.y, normal.y, to.y,
       bi.z, diff.z, normal.z, to.z,
       0, 0, 0, 1
     );
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
     matrix.scale(new THREE.Vector3(size, size, size));
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
 
     // Add arrowhead transform before object matrix.
     this.object.updateMatrix();
+    if (this.object.matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
     this.object.matrix.multiply(matrix);
+    if (this.object.matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
 
     // Move cone down so tip is at (0,0,0).
     matrix.identity().setPosition({ x: 0, y: 0.5 - offset, z: 0 });
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
     this.object.matrix.multiply(matrix);
     if (this.object.matrix.determinant() === 0) {
       throw new Error("Matrix is singular!!!");
