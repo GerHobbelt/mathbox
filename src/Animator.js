@@ -362,15 +362,15 @@ MathBox.Animator.Animation.prototype = {
             })
             return out;
           }
-          if (to.constructor == THREE.Matrix4) {
-            out = new THREE.Matrix4()
+          if (to.constructor === THREE.Matrix4) {
+            out = new THREE.Matrix4();
             for (var i = 0; i < 16; ++i) {
               out.elements[i] = lerp(from.elements[i], to.elements[i]);
             }
             return out;
           }
           if (to.constructor == THREE.Vector3) {
-            out = new THREE.Vector3()
+            out = new THREE.Vector3();
             out.x = lerp(from.x, to.x);
             out.y = lerp(from.y, to.y);
             out.z = lerp(from.z, to.z);

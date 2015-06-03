@@ -1,6 +1,6 @@
 {
   "name": "davinci-mathbox",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "MathBox-core.min.js",
   "homepage": "https://github.com/geometryzen/davinci-mathbox",
   "authors": [
@@ -13,7 +13,6 @@
     "build/MathBox-bundle.min.js",
     "build/MathBox.js",
     "build/MathBox.min.js",
-    "node_modules",
     "bower_components",
     "examples",
     "resources",
@@ -23,6 +22,7 @@
     "vendor",
     "CHANGES.md",
     "IDEAS.md",
+    "README.md",
     "build.sh"
   ],
   "dependencies": {

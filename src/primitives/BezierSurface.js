@@ -6,7 +6,8 @@ MathBox.BezierSurface = function (options) {
   this.matrixY = new THREE.Matrix4();
   this.matrixZ = new THREE.Matrix4();
 
-  this.coefficients = new THREE.Matrix4(
+  this.coefficients = new THREE.Matrix4();
+  this.coefficients.set(
     -1,  3, -3,  1,
      3, -6,  3,  0,
     -3,  3,  0,  0,

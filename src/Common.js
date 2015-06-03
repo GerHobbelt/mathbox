@@ -3,8 +3,8 @@
  */
 
 // Math!
-var π = Math.PI,
-    τ = π * 2;
+var π = Math.PI;
+var τ = π * 2;
 
 // Check dependencies.
 (function (deps) {
@@ -15,7 +15,7 @@ var π = Math.PI,
   'THREE': 'Three.js',
   'tQuery': 'tQuery.js (bundle)',
   'ThreeBox': 'ThreeBox.js',
-  'ThreeRTT': 'ThreeRTT.js'//,
+  'ThreeRTT': 'ThreeRTT.js'
 });
 
 // Namespace.
@@ -38,8 +38,7 @@ MathBox.getShader = function (id) {
   return elem && elem.textContent || id;
 };
 
-// FIXME: Don't pollute other namespaces.
-Math.sign = function (x) {
+MathBix.signum = function (x) {
   return x > 0 ? 1 : x < 0 ? -1 : 0;
 };
 

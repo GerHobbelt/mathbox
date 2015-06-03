@@ -52,7 +52,7 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
 
     // Polar power and fold
     vector.x *= fold;
-    vector.y = Math.sign(vector.y) * Math.pow(Math.abs(vector.y), power);
+    vector.y = MathBox.signum(vector.y) * Math.pow(Math.abs(vector.y), power);
 
     // Cartesian to polar
     if (alpha > 0.0001) {
@@ -100,7 +100,7 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
 
     // Inverse polar power and fold
     vector.x /= fold;
-    vector.y = Math.sign(vector.y) * Math.pow(Math.abs(vector.y), 1 / power);
+    vector.y = MathBox.signum(vector.y) * Math.pow(Math.abs(vector.y), 1 / power);
   },
 
   axis: function (axis) {

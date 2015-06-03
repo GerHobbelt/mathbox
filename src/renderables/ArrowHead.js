@@ -83,13 +83,14 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
 
     // Prepare object matrix to place arrowhead
     var size = options.size;
-    var matrix = new THREE.Matrix4(
+    var matrix = new THREE.Matrix4();
+    matrix.set(
       bi.x, diff.x, normal.x, to.x,
       bi.y, diff.y, normal.y, to.y,
       bi.z, diff.z, normal.z, to.z,
       0, 0, 0, 1//,
-    )
-    .scale(new THREE.Vector3(size, size, size));
+    );
+    matrix.scale(new THREE.Vector3(size, size, size));
 
     // Add arrowhead transform before object matrix
     this.object.updateMatrix();

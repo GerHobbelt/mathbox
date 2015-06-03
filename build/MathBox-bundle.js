@@ -54156,8 +54156,8 @@ $.Outlet.prototype = {
  */
 
 // Math!
-var π = Math.PI,
-    τ = π * 2;
+var π = Math.PI;
+var τ = π * 2;
 
 // Check dependencies.
 (function (deps) {
@@ -54168,7 +54168,7 @@ var π = Math.PI,
   'THREE': 'Three.js',
   'tQuery': 'tQuery.js (bundle)',
   'ThreeBox': 'ThreeBox.js',
-  'ThreeRTT': 'ThreeRTT.js'//,
+  'ThreeRTT': 'ThreeRTT.js'
 });
 
 // Namespace.
@@ -54191,8 +54191,7 @@ MathBox.getShader = function (id) {
   return elem && elem.textContent || id;
 };
 
-// FIXME: Don't pollute other namespaces.
-Math.sign = function (x) {
+MathBix.signum = function (x) {
   return x > 0 ? 1 : x < 0 ? -1 : 0;
 };
 
@@ -54626,15 +54625,15 @@ MathBox.Animator.Animation.prototype = {
             })
             return out;
           }
-          if (to.constructor == THREE.Matrix4) {
-            out = new THREE.Matrix4()
+          if (to.constructor === THREE.Matrix4) {
+            out = new THREE.Matrix4();
             for (var i = 0; i < 16; ++i) {
               out.elements[i] = lerp(from.elements[i], to.elements[i]);
             }
             return out;
           }
           if (to.constructor == THREE.Vector3) {
-            out = new THREE.Vector3()
+            out = new THREE.Vector3();
             out.x = lerp(from.x, to.x);
             out.y = lerp(from.y, to.y);
             out.z = lerp(from.z, to.z);
@@ -57563,7 +57562,8 @@ MathBox.BezierSurface = function (options) {
   this.matrixY = new THREE.Matrix4();
   this.matrixZ = new THREE.Matrix4();
 
-  this.coefficients = new THREE.Matrix4(
+  this.coefficients = new THREE.Matrix4();
+  this.coefficients.set(
     -1,  3, -3,  1,
      3, -6,  3,  0,
     -3,  3,  0,  0,
@@ -58139,13 +58139,14 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
 
     // Prepare object matrix to place arrowhead
     var size = options.size;
-    var matrix = new THREE.Matrix4(
+    var matrix = new THREE.Matrix4();
+    matrix.set(
       bi.x, diff.x, normal.x, to.x,
       bi.y, diff.y, normal.y, to.y,
       bi.z, diff.z, normal.z, to.z,
       0, 0, 0, 1//,
-    )
-    .scale(new THREE.Vector3(size, size, size));
+    );
+    matrix.scale(new THREE.Vector3(size, size, size));
 
     // Add arrowhead transform before object matrix
     this.object.updateMatrix();
@@ -58637,7 +58638,7 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
 
     // Polar power and fold
     vector.x *= fold;
-    vector.y = Math.sign(vector.y) * Math.pow(Math.abs(vector.y), power);
+    vector.y = MathBox.signum(vector.y) * Math.pow(Math.abs(vector.y), power);
 
     // Cartesian to polar
     if (alpha > 0.0001) {
@@ -58685,7 +58686,7 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
 
     // Inverse polar power and fold
     vector.x /= fold;
-    vector.y = Math.sign(vector.y) * Math.pow(Math.abs(vector.y), 1 / power);
+    vector.y = MathBox.signum(vector.y) * Math.pow(Math.abs(vector.y), 1 / power);
   },
 
   axis: function (axis) {
