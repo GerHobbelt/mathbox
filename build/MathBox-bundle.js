@@ -57265,6 +57265,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         scale = this.style.get('mathScale');
 
     console.log("3. size=" + size);
+    console.log("scale=" + (scale instanceof THREE.Vector3));
     console.log("scale=" + scale);
 
     // Find necessary foreshortening factors so line does not stick out through the arrowhead.
@@ -57309,7 +57310,8 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         last.copy(vertices[i-1]);
         viewport.to(current);
         viewport.to(last);
-        current.sub(last).multiplyScalar(scale);
+        // FIXME: scale is a THREE.Vector3
+        current.sub(last)/*.multiplyScalar(scale)*/;
 
         var l = current.length();
         console.log("l=" + l);
@@ -57321,7 +57323,8 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
 
         // Foreshorten line
         var f = l - clipped;
-        current.normalize().multiplyScalar(f).divideScalar(scale).add(last);
+        // FIXME: scale is a THREE.Vector3
+        current.normalize().multiplyScalar(f)/*.divideScalar(scale)*/.add(last);
 
         // Transform back
         viewport.from(current);
