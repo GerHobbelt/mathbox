@@ -5060,7 +5060,7 @@ MathBox.Style.prototype = {
       var vector = new THREE.Vector3();
       return vector.set.apply(vector, v);
     }
-    if (v.constructor != THREE.Vector3) {
+    if (v.constructor !== THREE.Vector3) {
       return this.get('mathScale');
     }
     return v;
@@ -6173,6 +6173,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         scale = this.style.get('mathScale');
 
     console.log("3. size=" + size);
+    console.log("scale=" + scale);
 
     // Find necessary foreshortening factors so line does not stick out through the arrowhead.
     var j = 0, k = 0;

@@ -53,7 +53,7 @@ MathBox.Style.prototype = {
       var vector = new THREE.Vector3();
       return vector.set.apply(vector, v);
     }
-    if (v.constructor != THREE.Vector3) {
+    if (v.constructor !== THREE.Vector3) {
       return this.get('mathScale');
     }
     return v;
