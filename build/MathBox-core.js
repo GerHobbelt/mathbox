@@ -9,7 +9,9 @@ var τ = π * 2;
 // Check dependencies.
 (function (deps) {
   for (var i in deps) {
-    if (!window[i]) throw "Error: MathBox requires " + deps[i];
+    if (!window[i]) {
+      throw "Error: MathBox requires " + deps[i];
+    }
   }
 })({
   'THREE': 'Three.js',
@@ -23,7 +25,7 @@ window.MathBox = {};
 
 // Shortcut static call.
 window.mathBox = function (element, options) {
-  // Omit element (use body)
+  // Omit element (use body).
   if (element && !(element instanceof Node)) {
     options = element;
     element = null;
@@ -32,13 +34,13 @@ window.mathBox = function (element, options) {
   return tQuery.createWorld(options).mathBox(element, options);
 };
 
-// Fetch shader from <script> tag by id
+// Fetch shader from <script> tag by id.
 MathBox.getShader = function (id) {
   var elem = document.getElementById(id);
   return elem && elem.textContent || id;
 };
 
-MathBix.signum = function (x) {
+MathBox.signum = function (x) {
   return x > 0 ? 1 : x < 0 ? -1 : 0;
 };
 
@@ -3978,37 +3980,37 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     this.normal.z = this.diff.x + .3;
     this.normal.normalize();
 
-    // Prepare binormal
-    var bi = this.bi.cross(this.normal, this.diff).normalize();
+    // Prepare binormal.
+    var bi = this.bi.crossVectors(this.normal, this.diff).normalize();
 
     // Renormalize axes.
-    var normal = this.normal.cross(this.bi, this.diff);
+    var normal = this.normal.crossVectors(this.bi, this.diff);
 
-    // Prepare object matrix to place arrowhead
+    // Prepare object matrix to place arrowhead.
     var size = options.size;
     var matrix = new THREE.Matrix4();
     matrix.set(
       bi.x, diff.x, normal.x, to.x,
       bi.y, diff.y, normal.y, to.y,
       bi.z, diff.z, normal.z, to.z,
-      0, 0, 0, 1//,
+      0, 0, 0, 1
     );
     matrix.scale(new THREE.Vector3(size, size, size));
 
-    // Add arrowhead transform before object matrix
+    // Add arrowhead transform before object matrix.
     this.object.updateMatrix();
     this.object.matrix.multiply(matrix);
 
-    // Move cone down so tip is at 0,0,0
+    // Move cone down so tip is at (0,0,0).
     matrix.identity().setPosition({ x: 0, y: 0.5 - offset, z: 0 });
     this.object.matrix.multiply(matrix);
 
-    // Override object matrix
+    // Override object matrix.
     this.object.matrixAutoUpdate = false;
     this.object.matrixWorldNeedsUpdate = true;
 
     MathBox.Renderable.prototype.adjust.call(this, viewport);
-  },
+  }
 
 });
 
