@@ -89,7 +89,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
       p[axis] = min + x * inv;
 
       points[x].set.apply(points[x], p);
-      points[x].addSelf(add);
+      points[x].add(add);
     });
 
     // Show/hide line
@@ -120,7 +120,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
         // Tick points for ticks (2 each)
         var j = i*2;
         tickPoints[j].set.apply(tickPoints[j], p);
-        tickPoints[j].addSelf(add);
+        tickPoints[j].add(add);
         tickSigns[j] = 1;
 
         tickPoints[j+1].copy(tickPoints[j]);

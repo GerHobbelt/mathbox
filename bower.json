@@ -1,14 +1,18 @@
 {
   "name": "davinci-mathbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "MathBox-core.min.js",
-  "homepage": "https://github.com/geometryzen/MathBox.js",
+  "homepage": "https://github.com/geometryzen/davinci-mathbox",
   "authors": [
     "David Holmes <david.geo.holmes@gmail.com>"
   ],
   "license": "MIT",
   "ignore": [
     "**/.*",
+    "build/MathBox-bundle.js",
+    "build/MathBox-bundle.min.js",
+    "build/MathBox.js",
+    "build/MathBox.min.js",
     "node_modules",
     "bower_components",
     "examples",
@@ -17,6 +21,8 @@
     "src",
     "test",
     "vendor",
+    "CHANGES.md",
+    "IDEAS.md",
     "build.sh"
   ],
   "dependencies": {

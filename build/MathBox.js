@@ -5348,12 +5348,12 @@ MathBox.Overlay.prototype = {
     if (object.distance) {
       // Add tangent and project again
       q.copy(object.tangent).multiplyScalar(epsilon);
-      q.addSelf(object.position);
+      q.add(object.position);
       camera.matrixWorldInverse.multiplyVector3(q);
 
       // Find difference and scale it
       var sign = object.distance > 0 ? 1 : -1;
-      q.subSelf(v);
+      q.sub(v);
       q.z = 0;
       q.normalize().multiplyScalar(object.distance);
       x += Math.abs(q.y) * sign;
@@ -5789,7 +5789,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
       p[axis] = min + x * inv;
 
       points[x].set.apply(points[x], p);
-      points[x].addSelf(add);
+      points[x].add(add);
     });
 
     // Show/hide line
@@ -5820,7 +5820,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
         // Tick points for ticks (2 each)
         var j = i*2;
         tickPoints[j].set.apply(tickPoints[j], p);
-        tickPoints[j].addSelf(add);
+        tickPoints[j].add(add);
         tickSigns[j] = 1;
 
         tickPoints[j+1].copy(tickPoints[j]);
@@ -6208,7 +6208,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         last.copy(vertices[i-1]);
         viewport.to(current);
         viewport.to(last);
-        current.subSelf(last).multiplySelf(scale);
+        current.sub(last).multiplyScalar(scale);
 
         var l = current.length();
 
@@ -6217,7 +6217,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
 
         // Foreshorten line
         var f = l - clipped;
-        current.normalize().multiplyScalar(f).divideSelf(scale).addSelf(last);
+        current.normalize().multiplyScalar(f).divideScalar(scale).add(last);
 
         // Transform back
         viewport.from(current);
@@ -6421,8 +6421,8 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
 
           /* high quality */
           /*
-          tangents[0][o].sub(vertices[right + j * stride], vertices[left + j * stride]).multiplyScalar(epsilon).addSelf(v);
-          tangents[1][o].sub(vertices[i + down * stride], vertices[i + up * stride]).multiplyScalar(epsilon).addSelf(v);
+          tangents[0][o].sub(vertices[right + j * stride], vertices[left + j * stride]).multiplyScalar(epsilon).add(v);
+          tangents[1][o].sub(vertices[i + down * stride], vertices[i + up * stride]).multiplyScalar(epsilon).add(v);
           */
 
           /* low quality */
@@ -6579,9 +6579,9 @@ MathBox.BezierSurface.prototype = _.extend(new MathBox.Surface(null), {
 
     // Apply bezier control weights for cubic polynomial
     var m0 = this.coefficients;
-    this.matrixX.multiplySelf(m0).transpose().multiplySelf(m0);
-    this.matrixY.multiplySelf(m0).transpose().multiplySelf(m0);
-    this.matrixZ.multiplySelf(m0).transpose().multiplySelf(m0);
+    this.matrixX.multiply(m0).transpose().multiply(m0);
+    this.matrixY.multiply(m0).transpose().multiply(m0);
+    this.matrixZ.multiply(m0).transpose().multiply(m0);
 
     var uniforms = {
       bezierSurfaceX: this.matrixX,
@@ -7057,11 +7057,11 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
 
     // Add arrowhead transform before object matrix
     this.object.updateMatrix();
-    this.object.matrix.multiplySelf(matrix);
+    this.object.matrix.multiply(matrix);
 
     // Move cone down so tip is at 0,0,0
     matrix.identity().setPosition({ x: 0, y: 0.5 - offset, z: 0 });
-    this.object.matrix.multiplySelf(matrix);
+    this.object.matrix.multiply(matrix);
 
     // Override object matrix
     this.object.matrixAutoUpdate = false;

@@ -93,11 +93,11 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
 
     // Add arrowhead transform before object matrix
     this.object.updateMatrix();
-    this.object.matrix.multiplySelf(matrix);
+    this.object.matrix.multiply(matrix);
 
     // Move cone down so tip is at 0,0,0
     matrix.identity().setPosition({ x: 0, y: 0.5 - offset, z: 0 });
-    this.object.matrix.multiplySelf(matrix);
+    this.object.matrix.multiply(matrix);
 
     // Override object matrix
     this.object.matrixAutoUpdate = false;

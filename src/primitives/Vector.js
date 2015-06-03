@@ -151,7 +151,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         last.copy(vertices[i-1]);
         viewport.to(current);
         viewport.to(last);
-        current.subSelf(last).multiplySelf(scale);
+        current.sub(last).multiplyScalar(scale);
 
         var l = current.length();
 
@@ -160,7 +160,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
 
         // Foreshorten line
         var f = l - clipped;
-        current.normalize().multiplyScalar(f).divideSelf(scale).addSelf(last);
+        current.normalize().multiplyScalar(f).divideScalar(scale).add(last);
 
         // Transform back
         viewport.from(current);

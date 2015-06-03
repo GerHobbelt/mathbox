@@ -168,12 +168,12 @@ MathBox.Overlay.prototype = {
     if (object.distance) {
       // Add tangent and project again
       q.copy(object.tangent).multiplyScalar(epsilon);
-      q.addSelf(object.position);
+      q.add(object.position);
       camera.matrixWorldInverse.multiplyVector3(q);
 
       // Find difference and scale it
       var sign = object.distance > 0 ? 1 : -1;
-      q.subSelf(v);
+      q.sub(v);
       q.z = 0;
       q.normalize().multiplyScalar(object.distance);
       x += Math.abs(q.y) * sign;

@@ -114,9 +114,9 @@ MathBox.BezierSurface.prototype = _.extend(new MathBox.Surface(null), {
 
     // Apply bezier control weights for cubic polynomial
     var m0 = this.coefficients;
-    this.matrixX.multiplySelf(m0).transpose().multiplySelf(m0);
-    this.matrixY.multiplySelf(m0).transpose().multiplySelf(m0);
-    this.matrixZ.multiplySelf(m0).transpose().multiplySelf(m0);
+    this.matrixX.multiply(m0).transpose().multiply(m0);
+    this.matrixY.multiply(m0).transpose().multiply(m0);
+    this.matrixZ.multiply(m0).transpose().multiply(m0);
 
     var uniforms = {
       bezierSurfaceX: this.matrixX,
