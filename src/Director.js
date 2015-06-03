@@ -248,7 +248,6 @@ MathBox.Director.prototype = {
       if (verb == 'remove') animate = options;
 
       if (rollback) {
-//        console.log('inverting', op);
         var inverse = this.invert(op);
         var args = [0, 0].concat(inverse);
         Array.prototype.splice.apply(rollback, args);

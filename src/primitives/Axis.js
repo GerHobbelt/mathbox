@@ -10,7 +10,6 @@ MathBox.Axis = function (options) {
   this.on('change', function (changed) {
     if (changed.size !== undefined) {
       if (this.arrow) {
-        console.log("this.arrow.set('size', " + changed.size + ");");
         this.arrow.set('size', changed.size);
       }
     }

@@ -326,7 +326,6 @@ MathBox.Animator.Animation.prototype = {
 
       // Sanity type check.
       if (typeof from != typeof to) {
-        console.log(object, key)
         throw "Data type mismatch between from/to values in animator. "+ key +': '+ from + ' ('+ from.constructor +')' + ", " + to + "("+ to.constructor +")";
       }
 

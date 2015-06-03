@@ -83,8 +83,7 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     var normal = this.normal.crossVectors(this.bi, this.diff);
 
     // Prepare object matrix to place arrowhead.
-    // FIXME: Why is size NaN?
-    var size = options.size || 1.0;
+    var size = options.size;
     var matrix = new THREE.Matrix4();
     if (matrix.determinant() === 0) {
       throw new Error("Matrix is singular!!!");

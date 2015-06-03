@@ -16,7 +16,6 @@ MathBox.Vector = function (options) {
   this.on('change', function (changed) {
     if (changed.size !== undefined) {
       _.each(this.arrows, function (arrow) {
-        console.log("1. size=" + changed.size);
         arrow.set('size', changed.size);
       });
     }
@@ -74,7 +73,6 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
 
     var lineOptions = { dynamic: options.live, type: 'line', strip: false };
     var arrowOptions = { size: options.size };
-    console.log("2. options.size=" + options.size);
 
     // Allocate vertices for line segments.
     // Allocate arrowheads if arrows requested.
@@ -110,10 +108,6 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         n = options.n,
         size = options.size,
         scale = this.style.get('mathScale');
-
-    console.log("3. size=" + size);
-    console.log("scale=" + (scale instanceof THREE.Vector3));
-    console.log("scale=" + scale);
 
     // Find necessary foreshortening factors so line does not stick out through the arrowhead.
     var j = 0, k = 0;
@@ -161,12 +155,8 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         current.sub(last)/*.multiplyScalar(scale)*/;
 
         var l = current.length();
-        console.log("l=" + l);
-        console.log("size=" + size);
         var clipped = Math.min(1, l * .5 / size);
-        console.log("clipped=" + clipped);
         clipped = (1 - (1 - clipped) * (1 - clipped)) * size;
-        console.log("clipped=" + clipped);
 
         // Foreshorten line
         var f = l - clipped;
