@@ -12,7 +12,7 @@ MathBox.ViewportCartesian = function (options) {
   // Prepare uniforms
   _.extend(this._uniforms, {
     viewportTransform: this.transform,
-    viewportInverse: this.inverse//,
+    viewportInverse: this.inverse
   });
 };
 

@@ -8,7 +8,7 @@ MathBox.Renderable.ArrowHead = function (from, to, options, style) {
   MathBox.Renderable.call(this, options, style);
 };
 
-MathBox.Renderable.ArrowHead.geometry = new THREE.CylinderGeometry(.33, 0, 1, 16, 1);
+MathBox.Renderable.ArrowHead.geometry = new THREE.CylinderGeometry(0.33, 0, 1, 16, 1);
 
 MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), {
 
@@ -16,7 +16,7 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     return {
       offset: 0,
       absolute: true,
-      size: .1//,
+      size: 0.1
     };
   },
 
@@ -54,6 +54,7 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     var to = this._to.copy(this.to);
     from.applyProjection(this.mathTransform);
     to.applyProjection(this.mathTransform);
+
     viewport.to(from);
     viewport.to(to);
 
@@ -99,6 +100,9 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     // Move cone down so tip is at (0,0,0).
     matrix.identity().setPosition({ x: 0, y: 0.5 - offset, z: 0 });
     this.object.matrix.multiply(matrix);
+    if (this.object.matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
 
     // Override object matrix.
     this.object.matrixAutoUpdate = false;

@@ -9,7 +9,7 @@ MathBox.ViewportProjective = function (options) {
   // Prepare uniforms
   _.extend(this._uniforms, {
     projectiveTransform: new THREE.Matrix4(),
-    projectiveInverse: new THREE.Matrix4(),
+    projectiveInverse: new THREE.Matrix4()
   });
 };
 

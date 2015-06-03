@@ -369,14 +369,14 @@ MathBox.Animator.Animation.prototype = {
             }
             return out;
           }
-          if (to.constructor == THREE.Vector3) {
+          if (to.constructor === THREE.Vector3) {
             out = new THREE.Vector3();
             out.x = lerp(from.x, to.x);
             out.y = lerp(from.y, to.y);
             out.z = lerp(from.z, to.z);
             return out;
           }
-          if (to.constructor == THREE.Color) {
+          if (to.constructor === THREE.Color) {
             out = new THREE.Color()
             out.r = lerp(from.r, to.r);
             out.g = lerp(from.g, to.g);

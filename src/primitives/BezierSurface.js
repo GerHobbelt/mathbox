@@ -11,7 +11,7 @@ MathBox.BezierSurface = function (options) {
     -1,  3, -3,  1,
      3, -6,  3,  0,
     -3,  3,  0,  0,
-     1,  0,  0,  0//,
+     1,  0,  0,  0
   );
   MathBox.Surface.call(this, options);
 };
