@@ -58849,7 +58849,7 @@ MathBox.ViewportProjective.prototype = _.extend(new MathBox.ViewportCartesian(nu
     var m = this.get('projective');
     t.set.apply(t, m[0].concat(m[1], m[2], m[3]));
 
-    this._uniforms.projectiveInverse.getInverse(t);
+    this._uniforms.projectiveInverse.getInverse(t, true);
 
     MathBox.ViewportCartesian.prototype.update.call(this, stage);
   },
