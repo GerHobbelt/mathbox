@@ -195,8 +195,8 @@ MathBox.Materials.prototype = {
     }
 
     // Finish graph and compile program
-    var graph = factory.end(),
-        program = graph.compile();
+    var graph = factory.end();
+    var program = graph.compile();
 
     // Create Three.js material
     var material = new THREE.ShaderMaterial({

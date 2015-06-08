@@ -1,9 +1,10 @@
 /**
  * Generic renderable of vertices for points/lines/surfaces.
+ * @param points THREE.Vector3[]
+ * @param options {type: 'points'|line'|'mesh', strip: boolean, dynamic: boolean}
  */
 MathBox.Renderable.Mesh = function (points, options, style) {
   this.points = points;
-
   MathBox.Renderable.call(this, options, style);
 };
 
@@ -16,22 +17,18 @@ MathBox.Renderable.Mesh.prototype = _.extend(new MathBox.Renderable(null), {
       dynamic: false,
       absolute: false,
       strip: true,
-      shaders: {},
+      shaders: {}
     };
   },
 
   make: function (materials) {
-    var options = this.get(),
-        type = options.type,
-        strip = options.strip,
-        shaders = options.shaders;
+    var options = this.get();
+    var type    = options.type;
+    var strip   = options.strip;
+    var shaders = options.shaders;
 
     // Decide on THREE renderable.
-    var klass = {
-      points: THREE.PointCloud,
-      line: THREE.Line,
-      mesh: THREE.Mesh//,
-    }[type];
+    var klass = {points: THREE.PointCloud, line: THREE.Line, mesh: THREE.Mesh}[type];
     if (!klass) throw "Invalid Mesh type '"+ type +"'";
 
     // Prepare material / shadergraph
@@ -71,6 +68,6 @@ MathBox.Renderable.Mesh.prototype = _.extend(new MathBox.Renderable(null), {
       this.geometry.verticesNeedUpdate = true;
     }
     MathBox.Renderable.prototype.adjust.call(this, viewport);
-  }//,
+  }
 
 });

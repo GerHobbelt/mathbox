@@ -218,8 +218,9 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
       });
     }
 
-  }//,
+  }
 
 });
 
+// Register 'surface' as a primitive.
 MathBox.Primitive.types.surface = MathBox.Surface;

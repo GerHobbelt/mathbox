@@ -133,8 +133,6 @@ MathBox.Renderable.Labels.prototype = _.extend(new MathBox.Renderable(null), {
     });
 
     MathBox.Renderable.prototype.adjust.call(this, viewport);
-  },
-
+  }
 
 });
-

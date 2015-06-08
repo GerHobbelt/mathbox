@@ -4,7 +4,6 @@
 MathBox.Grid = function (options) {
   // Allow inheritance constructor
   if (options === null) return;
-
   MathBox.Primitive.call(this, options);
 };
 
@@ -21,8 +20,8 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
       tickScale: [ 10, 10 ],
       style: {
         lineWidth: 1,
-        color: new THREE.Color(0xA0A0A0)//,
-      }//,
+        color: new THREE.Color(0xA0A0A0)
+      }
     };
   },
 
@@ -35,7 +34,6 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
   },
 
   adjust: function (viewport) {
-
     var options = this.get(),
         axis = options.axis,
         ticks = options.ticks,
@@ -105,20 +103,21 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     this.lines[0].show(show[0]);
     this.lines[1].show(show[1]);
 
+    // TODO: Why is the ranges index flipped in the first case.
     show[0] && generate(points[0], ranges[1], ranges[0], limit[0], n[0]);
     show[1] && generate(points[1], ranges[0], ranges[1], limit[1], n[1]);
   },
 
   make: function (materials) {
-    var options = this.get(),
-        axis = options.axis,
-        ticks = options.ticks,
-        n = options.n,
-        points = this.points = [[], []],
-        style = this.style;
+    var options = this.get();
+    var axis    = options.axis;
+    var ticks   = options.ticks;
+    var n       = options.n;
+    var points  = this.points = [[], []];
+    var style   = this.style;
 
     // Symmetrical grid division
-    if (typeof n == 'number') {
+    if (typeof n === 'number') {
       n = [n, n];
     }
 
@@ -128,6 +127,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     // Prepare arrays of vertices.
     _.each(ticks, function (tick, i) {
       i = 1 - i;
+      // What is the magic number 4?
       limit[i] = tick * 4;
       MathBox.loop(limit[i] * (n[i] - 1) * 2, function (x) {
         points[i].push(new THREE.Vector3());
@@ -138,7 +138,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     this.lines = [];
     this.lines.push(new MathBox.Renderable.Mesh(points[0], { type: 'line', strip: false, dynamic: true }, style));
     this.lines.push(new MathBox.Renderable.Mesh(points[1], { type: 'line', strip: false, dynamic: true }, style));
-  }//,
+  }
 
 });
 

@@ -2,7 +2,9 @@ MathBox.Primitive = function (options) {
   // Allow inheritance constructor
   if (options === null) return;
 
-  // Apply defaults and unpack styles
+  // Apply defaults and unpack styles.
+  // FIXME: This call to derived classes is bogus.
+  // FIXME: It won't work if we use ES6 classes, for example.
   var defaults = this.defaults();
   if (options) {
     options.style = _.extend(defaults.style, options.style || {});
@@ -29,6 +31,7 @@ MathBox.Primitive = function (options) {
   this.set('id', options.id || this.sequence);
 
   // Call init method for subclass' benefit.
+  // FIXME: Bogus. Is this even used anyway?
   this.init();
 };
 
@@ -59,7 +62,7 @@ MathBox.Primitive.prototype = {
   },
 
   adjust: function (viewport) {
-  }//,
+  }
 
 };
 

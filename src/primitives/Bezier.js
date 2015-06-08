@@ -96,7 +96,7 @@ MathBox.Bezier.prototype = _.extend(new MathBox.Curve(null), {
     };
     this.line.set(opts);
     this.points.set(opts);
-  }//,
+  }
 
 });
 

@@ -351,25 +351,29 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
   ////////// Primitive animation ////////////////////////
 
   /**
-   * Set default transition duration
+   * Set default transition duration, or get the current duration.
    */
   transition: function (transition) {
     if (transition !== undefined) {
       this._transition = transition;
       return this;
     }
-    return this._transition;
+    else {
+      return this._transition;
+    }
   },
 
   /**
-   * Set speed multiplier
+   * Set speed multiplier, or get the current multiplier.
    */
   speed: function (speed) {
     if (speed !== undefined) {
       this._speed = speed;
       return this;
     }
-    return this._speed;
+    else {
+      return this._speed;
+    }
   },
 
   /**

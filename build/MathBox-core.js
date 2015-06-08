@@ -884,25 +884,29 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
   ////////// Primitive animation ////////////////////////
 
   /**
-   * Set default transition duration
+   * Set default transition duration, or get the current duration.
    */
   transition: function (transition) {
     if (transition !== undefined) {
       this._transition = transition;
       return this;
     }
-    return this._transition;
+    else {
+      return this._transition;
+    }
   },
 
   /**
-   * Set speed multiplier
+   * Set speed multiplier, or get the current multiplier.
    */
   speed: function (speed) {
     if (speed !== undefined) {
       this._speed = speed;
       return this;
     }
-    return this._speed;
+    else {
+      return this._speed;
+    }
   },
 
   /**
@@ -1324,8 +1328,8 @@ MathBox.Materials.prototype = {
     }
 
     // Finish graph and compile program
-    var graph = factory.end(),
-        program = graph.compile();
+    var graph = factory.end();
+    var program = graph.compile();
 
     // Create Three.js material
     var material = new THREE.ShaderMaterial({
@@ -1477,6 +1481,7 @@ tQuery.World.registerInstance('mathBox', function (element, options) {
   this.tScene().add(mathbox);
 
   // White background
+  // TODO: Looks like we touch implementation. Maybe tRenderer()?
   this._tRenderer.setClearColor(0xFFFFFF, 1);
 
   // Hook into rendering loop
@@ -2351,7 +2356,9 @@ MathBox.Sprite.prototype = _.extend(new THREE.Object3D(), {
   // Allow inheritance constructor
   if (options === null) return;
 
-  // Apply defaults and unpack styles
+  // Apply defaults and unpack styles.
+  // FIXME: This call to derived classes is bogus.
+  // FIXME: It won't work if we use ES6 classes, for example.
   var defaults = this.defaults();
   if (options) {
     options.style = _.extend(defaults.style, options.style || {});
@@ -2378,6 +2385,7 @@ MathBox.Sprite.prototype = _.extend(new THREE.Object3D(), {
   this.set('id', options.id || this.sequence);
 
   // Call init method for subclass' benefit.
+  // FIXME: Bogus. Is this even used anyway?
   this.init();
 };
 
@@ -2408,7 +2416,7 @@ MathBox.Primitive.prototype = {
   },
 
   adjust: function (viewport) {
-  }//,
+  }
 
 };
 
@@ -2631,7 +2639,7 @@ MathBox.Bezier.prototype = _.extend(new MathBox.Curve(null), {
     };
     this.line.set(opts);
     this.points.set(opts);
-  }//,
+  }
 
 });
 
@@ -2856,7 +2864,6 @@ MathBox.Primitive.types.axis = MathBox.Axis;
 MathBox.Grid = function (options) {
   // Allow inheritance constructor
   if (options === null) return;
-
   MathBox.Primitive.call(this, options);
 };
 
@@ -2873,8 +2880,8 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
       tickScale: [ 10, 10 ],
       style: {
         lineWidth: 1,
-        color: new THREE.Color(0xA0A0A0)//,
-      }//,
+        color: new THREE.Color(0xA0A0A0)
+      }
     };
   },
 
@@ -2887,7 +2894,6 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
   },
 
   adjust: function (viewport) {
-
     var options = this.get(),
         axis = options.axis,
         ticks = options.ticks,
@@ -2957,20 +2963,21 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     this.lines[0].show(show[0]);
     this.lines[1].show(show[1]);
 
+    // TODO: Why is the ranges index flipped in the first case.
     show[0] && generate(points[0], ranges[1], ranges[0], limit[0], n[0]);
     show[1] && generate(points[1], ranges[0], ranges[1], limit[1], n[1]);
   },
 
   make: function (materials) {
-    var options = this.get(),
-        axis = options.axis,
-        ticks = options.ticks,
-        n = options.n,
-        points = this.points = [[], []],
-        style = this.style;
+    var options = this.get();
+    var axis    = options.axis;
+    var ticks   = options.ticks;
+    var n       = options.n;
+    var points  = this.points = [[], []];
+    var style   = this.style;
 
     // Symmetrical grid division
-    if (typeof n == 'number') {
+    if (typeof n === 'number') {
       n = [n, n];
     }
 
@@ -2980,6 +2987,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     // Prepare arrays of vertices.
     _.each(ticks, function (tick, i) {
       i = 1 - i;
+      // What is the magic number 4?
       limit[i] = tick * 4;
       MathBox.loop(limit[i] * (n[i] - 1) * 2, function (x) {
         points[i].push(new THREE.Vector3());
@@ -2990,7 +2998,7 @@ MathBox.Grid.prototype = _.extend(new MathBox.Primitive(null), {
     this.lines = [];
     this.lines.push(new MathBox.Renderable.Mesh(points[0], { type: 'line', strip: false, dynamic: true }, style));
     this.lines.push(new MathBox.Renderable.Mesh(points[1], { type: 'line', strip: false, dynamic: true }, style));
-  }//,
+  }
 
 });
 
@@ -3399,10 +3407,11 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
       });
     }
 
-  }//,
+  }
 
 });
 
+// Register 'surface' as a primitive.
 MathBox.Primitive.types.surface = MathBox.Surface;
 /**
  * Bezier surface of order 3.
@@ -3610,7 +3619,7 @@ MathBox.Platonic.prototype = _.extend(new MathBox.Primitive(null), {
       doubleSided: true,
       flipSided: false,
       shaded: true,
-      style: {}//,
+      style: {}
     };
   },
 
@@ -3665,7 +3674,7 @@ MathBox.Platonic.prototype = _.extend(new MathBox.Primitive(null), {
       dynamic: options.live,
     }, style);
 
-  }//,
+  }
 
 });
 
@@ -3725,11 +3734,19 @@ MathBox.Renderable.prototype = {
     return this.object && this.object.visible;
   },
 
+  /**
+   * TODO: Is this first parameter really a translation?
+   * @param position {x: number, y: number, z: number}
+   * @param rotation {x: number, y: number, z: number}
+   * @param scale    {x: number, y: number, z: number}
+   */
   composeTransform: function (position, rotation, scale) {
+
     var mRotation = new THREE.Matrix4();
     var mScale = new THREE.Matrix4();
 
     mRotation.identity();
+
     var euler = new THREE.Euler(rotation.x, rotation.y, rotation.z, this.object.rotation.order);
     mRotation.makeRotationFromEuler(euler);
 
@@ -3823,17 +3840,18 @@ MathBox.Renderable.prototype = {
     if (this.material) {
        this.material.applyUniforms(viewport.uniforms());
     }
-  }//,
+  }
 
 };
 
 MathBox.Attributes.mixin(MathBox.Renderable);
 /**
  * Generic renderable of vertices for points/lines/surfaces.
+ * @param points THREE.Vector3[]
+ * @param options {type: 'points'|line'|'mesh', strip: boolean, dynamic: boolean}
  */
 MathBox.Renderable.Mesh = function (points, options, style) {
   this.points = points;
-
   MathBox.Renderable.call(this, options, style);
 };
 
@@ -3846,22 +3864,18 @@ MathBox.Renderable.Mesh.prototype = _.extend(new MathBox.Renderable(null), {
       dynamic: false,
       absolute: false,
       strip: true,
-      shaders: {},
+      shaders: {}
     };
   },
 
   make: function (materials) {
-    var options = this.get(),
-        type = options.type,
-        strip = options.strip,
-        shaders = options.shaders;
+    var options = this.get();
+    var type    = options.type;
+    var strip   = options.strip;
+    var shaders = options.shaders;
 
     // Decide on THREE renderable.
-    var klass = {
-      points: THREE.PointCloud,
-      line: THREE.Line,
-      mesh: THREE.Mesh//,
-    }[type];
+    var klass = {points: THREE.PointCloud, line: THREE.Line, mesh: THREE.Mesh}[type];
     if (!klass) throw "Invalid Mesh type '"+ type +"'";
 
     // Prepare material / shadergraph
@@ -3901,7 +3915,7 @@ MathBox.Renderable.Mesh.prototype = _.extend(new MathBox.Renderable(null), {
       this.geometry.verticesNeedUpdate = true;
     }
     MathBox.Renderable.prototype.adjust.call(this, viewport);
-  }//,
+  }
 
 });
 /**
@@ -4259,11 +4273,9 @@ MathBox.Renderable.Labels.prototype = _.extend(new MathBox.Renderable(null), {
     });
 
     MathBox.Renderable.prototype.adjust.call(this, viewport);
-  },
-
+  }
 
 });
-
 /**
  * Generic viewport base class.
  */

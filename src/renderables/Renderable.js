@@ -53,11 +53,19 @@ MathBox.Renderable.prototype = {
     return this.object && this.object.visible;
   },
 
+  /**
+   * TODO: Is this first parameter really a translation?
+   * @param position {x: number, y: number, z: number}
+   * @param rotation {x: number, y: number, z: number}
+   * @param scale    {x: number, y: number, z: number}
+   */
   composeTransform: function (position, rotation, scale) {
+
     var mRotation = new THREE.Matrix4();
     var mScale = new THREE.Matrix4();
 
     mRotation.identity();
+
     var euler = new THREE.Euler(rotation.x, rotation.y, rotation.z, this.object.rotation.order);
     mRotation.makeRotationFromEuler(euler);
 
@@ -151,7 +159,7 @@ MathBox.Renderable.prototype = {
     if (this.material) {
        this.material.applyUniforms(viewport.uniforms());
     }
-  }//,
+  }
 
 };
 

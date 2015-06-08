@@ -24,6 +24,7 @@ tQuery.World.registerInstance('mathBox', function (element, options) {
   this.tScene().add(mathbox);
 
   // White background
+  // TODO: Looks like we touch implementation. Maybe tRenderer()?
   this._tRenderer.setClearColor(0xFFFFFF, 1);
 
   // Hook into rendering loop

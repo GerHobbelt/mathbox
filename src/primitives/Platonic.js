@@ -21,7 +21,7 @@ MathBox.Platonic.prototype = _.extend(new MathBox.Primitive(null), {
       doubleSided: true,
       flipSided: false,
       shaded: true,
-      style: {}//,
+      style: {}
     };
   },
 
@@ -76,7 +76,7 @@ MathBox.Platonic.prototype = _.extend(new MathBox.Primitive(null), {
       dynamic: options.live,
     }, style);
 
-  }//,
+  }
 
 });
 
