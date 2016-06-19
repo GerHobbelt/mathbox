@@ -1,4 +1,4 @@
-Util = require '../../../Util'
+Util = require '../../../util'
 
 ###
 Manually allocated GL texture for data streaming.
@@ -83,6 +83,3 @@ class DataTexture
     @textureObject = @texture = null
 
 module.exports = DataTexture
-
-
-

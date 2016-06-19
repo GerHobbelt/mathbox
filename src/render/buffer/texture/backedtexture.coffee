@@ -1,4 +1,4 @@
-Util = require '../../../Util'
+Util = require '../../../util'
 DataTexture = require './datatexture'
 
 ###
@@ -61,4 +61,3 @@ class BackedTexture extends DataTexture
     super
 
 module.exports = BackedTexture
-
