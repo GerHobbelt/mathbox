@@ -27,8 +27,8 @@ class LineGeometry extends ClipGeometry
     lines     = samples - 1
     @joints   = joints = detail  - 1
 
-    @vertices = vertices = (lines - 1) * joints + samples
-    @segments = segments = (lines - 1) * joints + lines
+    @vertices = vertices = (lines - 1) * joints + samples + if closed then 2 * joints else 0
+    @segments = segments = vertices - 1
 
     wrap      = samples  - if closed then 1 else 0
     points    = vertices * strips * ribbons * layers * 2
@@ -129,9 +129,11 @@ class LineGeometry extends ClipGeometry
     return
 
   clip: (samples = @samples - @closed, strips = @strips, ribbons = @ribbons, layers = @layers) ->
-    segments = Math.max 0, samples - if @closed then 0 else 1
+    # Set samples without extra for props.closed (either on 'this' or in the params) then add it back in
+    samples += @closed
+    segments = Math.max 0, samples - if @closed then 1 else 0
 
-    vertices = samples + (samples - 2) * @joints
+    vertices = samples + (samples - 2) * @joints + if @closed then 2 * @joints else 0
     segments = vertices - 1
 
     @_clipGeometry   vertices, strips, ribbons, layers
