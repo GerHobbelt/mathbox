@@ -32,6 +32,7 @@ Classes =
   volume:            require './data/volume'
   scale:             require './data/scale'
   latch:             require './data/latch'
+  image:             require './data/image'
 
   html:              require './overlay/html'
   dom:               require './overlay/dom'
