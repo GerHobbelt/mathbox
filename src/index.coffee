@@ -1,5 +1,7 @@
+Threestrap = require '@math3d/threestrap'
 # Global constructor
 mathBox = (options) ->
+  # Threestrap(THREE)
   three = THREE.Bootstrap options
 
   if !three.fallback
@@ -16,6 +18,8 @@ window.e = Math.E
 # Namespace
 window.MathBox = exports
 window.mathBox = exports.mathBox = mathBox
+window.THREE = require 'three'
+Threestrap(THREE)
 exports.version = '0.0.5'
 
 # Load context and export namespace
