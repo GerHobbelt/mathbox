@@ -42,7 +42,7 @@ class ArrowGeometry extends ClipGeometry
 
     circle = []
     for k in [0...sides]
-      angle = k / sides * τ
+      angle = k / sides * (2 * Math.PI)
       circle.push [Math.cos(angle), Math.sin(angle), 1] 
 
     base = 0
