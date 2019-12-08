@@ -1,3 +1,4 @@
+THREE         = require 'three'
 Renderable    = require '../renderable'
 Util          = require '../../util'
 DataTexture   = require './texture/datatexture'

@@ -1,3 +1,4 @@
+THREE = require 'three'
 debug = false
 
 tick = () ->

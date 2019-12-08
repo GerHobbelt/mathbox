@@ -1,3 +1,4 @@
+THREE = require 'three'
 Atlas = require './atlas'
 
 SCRATCH_SIZE = 512 / 16

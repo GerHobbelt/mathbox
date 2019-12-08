@@ -1,3 +1,4 @@
+THREE     = require 'three'
 Primitive = require '../../primitive'
 Util      = require '../../../util'
 

@@ -1,5 +1,6 @@
-Util = require '../../util'
-View = require './view/view'
+THREE = require 'three'
+Util  = require '../../util'
+View  = require './view/view'
 
 ###
 

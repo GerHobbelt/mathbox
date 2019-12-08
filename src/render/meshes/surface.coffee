@@ -1,3 +1,4 @@
+THREE           = require 'three'
 Base            = require './base'
 SurfaceGeometry = require('../geometry').SurfaceGeometry
 Util            = require '../../util'

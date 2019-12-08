@@ -1,5 +1,6 @@
+THREE    = require 'three'
 Operator = require '../operator/operator'
-Util = require '../../../util'
+Util     = require '../../../util'
 
 class Format extends Operator
   @traits = ['node', 'bind', 'operator', 'texture', 'text', 'format', 'font']

@@ -1,3 +1,4 @@
+THREE           = require 'three'
 Screen          = require './screen'
 Util            = require '../../util'
 

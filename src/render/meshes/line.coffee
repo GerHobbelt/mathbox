@@ -1,3 +1,4 @@
+THREE        = require 'three'
 Base         = require './base'
 LineGeometry = require('../geometry').LineGeometry
 

@@ -1,4 +1,5 @@
-Util = require '../../util'
+THREE = require 'three'
+Util  = require '../../util'
 
 # Property types
 #

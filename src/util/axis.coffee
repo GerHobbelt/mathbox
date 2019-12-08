@@ -1,3 +1,4 @@
+THREE     = require 'three'
 exports.setOrigin = (vec, dimensions, origin) ->
   dimensions = [dimensions] if +dimensions == dimensions
   x = if 1 in dimensions then 0 else origin.x

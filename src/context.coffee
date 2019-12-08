@@ -1,3 +1,4 @@
+THREE      = require 'three'
 Model      = require './model'
 Overlay    = require './overlay'
 Primitives = require './primitives'

@@ -1,5 +1,6 @@
-View = require './view'
-Util = require '../../../util'
+THREE = require 'three'
+View  = require './view'
+Util  = require '../../../util'
 
 class Spherical extends View
   @traits = ['node', 'object', 'visible', 'view', 'view3', 'spherical', 'vertex']

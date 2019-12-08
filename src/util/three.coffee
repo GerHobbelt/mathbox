@@ -1,3 +1,4 @@
+THREE = require 'three'
 exports.paramToGL = (gl, p) ->
 
   if ( p == THREE.RepeatWrapping ) then return gl.REPEAT

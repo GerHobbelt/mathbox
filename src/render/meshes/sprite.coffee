@@ -1,3 +1,4 @@
+THREE          = require 'three'
 Base           = require './base'
 SpriteGeometry = require('../geometry').SpriteGeometry
 

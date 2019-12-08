@@ -1,4 +1,5 @@
-Base = require './base'
+THREE = require 'three'
+Base  = require './base'
 
 class Debug extends Base
   constructor: (renderer, shaders, options) ->

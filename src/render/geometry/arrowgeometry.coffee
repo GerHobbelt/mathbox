@@ -1,3 +1,4 @@
+THREE        = require 'three'
 ClipGeometry = require './clipgeometry'
 
 ###

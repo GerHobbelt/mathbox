@@ -1,5 +1,6 @@
+THREE     = require 'three'
 Primitive = require '../../primitive'
-Util = require '../../../util'
+Util      = require '../../../util'
 
 class Camera extends Primitive
   @traits = ['node', 'camera']
