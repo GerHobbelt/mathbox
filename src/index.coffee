@@ -1,3 +1,4 @@
+require './index.css'
 THREE      = require 'three'
 Threestrap = require '@math3d/threestrap'
 Threestrap(THREE)
