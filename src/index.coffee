@@ -17,7 +17,7 @@ mathBox = (options) ->
 MathBox = exports
 MathBox.version = '0.0.5'
 MathBox.mathBox = mathBox
-MathBox.THREE = THREE;
+MathBox.THREE = THREE
 
 # Load context and export namespace
 MathBox.Context = Context = require './context'

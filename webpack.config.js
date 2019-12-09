@@ -38,7 +38,6 @@ const scriptBuild = {
   entry: './src/index.var.coffee',
   output: {
     filename: `mathbox-bundle.js`,
-    library: 'MathBox',
     libraryTarget: 'var',
     path: buildPath
   },
