@@ -10,26 +10,27 @@
   "scripts": {
     "test": "gulp test",
     "docs": "gulp docs",
-    "build": "gulp"
+    "build:shaders": "node ./src/shaders/buildSnippets.js",
+    "build": "npm run build:shaders && webpack"
   },
   "dependencies": {
     "@math3d/threestrap": "0.0.13-prod",
     "three": "0.84.0"
   },
   "devDependencies": {
-    "coffeescript": "^1.10.0",
     "coffee-loader": "^0.9.0",
+    "coffeescript": "^1.10.0",
     "cssauron": "^1.2.0",
-    "glslify-loader": "^2.0.0",
+    "css-loader": "^3.2.1",
+    "style-loader": "^1.0.1",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.10",
     "karma-browserify": "^4.4.0",
     "karma-chrome-launcher": "^0.2.1",
     "karma-coffee-preprocessor": "^0.3.0",
     "karma-jasmine": "^0.3.6",
-    "raw-loader": "^4.0.0",
-    "run-sequence": "^1.1.4",
-    "webpack": "^4.41.2"
+    "webpack": "^4.41.2",
+    "webpack-shell-plugin-next": "^1.1.5"
   },
   "author": "Steven Wittens",
   "license": "MIT"
