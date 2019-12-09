@@ -3,3 +3,5 @@
 .DS_Store
 .tmp/*
 release/mathbox-0.0.x*
+/build/*.commonjs2.js
+/src/shaders/snippets.json
