@@ -8,8 +8,8 @@
   },
   "main": "build/mathbox-bundle.js",
   "scripts": {
-    "test": "gulp test",
-    "docs": "gulp docs",
+    "test": "karma start karma.conf.js",
+    "docs": "coffee src/docs/generate.coffee > docs/primitives.md",
     "build:shaders": "node ./src/shaders/buildSnippets.js",
     "build": "npm run build:shaders && webpack"
   },
@@ -20,15 +20,15 @@
   "devDependencies": {
     "coffee-loader": "^0.9.0",
     "coffeescript": "^1.10.0",
-    "cssauron": "^1.2.0",
     "css-loader": "^3.2.1",
-    "style-loader": "^1.0.1",
+    "cssauron": "^1.2.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.10",
     "karma-browserify": "^4.4.0",
-    "karma-chrome-launcher": "^0.2.1",
-    "karma-coffee-preprocessor": "^0.3.0",
+    "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^0.3.6",
+    "karma-webpack": "^4.0.2",
+    "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-shell-plugin-next": "^1.1.5"
   },

@@ -6,7 +6,26 @@ module.exports = function(config) {
 
     // preprocess coffeescript
     preprocessors: {
-      '**/*.coffee': ['coffee']
+      '**/*.coffee': ['webpack']
+    },
+
+    webpack: {
+      mode: 'development',
+      module: {
+        rules: [
+          {
+            test: /\.coffee$/,
+            use: [ 'coffee-loader' ]
+          },
+          {
+            test:/\.css$/,
+            use:['style-loader','css-loader']
+        }
+        ]
+      },
+      resolve: {
+        extensions: [ '.js', '.coffee' ]
+      }
     },
 
     // base path, that will be used to resolve files and exclude
@@ -17,7 +36,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // Defined by gulp
+      { pattern: 'test/**/*.spec.coffee', watched: false },
     ],
 
 

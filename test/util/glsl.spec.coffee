@@ -1,3 +1,4 @@
+MathBox = require '../../src/index'
 GLSL = MathBox.Util.GLSL
 
 describe "util.glsl", () ->
