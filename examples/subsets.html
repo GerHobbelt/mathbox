@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MathBox - Empty</title>
+  <script src="../build/mathbox-bundle.js"></script>
+  <link rel="stylesheet" href="../build/mathbox.css">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+</head>
+<body>
+<div style="display: none">
+  <span class="foo">Fooooooo</span>
+</div>
+  <script>
+    var button = document.querySelector('.foo');
+    var clone = MathBox.DOM.createClass({
+      render: function (el, props, children) {
+        var button = children.cloneNode(true);
+        return button;
+      },
+    });
+    var mathbox = mathBox({
+      plugins: ['core', 'controls', 'cursor', 'mathbox'],
+      controls: {
+        // Orbit controls, i.e. Euler angles, with gimbal lock
+        klass: THREE.OrbitControls,
+
+        // Trackball controls, i.e. Free quaternion rotation
+        //klass: THREE.TrackballControls,
+      },
+    });
+    if (mathbox.fallback) throw "WebGL not supported"
+
+    var three = mathbox.three;
+    three.renderer.setClearColor(new THREE.Color(0xFFFFFF), 1.0);
+
+
+
+    // Do stuff with mathbox,
+    // for example: (see docs/intro.md)
+    
+
+    // Place camera
+    var camera =
+      mathbox
+      .camera({
+        proxy: true,
+        position: [0, 0, 2],
+      });
+
+    // 2D cartesian
+    var view =
+      mathbox
+      .cartesian({
+        range: [[-10, 10], [-10, 10], [-10, 10]],
+        scale: [1, 1],
+      });
+
+        // Axes + grid
+        // view
+        //   .axis({
+        //     axis: 1,
+        //     width: 4,
+        //   })
+        //   .axis({
+        //     axis: 2,
+        //     width: 4,
+        //   })
+        //   .grid({
+        //     width: 1,
+        //     divideX: 10,
+        //     divideY: 10,
+        //   });
+
+            // Make axes black
+            mathbox.select('axis').set('color', 'black');
+
+            // Calibrate focus distance for units
+            mathbox.set('focus', 3);
+
+            // Add some data
+            var data =
+              view
+              .interval({
+                expr: function (emit, x, i, t) {
+                  emit(x, Math.sin(x + t));
+                },
+                width: 64,
+                channels: 2,
+              });
+
+    // create points
+    var nPoints = 0;
+    var points = [];
+    let div = 1.0;
+    for (let y=0; y < 20; y++) {
+      for (let x=0; x <=y; x++) {
+        for (let z=0; z<=x; z++)
+          points.push([x/div, y/div, z/div]);
+        nPoints++;
+      }
+
+    }
+
+    // create links as pairs of distinct points that are near each other
+    var links = [];
+    for (var i = 1; i < nPoints; i++){
+      links.push(points[i-1], points[i])
+      //if (dist(i, j) < 0.4){
+    }
+
+    // draw the points
+    view.array({
+      width: nPoints,
+      items: 1,
+      channels: 3,
+      data: points,
+      live: false,
+    }).point({
+      color: 0xff4444,
+      size: 5,
+    }).html({
+      width:  nPoints,
+      height: 1,
+      expr: function (emit, el, i, j, k, l, t) {
+        // Emit copies of the button
+        emit(el(clone, {i: i + 1, j: j + 1}, button));
+      },
+    })
+    .dom({
+      snap: true,
+      offset: [0, 40],
+      depth: 0,
+      size: 24,
+      zoom: 1,
+      outline: 2,
+      pointerEvents: true,
+    });
+
+    // draw the links
+    view.array({
+      width: links.length/2,
+      items: 2,
+      channels: 3,
+      data: links,
+      live: false,
+    })
+    .vector({
+      color: 0x4444ff,
+      width: 2,
+    });
+
+
+    
+  </script>
+</body>
+</html>
