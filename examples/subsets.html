@@ -97,7 +97,7 @@
       for (let x=0; x <=y; x++) {
         for (let z=0; z<=x; z++)
           points.push([x/div, y/div, z/div]);
-        nPoints++;
+          nPoints++;
       }
 
     }
@@ -109,6 +109,8 @@
       //if (dist(i, j) < 0.4){
     }
 
+    let textTest = 0;
+
     // draw the points
     view.array({
       width: nPoints,
@@ -116,10 +118,34 @@
       channels: 3,
       data: points,
       live: false,
-    }).point({
+    })/*
+    .point({
       color: 0xff4444,
       size: 5,
-    }).html({
+    })*/
+
+            .text({
+      font: 'Helvetica',
+      style: 'bold',
+      width:  nPoints,
+      height: 5,
+      depth:  2,
+      expr: function (emit, i, j, k, time) {
+        emit(i );
+      },
+              live: false
+    }).label({
+      color: '#000000',
+      snap: false,
+      outline: 0.3,
+      size: 8,
+      offset: [0, 0],
+      depth: 1,
+      zIndex: 0,
+    });;
+
+
+     /*.html({
       width:  nPoints,
       height: 1,
       expr: function (emit, el, i, j, k, l, t) {
@@ -129,13 +155,13 @@
     })
     .dom({
       snap: true,
-      offset: [0, 40],
+      offset: [0, 10],
       depth: 0,
-      size: 24,
+      size: 10,
       zoom: 1,
-      outline: 2,
-      pointerEvents: true,
-    });
+      outline: 1,
+      pointerEvents: false,
+    }); */
 
     // draw the links
     view.array({
