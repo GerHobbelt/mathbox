@@ -68,6 +68,14 @@ class Combo {
 
 }
 
+class ThreeCombinationGraph {
+
+  constructor(view) {
+    this.view = view;
+  }
+
+}
+
 let combos = [];
 let arbitraryPowBase = Math.random()* 2;
 let funk = (x) => Math.pow(arbitraryPowBase,x);
@@ -177,6 +185,8 @@ combos.push(new Combo([true, true, true], comboSet.arr, 0));
 
 
 
+
+
     let textTest = 0;
 
     // draw the points
@@ -200,7 +210,7 @@ combos.push(new Combo([true, true, true], comboSet.arr, 0));
       height: 5,
       depth:  2,
       expr: function (emit, i, j, k, time) {
-        emit(baseCombos[i].toBoolString() + '\n' + baseCombos[i].val);
+        emit(baseCombos[i].toBoolString());  //+ '\n' + baseCombos[i].val);
       },
               live: false
     }).label({
