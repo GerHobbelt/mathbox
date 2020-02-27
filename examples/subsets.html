@@ -8,18 +8,33 @@
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 </head>
 <body>
-<div style="display: none">
-  <span class="foo">Fooooooo</span>
-</div>
   <script>
+
+class ComboSet {
+  constructor(size, funk) {
+    this.arr = [];
+    for (let i=0; i < size; i++) {
+      this.arr.push(funk(i));
+    }
+  }
+}
 class Combo {
-  constructor(previous) {
+  constructor(previous, set, pointIndex) {
     if (!previous.boolArray) this.boolArray = [...previous];
     else {
       this.boolArray = [...previous.boolArray];
       this.shiftArray(0);
     }
+    this.updateVal(set);
+    this.pointIndex = pointIndex;
+  }
 
+  updateVal(set) {
+    this.val = 0;
+    for (let i=0; i < this.boolArray.length; i++) {
+      if (this.boolArray[i]) this.val += set[i];
+    }
+    return this.val;
   }
   shiftArray(i) {
     if (this.boolArray[i]) {
@@ -54,15 +69,13 @@ class Combo {
 }
 
 let combos = [];
-combos.push(new Combo([true, true, true]));
+let arbitraryPowBase = Math.random()* 2;
+let funk = (x) => Math.pow(arbitraryPowBase,x);
+let comboSet = new ComboSet(13, funk ); // Math.pow(2,x)
+comboSet.arr.sort((a,b)=>a-b);
+combos.push(new Combo([true, true, true], comboSet.arr, 0));
 
-    var button = document.querySelector('.foo');
-    var clone = MathBox.DOM.createClass({
-      render: function (el, props, children) {
-        var button = children.cloneNode(true);
-        return button;
-      },
-    });
+
     var mathbox = mathBox({
       plugins: ['core', 'controls', 'cursor', 'mathbox'],
       controls: {
@@ -89,14 +102,15 @@ combos.push(new Combo([true, true, true]));
       mathbox
       .camera({
         proxy: true,
-        position: [0, 0, 2],
+        position: [0, -0.9, 0.6], //[0, -0.9, 0.6],
+        // [0.20497403742066023, -0.6133419429168323, 0.6211015089889746]
       });
 
     // 2D cartesian
     var view =
       mathbox
       .cartesian({
-        range: [[-10, 10], [-10, 10], [-10, 10]],
+        range: [[-7, 15], [-7, 15], [-7, 15]],
         scale: [1, 1],
       });
 
@@ -120,18 +134,18 @@ combos.push(new Combo([true, true, true]));
             mathbox.select('axis').set('color', 'black');
 
             // Calibrate focus distance for units
-            mathbox.set('focus', 3);
+            //mathbox.set('focus', 3);
 
             // Add some data
-            var data =
-              view
-              .interval({
-                expr: function (emit, x, i, t) {
-                  emit(x, Math.sin(x + t));
-                },
-                width: 64,
-                channels: 2,
-              });
+            // var data =
+            //   view
+            //   .interval({
+            //     expr: function (emit, x, i, t) {
+            //       emit(x, Math.sin(x + t));
+            //     },
+            //     width: 64,
+            //     channels: 2,
+            //   });
 
     // create points
     var nPoints = 0;
@@ -143,20 +157,25 @@ combos.push(new Combo([true, true, true]));
       for (let x=0; x <=y; x++) {
         for (let z=0; z<=x; z++) {
           if (!started) started = true;
-          else combos.push(new Combo(combos[nPoints-1]));
+          else combos.push(new Combo(combos[nPoints-1], comboSet.arr, nPoints));
           points.push([x / div, y / div, z / div]);
           nPoints++;
         }
       }
 
     }
+    let baseCombos = [... combos];
+    combos.sort((a,b)=> b.val-a.val);
 
-    // create links as pairs of distinct points that are near each other
-    var links = [];
+    let links = [];
+    let eqLinks = [];
     for (var i = 1; i < nPoints; i++){
-      links.push(points[i-1], points[i])
-      //if (dist(i, j) < 0.4){
+      if (combos[i-1].val == combos[i].val) eqLinks.push(points[combos[i-1].pointIndex], points[combos[i].pointIndex]);
+      else links.push(points[combos[i-1].pointIndex], points[combos[i].pointIndex]);
+
     }
+
+
 
     let textTest = 0;
 
@@ -173,6 +192,7 @@ combos.push(new Combo([true, true, true]));
       size: 5,
     })*/
 
+
             .text({
       font: 'Helvetica',
       style: 'bold',
@@ -180,7 +200,7 @@ combos.push(new Combo([true, true, true]));
       height: 5,
       depth:  2,
       expr: function (emit, i, j, k, time) {
-        emit(combos[i].toBoolString() );
+        emit(baseCombos[i].toBoolString() + '\n' + baseCombos[i].val);
       },
               live: false
     }).label({
@@ -191,26 +211,9 @@ combos.push(new Combo([true, true, true]));
       offset: [0, 0],
       depth: 1,
       zIndex: 0,
-    });;
+    });
 
 
-     /*.html({
-      width:  nPoints,
-      height: 1,
-      expr: function (emit, el, i, j, k, l, t) {
-        // Emit copies of the button
-        emit(el(clone, {i: i + 1, j: j + 1}, button));
-      },
-    })
-    .dom({
-      snap: true,
-      offset: [0, 10],
-      depth: 0,
-      size: 10,
-      zoom: 1,
-      outline: 1,
-      pointerEvents: false,
-    }); */
 
     // draw the links
     view.array({
@@ -225,6 +228,17 @@ combos.push(new Combo([true, true, true]));
       width: 2,
     });
 
+    view.array({
+      width: eqLinks.length/2,
+      items: 2,
+      channels: 3,
+      data: eqLinks,
+      live: false,
+    })
+    .vector({
+      color: 0xff0000,
+      width: 2,
+    });
 
     
   </script>
