@@ -16,13 +16,13 @@
   },
   "dependencies": {
     "@math3d/threestrap": "0.0.13-prod",
-    "three": "^0.72.0"
+    "three": "^0.116.1"
   },
   "devDependencies": {
     "autoprefixer": "^9.8.0",
     "browserify": "^16.5.1",
     "coffee-loader": "^0.9.0",
-    "coffeescript": "^1.10.0",
+    "coffeescript": "^1.12.7",
     "css-loader": "^3.5.3",
     "cssauron": "^1.4.0",
     "glob": "^7.1.6",
