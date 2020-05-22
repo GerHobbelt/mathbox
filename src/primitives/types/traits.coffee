@@ -11,6 +11,10 @@ Traits =
   object:
     visible:           Types.bool(true)
 
+  latch:
+    data:              Types.nullable(Types.object())
+    deep:              Types.nullable(Types.bool(true))
+
   unit:
     scale:             Types.nullable(Types.number())
     fov:               Types.nullable(Types.number())
@@ -178,6 +182,7 @@ Traits =
   mesh:
     fill:              Types.bool(true)
     shaded:            Types.bool(false)
+    normals:           Types.nullable(Types.select())
     map:               Types.nullable(Types.select())
     lineBias:          Types.number(5)
   strip:
@@ -236,6 +241,8 @@ Traits =
 
   shader:
     sources:           Types.nullable(Types.select())
+    indices:           Types.number(4)
+    channels:          Types.number(4)
     language:          Types.string('glsl')
     code:              Types.string()
     uniforms:          Types.nullable(Types.object())
@@ -283,6 +290,11 @@ Traits =
     width:             Types.nullable(Types.vec2())
     height:            Types.nullable(Types.vec2())
     depth:             Types.nullable(Types.vec2())
+  reverse:
+    items:             Types.bool(false)
+    width:             Types.bool(false)
+    height:            Types.bool(false)
+    depth:             Types.bool(false)
   lerp:
     size:              Types.mapping('absolute')
     items:             Types.nullable(Types.number())

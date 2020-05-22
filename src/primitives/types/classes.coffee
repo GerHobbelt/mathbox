@@ -31,6 +31,7 @@ Classes =
   voxel:             require './data/voxel'
   volume:            require './data/volume'
   scale:             require './data/scale'
+  latch:             require './data/latch'
 
   html:              require './overlay/html'
   dom:               require './overlay/dom'
@@ -48,6 +49,7 @@ Classes =
   readback:          require './operator/readback'
   resample:          require './operator/resample'
   repeat:            require './operator/repeat'
+  reverse:           require './operator/reverse'
   swizzle:           require './operator/swizzle'
   spread:            require './operator/spread'
   split:             require './operator/split'

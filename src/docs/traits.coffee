@@ -9,6 +9,10 @@ Traits =
   object:
     visible:           ["Visibility for rendering", "bool", "true"]
 
+  latch:
+    data:              ["Data to monitor for changes", "nullable object", null]
+    deep:              ["Do deep value comparison", "boolean", true]
+
   unit:
     scale:             ["(Vertical) Reference scale of viewport in pixels", "nullable number", "null", 720]
     fov:               ["(Vertical) Field-of-view to calibrate units for (degrees)", "nullable number", "null", 60]
@@ -152,7 +156,7 @@ Traits =
     fill:              ["Fill shape", "bool", true]
     depth:             ["Depth scaling", "number", 1]
   line:
-    size:              ["Line width", "positive number", 2]
+    width:             ["Line width", "positive number", 2]
     stroke:            ["Line stroke (solid, dotted, dashed)", "stroke", '"solid"']
     depth:             ["Depth scaling", "number", 1]
     proximity:         ["Proximity threshold", "nullable number", "null", "10"]
@@ -160,6 +164,7 @@ Traits =
   mesh:
     fill:              ["Fill mesh", "bool", true]
     shaded:            ["Shade mesh", "bool", false]
+    normals:           ["Normals data source", "nullable select", "null", "#normals"]
     map:               ["Texture map source", "nullable select", "null", '"#map"']
     lineBias:          ["Z-Bias for lines on fill", "number", 5]
   strip:
@@ -218,6 +223,8 @@ Traits =
 
   shader:
     sources:           ["Sampler sources", "nullable select", "null", '["#pressure", "#divergence"]']
+    indices:           ["Source indices", "number", 4]
+    channels:          ["Source channels", "number", 4]
     language:          ["Shader language", "string", '"glsl"']
     code:              ["Shader code", "string", '""']
     uniforms:          ["Shader uniform objects (three.js style)", "nullable object", "null", "{ time: { type: 'f', value: 3 }}"]
@@ -260,6 +267,11 @@ Traits =
     width:             ["Repeat width",  "number", "1"]
     height:            ["Repeat height", "number", "1"]
     depth:             ["Repeat depth",  "number", "1"]
+  reverse:
+    items:             ["Reverse items",  "boolean", "false"]
+    width:             ["Reverse width",  "boolean", "false"]
+    height:            ["Reverse height", "boolean", "false"]
+    depth:             ["Reverse depth",  "boolean", "false"]
   slice:
     items:             ["Slice from, to items (excluding to)",  "nullable vec2", "null", "[2, 4]"]
     width:             ["Slice from, to width (excluding to)",  "nullable vec2", "null", "[2, 4]"]
