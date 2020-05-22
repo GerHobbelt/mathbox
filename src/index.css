@@ -1,2 +1,5 @@
+/* Mathbox */
 @import './splash.css';
+
+/* ShaderGraph CSS */
 @import '../vendor/shadergraph/build/shadergraph.css';

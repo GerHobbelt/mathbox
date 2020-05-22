@@ -9,15 +9,18 @@
   "main": "build/mathbox-bundle.js",
   "scripts": {
     "build:shaders": "node ./src/shaders/buildSnippets.js",
-    "build": "npm run build:shaders && webpack",
-    "test": "build:shaders && karma start karma.conf.js",
+    "build:css": "npx postcss --no-map --verbose src/index.css --use autoprefixer postcss-import -o build/mathbox.css",
+    "build": "npm run build:shaders && npm run build:css && webpack",
+    "test": "karma start karma.conf.js",
     "docs": "coffee src/docs/generate.coffee > docs/primitives.md"
   },
   "dependencies": {
     "@math3d/threestrap": "0.0.13-prod",
-    "three": "0.116.1"
+    "three": "^0.72.0"
   },
   "devDependencies": {
+    "autoprefixer": "^9.8.0",
+    "browserify": "^16.5.1",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^1.10.0",
     "css-loader": "^3.5.3",
@@ -25,9 +28,13 @@
     "glob": "^7.1.6",
     "jasmine-core": "^3.5.0",
     "karma": "^5.0.9",
+    "karma-browserify": "^7.0.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^3.1.1",
     "karma-webpack": "^4.0.2",
+    "postcss": "^7.0.30",
+    "postcss-cli": "^7.1.1",
+    "postcss-import": "^12.0.1",
     "style-loader": "^1.2.1",
     "webpack": "^4.43.0",
     "webpack-shell-plugin-next": "^1.1.9"
