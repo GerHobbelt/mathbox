@@ -27,15 +27,14 @@ class DataBuffer extends Buffer
     else
       shader.pipe Util.GLSL.truncateVec indices, 2 if indices != 2
 
-    wrap = if @wrap then '.wrap' else ''
-    shader.pipe "map.2d.data#{wrap}", @uniforms
+    shader.pipe "map.2d.data", @uniforms
     shader.pipe "sample.2d", @uniforms
     shader.pipe Util.GLSL.swizzleVec4 ['0000', 'x000', 'xw00', 'xyz0'][@channels] if @channels < 4
     shader
 
   build: (options) ->
     @data    = new Float32Array @samples * @channels * @items
-    @texture = new DataTexture  @gl, @items * @width, @height * @depth, @channels, options
+    @texture = new DataTexture  @renderer, @items * @width, @height * @depth, @channels, options
     @filled  = 0
     @used    = 0
 

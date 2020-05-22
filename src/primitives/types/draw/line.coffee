@@ -2,7 +2,7 @@ Primitive = require '../../primitive'
 Util      = require '../../../util'
 
 class Line extends Primitive
-  @traits = ['node', 'object', 'visible', 'style', 'line', 'arrow', 'geometry', 'position', 'bind', 'shade']
+  @traits = ['node', 'object', 'visible', 'style', 'line', 'arrow', 'geometry', 'position', 'bind', 'shade', 'closed']
 
   constructor: (node, context, helpers) ->
     super node, context, helpers
@@ -48,6 +48,9 @@ class Line extends Primitive
     # Clip start/end for terminating arrow
     {start, end} = @props
 
+    # Close line
+    {closed} = @props
+
     # Stroke style
     {stroke, join, proximity, closed} = @props
     @proximity = proximity
@@ -81,6 +84,7 @@ class Line extends Primitive
               position:  position
               color:     color
               clip:      start or end
+              closed:    closed
               stroke:    stroke
               join:      join
               proximity: proximity

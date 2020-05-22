@@ -4,6 +4,8 @@
 
 ![MathBox](http://acko.net/files/mathbox2/cover1.jpg)
 
+*Note: this is a fork from MathBox with updated THREE.js version. In this repo there will be some bug fixes.*
+
 MathBox is a library for rendering presentation-quality math diagrams in a browser using WebGL. Built on top of Three.js and ShaderGraph, it provides a clean API to visualize mathematical relationships and animate them declaratively.
 
 MathBox is used through its JS-based DOM.

@@ -94,9 +94,14 @@ void clipEnds(vec4 xyzw, vec3 center, vec3 pos) {
     float invrange = 1.0 / (size * scale);
   
     // Clip end
-    vec3 diff = normalize(end - center);
-    float d = dot(end - pos, diff);
-    vClipEnds.x = d * invrange - 1.0;
+    vec3 diff = end - center;
+    if(diff == vec3(0.0))
+      vClipEnds.x = -1.0;
+    else {
+      diff = normalize(end - center);
+      float d = dot(end - pos, diff);
+      vClipEnds.x = d * invrange - 1.0;
+    }
   }
 
   if (clipStyle.x > 0.0) {
@@ -117,9 +122,14 @@ void clipEnds(vec4 xyzw, vec3 center, vec3 pos) {
     float invrange = 1.0 / (size * scale);
   
     // Clip start 
-    vec3 diff = normalize(center - start);
-    float d = dot(pos - start, diff);
-    vClipEnds.y = d * invrange - 1.0;
+    vec3 diff = center - start;
+    if(diff == vec3(0.0))
+      vClipEnds.y = -1.0;
+    else {
+      diff = normalize(center - start);
+      float d = dot(pos - start, diff);
+      vClipEnds.y = d * invrange - 1.0;
+    }
   }
 }
 #endif
