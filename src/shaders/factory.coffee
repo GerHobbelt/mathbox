@@ -1,5 +1,5 @@
 # TODO: replace this with an npm module
-ShaderGraph = require '../../vendor/shadergraph/src'
+ShaderGraph = require '@gerhobbelt/shadergraph'
 
 Factory = (snippets) ->
   fetch = (name) ->

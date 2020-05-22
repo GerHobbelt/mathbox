@@ -1,6 +1,0 @@
-[submodule "shadergraph"]
-path = vendor/shadergraph
-url  = https://github.com/boisgera/shadergraph.git
-[submodule "threestrap"]
-path = vendor/threestrap
-url  = https://github.com/znah/threestrap.git

@@ -2,4 +2,4 @@
 @import './splash.css';
 
 /* ShaderGraph CSS */
-@import '../vendor/shadergraph/build/shadergraph.css';
+@import '../node_modules/@gerhobbelt/shadergraph/build/shadergraph.css';

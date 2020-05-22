@@ -15,8 +15,9 @@
     "docs": "coffee src/docs/generate.coffee > docs/primitives.md"
   },
   "dependencies": {
+    "@gerhobbelt/shadergraph": "2.0.8-1",
     "@math3d/threestrap": "0.0.13-prod",
-    "three": "0.85.2"
+    "three": "0.95.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.8.0",
