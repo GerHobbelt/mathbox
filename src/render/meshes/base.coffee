@@ -41,7 +41,7 @@ class Base extends Renderable
     out.join("\n")
 
   _material: (options) ->
-    precision = @renderer.getPrecision()
+    precision = @renderer.capabilities.precision
 
     vertexPrefix = """
     precision #{precision} float;
