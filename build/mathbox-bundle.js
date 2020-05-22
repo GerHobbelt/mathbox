@@ -51311,7 +51311,7 @@ if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 var Binder, Model, Primitive,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-Model = __webpack_require__(23);
+Model = __webpack_require__(24);
 
 Primitive = (function() {
   Primitive.Node = Model.Node;
@@ -51691,7 +51691,7 @@ var Operator, Source,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-Source = __webpack_require__(29);
+Source = __webpack_require__(20);
 
 Operator = (function(superClass) {
   extend(Operator, superClass);
@@ -52126,17 +52126,17 @@ module.exports = View;
 
 exports.Geometry = __webpack_require__(56);
 
-exports.ArrowGeometry = __webpack_require__(188);
+exports.ArrowGeometry = __webpack_require__(189);
 
-exports.FaceGeometry = __webpack_require__(189);
+exports.FaceGeometry = __webpack_require__(190);
 
-exports.LineGeometry = __webpack_require__(190);
+exports.LineGeometry = __webpack_require__(191);
 
-exports.ScreenGeometry = __webpack_require__(191);
+exports.ScreenGeometry = __webpack_require__(192);
 
-exports.SpriteGeometry = __webpack_require__(192);
+exports.SpriteGeometry = __webpack_require__(193);
 
-exports.StripGeometry = __webpack_require__(193);
+exports.StripGeometry = __webpack_require__(194);
 
 exports.SurfaceGeometry = __webpack_require__(57);
 
@@ -52147,7 +52147,7 @@ exports.SurfaceGeometry = __webpack_require__(57);
 
 exports.Graph = __webpack_require__(34);
 
-exports.Node = __webpack_require__(212);
+exports.Node = __webpack_require__(213);
 
 exports.Outlet = __webpack_require__(63);
 
@@ -52211,7 +52211,7 @@ util.inherits = __webpack_require__(11);
 /*</replacement>*/
 
 var Readable = __webpack_require__(44);
-var Writable = __webpack_require__(28);
+var Writable = __webpack_require__(29);
 
 util.inherits(Duplex, Readable);
 
@@ -52824,7 +52824,7 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(27).Buffer))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28).Buffer))
 
 /***/ }),
 /* 17 */
@@ -53179,6 +53179,69 @@ module.exports = Buffer;
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var Primitive, Source, Util,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Primitive = __webpack_require__(2);
+
+Util = __webpack_require__(0);
+
+Source = (function(superClass) {
+  extend(Source, superClass);
+
+  function Source() {
+    return Source.__super__.constructor.apply(this, arguments);
+  }
+
+  Source.traits = ['node', 'source', 'index'];
+
+  Source.prototype.made = function() {
+    return this.trigger({
+      type: 'source.rebuild'
+    });
+  };
+
+  Source.prototype.indexShader = function(shader) {
+    return shader.pipe(Util.GLSL.identity('vec4'));
+  };
+
+  Source.prototype.sourceShader = function(shader) {
+    return shader.pipe(Util.GLSL.identity('vec4'));
+  };
+
+  Source.prototype.getDimensions = function() {
+    return {
+      items: 1,
+      width: 1,
+      height: 1,
+      depth: 1
+    };
+  };
+
+  Source.prototype.getActiveDimensions = function() {
+    return this.getDimensions();
+  };
+
+  Source.prototype.getIndexDimensions = function() {
+    return this.getActiveDimensions();
+  };
+
+  Source.prototype.getFutureDimensions = function() {
+    return this.getActiveDimensions();
+  };
+
+  return Source;
+
+})(Primitive);
+
+module.exports = Source;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var Buffer, Util, Voxel,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -53399,7 +53462,7 @@ module.exports = Voxel;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer, DataBuffer, DataTexture, THREE, Util,
@@ -53558,7 +53621,7 @@ module.exports = DataBuffer;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53658,7 +53721,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.Attributes = __webpack_require__(78);
@@ -53673,7 +53736,7 @@ exports.Node = __webpack_require__(42);
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54126,24 +54189,24 @@ function unwrapListeners(arr) {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(44);
 exports.Stream = exports;
 exports.Readable = exports;
-exports.Writable = __webpack_require__(28);
+exports.Writable = __webpack_require__(29);
 exports.Duplex = __webpack_require__(9);
 exports.Transform = __webpack_require__(48);
 exports.PassThrough = __webpack_require__(106);
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(27)
+var buffer = __webpack_require__(28)
 var Buffer = buffer.Buffer
 
 // alternative to using Object.keys for old browsers
@@ -54207,7 +54270,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56004,7 +56067,7 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56090,7 +56153,7 @@ var Stream = __webpack_require__(45);
 
 /*<replacement>*/
 
-var Buffer = __webpack_require__(26).Buffer;
+var Buffer = __webpack_require__(27).Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -56698,69 +56761,6 @@ Writable.prototype._destroy = function (err, cb) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(15), __webpack_require__(102).setImmediate, __webpack_require__(12)))
 
 /***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Primitive, Source, Util,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Primitive = __webpack_require__(2);
-
-Util = __webpack_require__(0);
-
-Source = (function(superClass) {
-  extend(Source, superClass);
-
-  function Source() {
-    return Source.__super__.constructor.apply(this, arguments);
-  }
-
-  Source.traits = ['node', 'source', 'index'];
-
-  Source.prototype.made = function() {
-    return this.trigger({
-      type: 'source.rebuild'
-    });
-  };
-
-  Source.prototype.indexShader = function(shader) {
-    return shader.pipe(Util.GLSL.identity('vec4'));
-  };
-
-  Source.prototype.sourceShader = function(shader) {
-    return shader.pipe(Util.GLSL.identity('vec4'));
-  };
-
-  Source.prototype.getDimensions = function() {
-    return {
-      items: 1,
-      width: 1,
-      height: 1,
-      depth: 1
-    };
-  };
-
-  Source.prototype.getActiveDimensions = function() {
-    return this.getDimensions();
-  };
-
-  Source.prototype.getIndexDimensions = function() {
-    return this.getActiveDimensions();
-  };
-
-  Source.prototype.getFutureDimensions = function() {
-    return this.getActiveDimensions();
-  };
-
-  return Source;
-
-})(Primitive);
-
-module.exports = Source;
-
-
-/***/ }),
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -57078,13 +57078,13 @@ module.exports = DataTexture;
 
 exports.Block = __webpack_require__(17);
 
-exports.Call = __webpack_require__(215);
+exports.Call = __webpack_require__(216);
 
-exports.Callback = __webpack_require__(216);
+exports.Callback = __webpack_require__(217);
 
-exports.Isolate = __webpack_require__(217);
+exports.Isolate = __webpack_require__(218);
 
-exports.Join = __webpack_require__(218);
+exports.Join = __webpack_require__(219);
 
 
 /***/ }),
@@ -57240,9 +57240,9 @@ module.exports = Graph;
 
 exports.Snippet = __webpack_require__(36);
 
-exports.Program = __webpack_require__(213);
+exports.Program = __webpack_require__(214);
 
-exports.Layout = __webpack_require__(214);
+exports.Layout = __webpack_require__(215);
 
 exports.assemble = __webpack_require__(64);
 
@@ -57496,11 +57496,11 @@ exports.max = function(a, b) {
 
 var Graph, markup, merge, resolve, serialize, visualize;
 
-Graph = __webpack_require__(221).Graph;
+Graph = __webpack_require__(222).Graph;
 
-exports.serialize = serialize = __webpack_require__(223);
+exports.serialize = serialize = __webpack_require__(224);
 
-exports.markup = markup = __webpack_require__(224);
+exports.markup = markup = __webpack_require__(225);
 
 visualize = function(graph) {
   var data;
@@ -58215,7 +58215,7 @@ var Duplex;
 Readable.ReadableState = ReadableState;
 
 /*<replacement>*/
-var EE = __webpack_require__(24).EventEmitter;
+var EE = __webpack_require__(25).EventEmitter;
 
 var EElistenerCount = function (emitter, type) {
   return emitter.listeners(type).length;
@@ -58228,7 +58228,7 @@ var Stream = __webpack_require__(45);
 
 /*<replacement>*/
 
-var Buffer = __webpack_require__(26).Buffer;
+var Buffer = __webpack_require__(27).Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -59199,7 +59199,7 @@ function indexOf(xs, x) {
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(24).EventEmitter;
+module.exports = __webpack_require__(25).EventEmitter;
 
 
 /***/ }),
@@ -62826,7 +62826,7 @@ THREE = __webpack_require__(1);
 
 Renderable = __webpack_require__(10);
 
-RenderTarget = __webpack_require__(205);
+RenderTarget = __webpack_require__(206);
 
 Util = __webpack_require__(0);
 
@@ -63067,7 +63067,7 @@ Util = __webpack_require__(0);
 
 DataTexture = __webpack_require__(32);
 
-BackedTexture = __webpack_require__(207);
+BackedTexture = __webpack_require__(208);
 
 
 /*
@@ -64018,7 +64018,7 @@ for (k in ref) {
   MathBox[k] = v;
 }
 
-__webpack_require__(246);
+__webpack_require__(247);
 
 THREE.Bootstrap.registerPlugin('mathbox', {
   defaults: {
@@ -64482,7 +64482,7 @@ module.exports = function (list, options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(22);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(23);
 var ___CSS_LOADER_AT_RULE_IMPORT_0___ = __webpack_require__(74);
 var ___CSS_LOADER_AT_RULE_IMPORT_1___ = __webpack_require__(75);
 exports = ___CSS_LOADER_API_IMPORT___(false);
@@ -64499,7 +64499,7 @@ module.exports = exports;
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(22);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(23);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".mathbox-loader {\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  -webkit-transform: translate(-50%, -50%);\r\n  transform: translate(-50%, -50%);\r\n  padding: 10px;\r\n  border-radius: 50%;\r\n  background: #fff;\r\n}\r\n\r\n.mathbox-loader.mathbox-exit {\r\n  opacity: 0;\r\n  -webkit-transition:\r\n    opacity .15s ease-in-out;\r\n  transition:\r\n    opacity .15s ease-in-out;\r\n}\r\n\r\n.mathbox-progress {\r\n  height: 10px;\r\n  border-radius: 5px;\r\n  width: 80px;\r\n  margin: 0 auto 20px;\r\n  box-shadow:\r\n     1px  1px 1px rgba(255, 255, 255, .2),\r\n     1px -1px 1px rgba(255, 255, 255, .2),\r\n    -1px  1px 1px rgba(255, 255, 255, .2),\r\n    -1px -1px 1px rgba(255, 255, 255, .2);\r\n  background: #ccc;\r\n  overflow: hidden;\r\n}\r\n\r\n.mathbox-progress > div {\r\n  display: block;\r\n  width: 0px;\r\n  height: 10px;\r\n  background: #888;\r\n}\r\n\r\n.mathbox-logo {\r\n  position: relative;\r\n  width: 140px;\r\n  height: 100px;\r\n  margin: 0 auto 10px;\r\n  -webkit-perspective: 200px;\r\n  perspective: 200px;\r\n}\r\n\r\n.mathbox-logo > div {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  -webkit-transform-style: preserve-3d;\r\n  transform-style:         preserve-3d;\r\n}\r\n\r\n.mathbox-logo > :nth-child(1) {\r\n  -webkit-transform: rotateZ(22deg) rotateX(24deg) rotateY(30deg);\r\n  transform:         rotateZ(22deg) rotateX(24deg) rotateY(30deg);\r\n}\r\n\r\n.mathbox-logo > :nth-child(2) {\r\n  -webkit-transform: rotateZ(11deg) rotateX(12deg) rotateY(15deg) scale3d(.6, .6, .6);\r\n  transform:         rotateZ(11deg) rotateX(12deg) rotateY(15deg) scale3d(.6, .6, .6);\r\n}\r\n\r\n.mathbox-logo > div > div {\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  margin-left: -100px;\r\n  margin-top: -100px;\r\n  width: 200px;\r\n  height: 200px;\r\n  box-sizing: border-box;\r\n  border-radius: 50%;\r\n}\r\n\r\n.mathbox-logo > div > :nth-child(1) {\r\n  -webkit-transform: scale(0.5, 0.5);\r\n  transform:         rotateX(30deg) scale(0.5, 0.5);\r\n}\r\n\r\n.mathbox-logo > div > :nth-child(2) {\r\n  -webkit-transform: rotateX(90deg) scale(0.42, 0.42);\r\n  transform:         rotateX(90deg) scale(0.42, 0.42);\r\n}\r\n\r\n.mathbox-logo > div > :nth-child(3) {\r\n  -webkit-transform: rotateY(90deg) scale(0.35, 0.35);\r\n  transform:         rotateY(90deg) scale(0.35, 0.35);\r\n}\r\n\r\n.mathbox-logo > :nth-child(1) > :nth-child(1) {\r\n  border: 16px solid #808080;\r\n}\r\n.mathbox-logo > :nth-child(1) > :nth-child(2) {\r\n  border: 19px solid #A0A0A0;\r\n}\r\n.mathbox-logo > :nth-child(1) > :nth-child(3) {\r\n  border: 23px solid #C0C0C0;\r\n}\r\n.mathbox-logo > :nth-child(2) > :nth-child(1) {\r\n  border: 27px solid #808080;\r\n}\r\n.mathbox-logo > :nth-child(2) > :nth-child(2) {\r\n  border: 32px solid #A0A0A0;\r\n}\r\n.mathbox-logo > :nth-child(2) > :nth-child(3) {\r\n  border: 38px solid #C0C0C0;\r\n}\r\n\r\n.mathbox-splash-blue .mathbox-progress {\r\n  background: #def;\r\n}\r\n.mathbox-splash-blue .mathbox-progress > div {\r\n  background: #1979e7;\r\n}\r\n.mathbox-splash-blue .mathbox-logo > :nth-child(1) > :nth-child(1) {\r\n  border-color: #1979e7;\r\n}\r\n.mathbox-splash-blue .mathbox-logo > :nth-child(1) > :nth-child(2) {\r\n  border-color: #33b0ff;\r\n}\r\n.mathbox-splash-blue .mathbox-logo > :nth-child(1) > :nth-child(3) {\r\n  border-color: #75eaff;\r\n}\r\n.mathbox-splash-blue .mathbox-logo > :nth-child(2) > :nth-child(1) {\r\n  border-color: #18487F;\r\n}\r\n.mathbox-splash-blue .mathbox-logo > :nth-child(2) > :nth-child(2) {\r\n  border-color: #33b0ff;\r\n}\r\n.mathbox-splash-blue .mathbox-logo > :nth-child(2) > :nth-child(3) {\r\n  border-color: #75eaff;\r\n}  \r\n\r\n\r\n\r\n", ""]);
@@ -64512,7 +64512,7 @@ module.exports = exports;
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(22);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(23);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, ".shadergraph-graph {\r\n  font: 12px sans-serif;\r\n  line-height: 25px;\r\n  position: relative;\r\n}\r\n.shadergraph-graph:after {\r\n  content: ' ';\r\n  display: block;\r\n  height: 0;\r\n  font-size: 0;\r\n  clear: both;\r\n}\r\n.shadergraph-graph svg {\r\n  pointer-events: none;\r\n}\r\n.shadergraph-clear {\r\n  clear: both;\r\n}\r\n.shadergraph-graph svg {\r\n  position: absolute;\r\n  left: 0;\r\n  right: 0;\r\n  top: 0;\r\n  bottom: 0;\r\n  width: auto;\r\n  height: auto;\r\n}\r\n.shadergraph-column {\r\n  float: left;\r\n}\r\n.shadergraph-node .shadergraph-graph {\r\n  float: left;\r\n  clear: both;\r\n  overflow: visible;\r\n}\r\n.shadergraph-node .shadergraph-graph .shadergraph-node {\r\n  margin: 5px 15px 15px; \r\n}\r\n.shadergraph-node {\r\n  margin: 5px 15px 25px; \r\n  background: rgba(0, 0, 0, .1);\r\n  border-radius: 5px;\r\n  box-shadow: 0 1px  2px rgba(0, 0, 0, .2),\r\n              0 1px  10px rgba(0, 0, 0, .2);\r\n  min-height: 35px;\r\n  float: left;\r\n  clear: left;\r\n  position: relative;\r\n}\r\n.shadergraph-type {\r\n  font-weight: bold;\r\n}\r\n.shadergraph-header {\r\n  font-weight: bold;\r\n  text-align: center;\r\n  height: 25px;\r\n  background: rgba(0, 0, 0, .3);\r\n  text-shadow: 0 1px 2px rgba(0, 0, 0, .25);\r\n  color: #fff;\r\n  border-top-left-radius: 5px;\r\n  border-top-right-radius: 5px;\r\n  margin-bottom: 5px;\r\n  padding: 0 10px;\r\n}\r\n.shadergraph-outlet div {\r\n}\r\n.shadergraph-outlet-in .shadergraph-name {\r\n  margin-right: 7px;\r\n}\r\n.shadergraph-outlet-out .shadergraph-name {\r\n  margin-left: 7px;\r\n}\r\n\r\n.shadergraph-name {\r\n  margin: 0 4px;\r\n}\r\n.shadergraph-point {\r\n  margin: 6px;\r\n  width:  11px;\r\n  height: 11px;\r\n  border-radius: 7.5px;\r\n  background: rgba(255, 255, 255, 1);\r\n}\r\n.shadergraph-outlet-in {\r\n  float: left;\r\n  clear: left;\r\n}\r\n.shadergraph-outlet-in div {\r\n  float: left;\r\n}\r\n.shadergraph-outlet-out {\r\n  float: right;\r\n  clear: right;\r\n}\r\n.shadergraph-outlet-out div {\r\n  float: right;\r\n}\r\n\r\n.shadergraph-node-callback {\r\n  background: rgba(205, 209, 221, .5);\r\n  box-shadow: 0 1px  2px rgba(0, 10, 40, .2),\r\n              0 1px  10px rgba(0, 10, 40, .2);\r\n}\r\n.shadergraph-node-callback > .shadergraph-header {\r\n  background: rgba(0, 20, 80, .3);\r\n}\r\n.shadergraph-graph .shadergraph-graph .shadergraph-node-callback {\r\n  background: rgba(0, 20, 80, .1);\r\n}\r\n\r\n.shadergraph-node-call {\r\n  background: rgba(209, 221, 205, .5);\r\n  box-shadow: 0 1px  2px rgba(10, 40, 0, .2),\r\n              0 1px  10px rgba(10, 40, 0, .2);\r\n}\r\n.shadergraph-node-call > .shadergraph-header {\r\n  background: rgba(20, 80, 0, .3);\r\n}\r\n.shadergraph-graph .shadergraph-graph .shadergraph-node-call {\r\n  background: rgba(20, 80, 0, .1);\r\n}\r\n\r\n.shadergraph-node-isolate {\r\n  background: rgba(221, 205, 209, .5);\r\n  box-shadow: 0 1px  2px rgba(40, 0, 10, .2),\r\n              0 1px  10px rgba(40, 0, 10, .2);\r\n}\r\n.shadergraph-node-isolate > .shadergraph-header {\r\n  background: rgba(80, 0, 20, .3);\r\n}\r\n.shadergraph-graph .shadergraph-graph .shadergraph-node-isolate {\r\n  background: rgba(80, 0, 20, .1);\r\n}\r\n\r\n.shadergraph-node.shadergraph-has-code {\r\n  cursor: pointer;\r\n}\r\n.shadergraph-node.shadergraph-has-code::before {\r\n  position: absolute;\r\n  content: ' ';\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  display: none;\r\n  border: 2px solid rgba(0, 0, 0, .25);\r\n  border-radius: 5px;\r\n}\r\n.shadergraph-node.shadergraph-has-code:hover::before {\r\n  display: block;\r\n}\r\n.shadergraph-code {\r\n  z-index: 10000;\r\n  display: none;\r\n  position: absolute;\r\n  background: #fff;\r\n  color: #000;\r\n  white-space: pre;\r\n  padding: 10px;\r\n  border-radius: 5px;\r\n  box-shadow: 0 1px  2px rgba(0, 0, 0, .2),\r\n              0 1px  10px rgba(0, 0, 0, .2);\r\n  font-family: monospace;\r\n  font-size: 10px;\r\n  line-height: 12px;\r\n}\r\n\r\n.shadergraph-overlay {\r\n  position: fixed;\r\n  top: 50%;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  background: #fff;\r\n  border-top: 1px solid #CCC;\r\n}\r\n.shadergraph-overlay .shadergraph-view {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  overflow: auto;\r\n}\r\n.shadergraph-overlay .shadergraph-inside {\r\n  width: 4000px;\r\n  min-height: 100%;\r\n  box-sizing: border-box;\r\n}\r\n.shadergraph-overlay .shadergraph-close {\r\n  position: absolute;\r\n  top: 5px;\r\n  right: 5px;\r\n  padding: 4px;\r\n  border-radius: 16px;\r\n  background: rgba(255,255,255,.3);\r\n  color: rgba(0, 0, 0, .3);\r\n  cursor: pointer;\r\n  font-size: 24px;\r\n  line-height: 24px;\r\n  width: 24px;\r\n  text-align: center;\r\n  vertical-align: middle;\r\n}\r\n.shadergraph-overlay .shadergraph-close:hover {\r\n  background: rgba(255,255,255,1);\r\n  color: rgba(0, 0, 0, 1);\r\n}\r\n.shadergraph-overlay .shadergraph-graph {\r\n  padding-top: 10px;\r\n  overflow: visible;\r\n  min-height: 100%;\r\n}\r\n.shadergraph-overlay span {\r\n  display: block;\r\n  padding: 5px 15px;\r\n  margin: 0;\r\n  background: rgba(0, 0, 0, .1);\r\n  font-weight: bold;\r\n  font-family: sans-serif;\r\n}", ""]);
@@ -64543,17 +64543,17 @@ var Context, Model, Overlay, Primitives, Render, Shaders, Stage, THREE, Util;
 
 THREE = __webpack_require__(1);
 
-Model = __webpack_require__(23);
+Model = __webpack_require__(24);
 
 Overlay = __webpack_require__(111);
 
 Primitives = __webpack_require__(115);
 
-Render = __webpack_require__(184);
+Render = __webpack_require__(185);
 
-Shaders = __webpack_require__(209);
+Shaders = __webpack_require__(210);
 
-Stage = __webpack_require__(242);
+Stage = __webpack_require__(243);
 
 Util = __webpack_require__(0);
 
@@ -67201,6 +67201,8 @@ apply = function(el, last, node, parent, index) {
                 comp.didUpdate(prevProps, prevState);
               }
             }
+          } else {
+            el.rendered = last.rendered;
           }
           return;
         } else {
@@ -68940,11 +68942,11 @@ function through (write, end, opts) {
 
 module.exports = Stream;
 
-var EE = __webpack_require__(24).EventEmitter;
+var EE = __webpack_require__(25).EventEmitter;
 var inherits = __webpack_require__(11);
 
 inherits(Stream, EE);
-Stream.Readable = __webpack_require__(25);
+Stream.Readable = __webpack_require__(26);
 Stream.Writable = __webpack_require__(107);
 Stream.Duplex = __webpack_require__(108);
 Stream.Transform = __webpack_require__(109);
@@ -69332,7 +69334,7 @@ module.exports = Array.isArray || function (arr) {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Buffer = __webpack_require__(26).Buffer;
+var Buffer = __webpack_require__(27).Buffer;
 var util = __webpack_require__(101);
 
 function copyBuffer(src, target, offset) {
@@ -69757,7 +69759,7 @@ function config (name) {
 
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 /* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(27)
+var buffer = __webpack_require__(28)
 var Buffer = buffer.Buffer
 
 // alternative to using Object.keys for old browsers
@@ -69879,7 +69881,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 /* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(28);
+module.exports = __webpack_require__(29);
 
 
 /***/ }),
@@ -69893,14 +69895,14 @@ module.exports = __webpack_require__(9);
 /* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(25).Transform
+module.exports = __webpack_require__(26).Transform
 
 
 /***/ }),
 /* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(25).PassThrough
+module.exports = __webpack_require__(26).PassThrough
 
 
 /***/ }),
@@ -70117,15 +70119,15 @@ module.exports = PrimitiveFactory;
 
 var Model;
 
-Model = __webpack_require__(23);
+Model = __webpack_require__(24);
 
 exports.Classes = __webpack_require__(118);
 
 exports.Types = __webpack_require__(55);
 
-exports.Traits = __webpack_require__(182);
+exports.Traits = __webpack_require__(183);
 
-exports.Helpers = __webpack_require__(183);
+exports.Helpers = __webpack_require__(184);
 
 
 /***/ }),
@@ -70161,47 +70163,48 @@ Classes = {
   interval: __webpack_require__(141),
   matrix: __webpack_require__(51),
   area: __webpack_require__(142),
-  voxel: __webpack_require__(20),
+  voxel: __webpack_require__(21),
   volume: __webpack_require__(143),
   scale: __webpack_require__(144),
   latch: __webpack_require__(145),
-  html: __webpack_require__(146),
-  dom: __webpack_require__(147),
-  text: __webpack_require__(148),
-  format: __webpack_require__(149),
-  label: __webpack_require__(150),
-  retext: __webpack_require__(151),
-  clamp: __webpack_require__(152),
-  grow: __webpack_require__(153),
-  join: __webpack_require__(154),
-  lerp: __webpack_require__(155),
-  memo: __webpack_require__(156),
-  readback: __webpack_require__(157),
+  image: __webpack_require__(146),
+  html: __webpack_require__(147),
+  dom: __webpack_require__(148),
+  text: __webpack_require__(149),
+  format: __webpack_require__(150),
+  label: __webpack_require__(151),
+  retext: __webpack_require__(152),
+  clamp: __webpack_require__(153),
+  grow: __webpack_require__(154),
+  join: __webpack_require__(155),
+  lerp: __webpack_require__(156),
+  memo: __webpack_require__(157),
+  readback: __webpack_require__(158),
   resample: __webpack_require__(52),
-  repeat: __webpack_require__(158),
-  reverse: __webpack_require__(159),
-  swizzle: __webpack_require__(160),
-  spread: __webpack_require__(161),
-  split: __webpack_require__(162),
-  slice: __webpack_require__(163),
-  subdivide: __webpack_require__(164),
-  transpose: __webpack_require__(165),
-  group: __webpack_require__(166),
-  inherit: __webpack_require__(167),
-  root: __webpack_require__(168),
-  unit: __webpack_require__(169),
-  shader: __webpack_require__(170),
-  camera: __webpack_require__(171),
-  rtt: __webpack_require__(172),
-  compose: __webpack_require__(173),
-  clock: __webpack_require__(174),
-  now: __webpack_require__(175),
-  move: __webpack_require__(176),
-  play: __webpack_require__(177),
-  present: __webpack_require__(178),
-  reveal: __webpack_require__(179),
-  slide: __webpack_require__(180),
-  step: __webpack_require__(181)
+  repeat: __webpack_require__(159),
+  reverse: __webpack_require__(160),
+  swizzle: __webpack_require__(161),
+  spread: __webpack_require__(162),
+  split: __webpack_require__(163),
+  slice: __webpack_require__(164),
+  subdivide: __webpack_require__(165),
+  transpose: __webpack_require__(166),
+  group: __webpack_require__(167),
+  inherit: __webpack_require__(168),
+  root: __webpack_require__(169),
+  unit: __webpack_require__(170),
+  shader: __webpack_require__(171),
+  camera: __webpack_require__(172),
+  rtt: __webpack_require__(173),
+  compose: __webpack_require__(174),
+  clock: __webpack_require__(175),
+  now: __webpack_require__(176),
+  move: __webpack_require__(177),
+  play: __webpack_require__(178),
+  present: __webpack_require__(179),
+  reveal: __webpack_require__(180),
+  slide: __webpack_require__(181),
+  step: __webpack_require__(182)
 };
 
 module.exports = Classes;
@@ -72550,7 +72553,7 @@ var Data, Source, Util,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-Source = __webpack_require__(29);
+Source = __webpack_require__(20);
 
 Util = __webpack_require__(0);
 
@@ -72832,7 +72835,7 @@ var Util, Volume, Voxel,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-Voxel = __webpack_require__(20);
+Voxel = __webpack_require__(21);
 
 Util = __webpack_require__(0);
 
@@ -72957,7 +72960,7 @@ var Scale, Source, Util,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-Source = __webpack_require__(29);
+Source = __webpack_require__(20);
 
 Util = __webpack_require__(0);
 
@@ -73137,11 +73140,141 @@ module.exports = Latch;
 /* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var Image, Source, Util,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Source = __webpack_require__(20);
+
+Util = __webpack_require__(0);
+
+Image = (function(superClass) {
+  extend(Image, superClass);
+
+  function Image() {
+    return Image.__super__.constructor.apply(this, arguments);
+  }
+
+  Image.traits = ['node', 'source', 'index', 'texture', 'image', 'rawtex'];
+
+  Image.prototype.init = function() {
+    this.width = this.height = this.texture = this.uniforms = null;
+    return this.myTexture = false;
+  };
+
+  Image.prototype.sourceShader = function(shader) {
+    shader.pipe;
+    shader.pipe(Util.GLSL.truncateVec(4, 2));
+    shader.pipe('map.2d.data', this.uniforms);
+    return shader.pipe('sample.2d', this.uniforms);
+  };
+
+  Image.prototype.imageShader = function(shader) {
+    return shader.pipe('sample.2d', this.uniforms);
+  };
+
+  Image.prototype.getDimensions = function() {
+    return {
+      items: 1,
+      width: this.width,
+      height: this.height,
+      depth: 1
+    };
+  };
+
+  Image.prototype.make = function() {
+    var types;
+    types = this._attributes.types;
+    return this.uniforms = {
+      dataTexture: {
+        type: 't',
+        value: null
+      },
+      dataResolution: this._attributes.make(types.vec2()),
+      dataPointer: this._attributes.make(types.vec2())
+    };
+  };
+
+  Image.prototype.unmake = function() {
+    if (this.myTexture) {
+      this.texture.dispose();
+    }
+    this.width = this.height = this.texture = null;
+    delete this.uniforms;
+    return this.myTexture = false;
+  };
+
+  Image.prototype.change = function(changed, touched, init) {
+    var height, ref, ref1, ref2, ref3, ref4, ref5, width;
+    if (init) {
+      return this.updateTex();
+    }
+    width = (ref = (ref1 = this.props.width) != null ? ref1 : (ref2 = this.props.image) != null ? ref2.naturalWidth : void 0) != null ? ref : 1;
+    height = (ref3 = (ref4 = this.props.height) != null ? ref4 : (ref5 = this.props.image) != null ? ref5.naturalHeight : void 0) != null ? ref3 : 1;
+    if (this.width !== width || this.height !== height) {
+      return this.rebuild();
+    }
+    if (touched['image']) {
+      return this.updateTex();
+    }
+  };
+
+  Image.prototype.updateTex = function() {
+    var image, magFilter, minFilter, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, texture;
+    this.width = (ref = (ref1 = this.props.width) != null ? ref1 : (ref2 = this.props.image) != null ? ref2.naturalWidth : void 0) != null ? ref : 1;
+    this.height = (ref3 = (ref4 = this.props.height) != null ? ref4 : (ref5 = this.props.image) != null ? ref5.naturalHeight : void 0) != null ? ref3 : 1;
+    image = this.props.image;
+    texture = this.props.texture;
+    this.needFlip = false;
+    minFilter = (ref6 = this.props.minFilter) != null ? ref6 : THREE.LinearFilter;
+    magFilter = (ref7 = this.props.magFilter) != null ? ref7 : THREE.LinearFilter;
+    if (this.myTexture) {
+      this.texture.dispose();
+      this.myTexture = false;
+    }
+    if ((texture == null) && (image == null)) {
+      texture = new THREE.DataTexture(new Uint8Array(this.width * this.height * 4), this.width, this.height, THREE.RGBAFormat, THREE.FloatType, THREE.UVMapping, THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, magFilter, minFilter, 1);
+      texture.generateMipmaps = false;
+      texture.flipY = false;
+      texture.needsUpdate = true;
+      this.myTexture = true;
+    }
+    if (image != null) {
+      texture = new THREE.Texture(image, THREE.UVMapping, THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, magFilter, minFilter, THREE.RGBAFormat, THREE.FloatType);
+      texture.generateMipmaps = false;
+      texture.unpackAlignment = 1;
+      texture.flipY = false;
+      texture.needsUpdate = true;
+      this.myTexture = true;
+      this.needFlip = true;
+    }
+    this.texture = texture;
+    this.uniforms.dataTexture.value = this.texture;
+    if (this.needFlip) {
+      this.uniforms.dataResolution.value.set(1 / this.width, -1 / this.height);
+      return this.uniforms.dataPointer.value.set(0.5, -this.height + 0.5);
+    } else {
+      this.uniforms.dataResolution.value.set(1 / this.width, 1 / this.height);
+      return this.uniforms.dataPointer.value.set(0.5, 0.5);
+    }
+  };
+
+  return Image;
+
+})(Source);
+
+module.exports = Image;
+
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var HTML, Util, Voxel,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-Voxel = __webpack_require__(20);
+Voxel = __webpack_require__(21);
 
 Util = __webpack_require__(0);
 
@@ -73218,7 +73351,7 @@ module.exports = HTML;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DOM, Primitive, Util,
@@ -73458,7 +73591,7 @@ module.exports = DOM;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer, THREE, Text, Util, Voxel,
@@ -73469,7 +73602,7 @@ THREE = __webpack_require__(1);
 
 Buffer = __webpack_require__(19);
 
-Voxel = __webpack_require__(20);
+Voxel = __webpack_require__(21);
 
 Util = __webpack_require__(0);
 
@@ -73599,7 +73732,7 @@ module.exports = Text;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Format, Operator, THREE, Util,
@@ -73782,7 +73915,7 @@ module.exports = Format;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Label, Primitive, Util,
@@ -73919,7 +74052,7 @@ module.exports = Label;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Resample, Retext, Util,
@@ -73970,7 +74103,7 @@ module.exports = Retext;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Clamp, Operator,
@@ -74040,7 +74173,7 @@ module.exports = Clamp;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Grow, Operator,
@@ -74124,7 +74257,7 @@ module.exports = Grow;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Join, Operator, Util,
@@ -74292,7 +74425,7 @@ module.exports = Join;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Lerp, Operator, Util,
@@ -74531,7 +74664,7 @@ module.exports = Lerp;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Memo, Operator, Util,
@@ -74635,7 +74768,7 @@ module.exports = Memo;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Primitive, Readback, Util,
@@ -74781,7 +74914,7 @@ module.exports = Readback;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Repeat,
@@ -74889,7 +75022,7 @@ module.exports = Repeat;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Reverse, Util,
@@ -74995,7 +75128,7 @@ module.exports = Reverse;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Swizzle, Util,
@@ -75054,7 +75187,7 @@ module.exports = Swizzle;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Spread,
@@ -75166,7 +75299,7 @@ module.exports = Spread;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Split, Util,
@@ -75339,7 +75472,7 @@ module.exports = Split;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Slice, Util,
@@ -75449,7 +75582,7 @@ module.exports = Slice;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Subdivide, Util,
@@ -75609,7 +75742,7 @@ module.exports = Subdivide;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Operator, Transpose, Util, labels,
@@ -75712,7 +75845,7 @@ module.exports = Transpose;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Group, Parent,
@@ -75748,7 +75881,7 @@ module.exports = Group;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Inherit, Parent,
@@ -75795,7 +75928,7 @@ module.exports = Inherit;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Parent, Root, Util,
@@ -75968,7 +76101,7 @@ module.exports = Root;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Parent, Unit, Util,
@@ -76012,7 +76145,7 @@ module.exports = Unit;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Primitive, Shader, Util,
@@ -76162,7 +76295,7 @@ module.exports = Shader;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Camera, Primitive, THREE, Util,
@@ -76240,7 +76373,7 @@ module.exports = Camera;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Parent, RTT, Util,
@@ -76490,7 +76623,7 @@ module.exports = RTT;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Compose, Primitive, Util,
@@ -76594,7 +76727,7 @@ module.exports = Compose;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Clock, Parent,
@@ -76665,7 +76798,7 @@ module.exports = Clock;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Now, Parent,
@@ -76736,7 +76869,7 @@ module.exports = Now;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Move, Transition,
@@ -76783,7 +76916,7 @@ module.exports = Move;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Play, Track,
@@ -76804,7 +76937,8 @@ Play = (function(superClass) {
   Play.prototype.init = function() {
     Play.__super__.init.apply(this, arguments);
     this.skew = null;
-    return this.start = null;
+    this.start = null;
+    return this.done = false;
   };
 
   Play.prototype.reset = function(go) {
@@ -76812,7 +76946,8 @@ Play = (function(superClass) {
       go = true;
     }
     this.skew = go ? 0 : null;
-    return this.start = null;
+    this.start = null;
+    return this.done = false;
   };
 
   Play.prototype.make = function() {
@@ -76833,6 +76968,7 @@ Play = (function(superClass) {
     if (!this.props.trigger || (this._inherit('slide') == null)) {
       this.reset();
     }
+    this._listen('root', 'root.post', this.post);
     parentClock = this._inherit('clock');
     return this._listen(parentClock, 'clock.tick', (function(_this) {
       return function() {
@@ -76864,6 +77000,14 @@ Play = (function(superClass) {
     return Play.__super__.update.apply(this, arguments);
   };
 
+  Play.prototype.post = function() {
+    if ((this.skew != null) && this.playhead === this.props.to && !this.props.loop && !this.done) {
+      return this.node.trigger({
+        type: "play.done"
+      });
+    }
+  };
+
   Play.prototype.change = function(changed, touched, init) {
     if (changed['trigger.trigger'] || changed['play.realtime']) {
       return this.rebuild();
@@ -76879,7 +77023,7 @@ module.exports = Play;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Parent, Present, Util,
@@ -77243,7 +77387,7 @@ module.exports = Present;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Reveal, Transition, Util,
@@ -77289,7 +77433,7 @@ module.exports = Reveal;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Parent, Slide,
@@ -77372,7 +77516,7 @@ module.exports = Slide;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Step, Track,
@@ -77500,7 +77644,7 @@ module.exports = Step;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Traits, Types;
@@ -77621,6 +77765,12 @@ Traits = {
   axis: {
     detail: Types.int(1),
     crossed: Types.bool(false)
+  },
+  rawtex: {
+    width: Types.nullable(Types.positive(Types.int(1), true)),
+    height: Types.nullable(Types.positive(Types.int(1), true)),
+    image: Types.nullable(Types.object()),
+    texture: Types.nullable(Types.object())
   },
   data: {
     data: Types.nullable(Types.data()),
@@ -77954,7 +78104,7 @@ module.exports = Traits;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var THREE, Util, View, helpers,
@@ -78484,20 +78634,20 @@ module.exports = function(object, traits) {
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.Scene = __webpack_require__(30);
 
-exports.Factory = __webpack_require__(185);
+exports.Factory = __webpack_require__(186);
 
 exports.Renderable = __webpack_require__(30);
 
-exports.Classes = __webpack_require__(186);
+exports.Classes = __webpack_require__(187);
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports) {
 
 var RenderFactory;
@@ -78525,32 +78675,32 @@ module.exports = RenderFactory;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Classes;
 
 Classes = {
-  sprite: __webpack_require__(187),
-  point: __webpack_require__(194),
-  line: __webpack_require__(195),
-  surface: __webpack_require__(196),
-  face: __webpack_require__(197),
-  strip: __webpack_require__(198),
-  arrow: __webpack_require__(199),
+  sprite: __webpack_require__(188),
+  point: __webpack_require__(195),
+  line: __webpack_require__(196),
+  surface: __webpack_require__(197),
+  face: __webpack_require__(198),
+  strip: __webpack_require__(199),
+  arrow: __webpack_require__(200),
   screen: __webpack_require__(58),
   memoScreen: __webpack_require__(59),
-  debug: __webpack_require__(200),
-  dataBuffer: __webpack_require__(21),
-  arrayBuffer: __webpack_require__(201),
-  matrixBuffer: __webpack_require__(202),
-  voxelBuffer: __webpack_require__(203),
-  pushBuffer: __webpack_require__(204),
+  debug: __webpack_require__(201),
+  dataBuffer: __webpack_require__(22),
+  arrayBuffer: __webpack_require__(202),
+  matrixBuffer: __webpack_require__(203),
+  voxelBuffer: __webpack_require__(204),
+  pushBuffer: __webpack_require__(205),
   renderToTexture: __webpack_require__(60),
   memo: __webpack_require__(61),
-  readback: __webpack_require__(206),
+  readback: __webpack_require__(207),
   atlas: __webpack_require__(62),
-  textAtlas: __webpack_require__(208),
+  textAtlas: __webpack_require__(209),
   scene: __webpack_require__(30)
 };
 
@@ -78558,7 +78708,7 @@ module.exports = Classes;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Base, Sprite, SpriteGeometry, THREE,
@@ -78640,7 +78790,7 @@ module.exports = Sprite;
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ArrowGeometry, ClipGeometry, THREE,
@@ -78774,7 +78924,7 @@ module.exports = ArrowGeometry;
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ClipGeometry, FaceGeometry, THREE,
@@ -78871,7 +79021,7 @@ module.exports = FaceGeometry;
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ClipGeometry, LineGeometry, THREE,
@@ -79026,7 +79176,7 @@ module.exports = LineGeometry;
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ScreenGeometry, SurfaceGeometry, THREE,
@@ -79108,7 +79258,7 @@ module.exports = ScreenGeometry;
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ClipGeometry, SpriteGeometry, THREE,
@@ -79210,7 +79360,7 @@ module.exports = SpriteGeometry;
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ClipGeometry, StripGeometry, THREE,
@@ -79324,7 +79474,7 @@ module.exports = StripGeometry;
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Base, Point, SpriteGeometry, THREE,
@@ -79431,7 +79581,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Base, Line, LineGeometry, THREE,
@@ -79531,7 +79681,7 @@ module.exports = Line;
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Base, Surface, SurfaceGeometry, THREE, Util,
@@ -79622,7 +79772,7 @@ module.exports = Surface;
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Base, Face, FaceGeometry, THREE,
@@ -79693,7 +79843,7 @@ module.exports = Face;
 
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Base, Strip, StripGeometry, THREE,
@@ -79764,7 +79914,7 @@ module.exports = Strip;
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Arrow, ArrowGeometry, Base, THREE,
@@ -79835,7 +79985,7 @@ module.exports = Arrow;
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Base, Debug, THREE,
@@ -79881,14 +80031,14 @@ module.exports = Debug;
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ArrayBuffer_, DataBuffer, Util,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-DataBuffer = __webpack_require__(21);
+DataBuffer = __webpack_require__(22);
 
 Util = __webpack_require__(0);
 
@@ -79984,14 +80134,14 @@ module.exports = ArrayBuffer_;
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DataBuffer, MatrixBuffer, Util,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-DataBuffer = __webpack_require__(21);
+DataBuffer = __webpack_require__(22);
 
 Util = __webpack_require__(0);
 
@@ -80141,14 +80291,14 @@ module.exports = MatrixBuffer;
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DataBuffer, Util, VoxelBuffer,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-DataBuffer = __webpack_require__(21);
+DataBuffer = __webpack_require__(22);
 
 Util = __webpack_require__(0);
 
@@ -80290,7 +80440,7 @@ module.exports = VoxelBuffer;
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer, PushBuffer, Util,
@@ -80421,7 +80571,7 @@ module.exports = PushBuffer;
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var RenderTarget, THREE;
@@ -80538,7 +80688,7 @@ module.exports = RenderTarget;
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer, Memo, MemoScreen, Readback, Renderable, THREE, Util,
@@ -80878,7 +81028,7 @@ module.exports = Readback;
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BackedTexture, DataTexture, Util,
@@ -80967,7 +81117,7 @@ module.exports = BackedTexture;
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Atlas, SCRATCH_SIZE, THREE, TextAtlas,
@@ -81192,21 +81342,21 @@ module.exports = TextAtlas;
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.Factory = __webpack_require__(210);
+exports.Factory = __webpack_require__(211);
 
-exports.Snippets = __webpack_require__(241);
+exports.Snippets = __webpack_require__(242);
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Factory, ShaderGraph;
 
-ShaderGraph = __webpack_require__(211);
+ShaderGraph = __webpack_require__(212);
 
 Factory = function(snippets) {
   var fetch;
@@ -81233,16 +81383,16 @@ module.exports = Factory;
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Block, Factory, GLSL, Graph, Linker, ShaderGraph, Snippet, Visualize, cache, inspect, library, merge, visualize;
 
 Block = __webpack_require__(33);
 
-Factory = __webpack_require__(219);
+Factory = __webpack_require__(220);
 
-GLSL = __webpack_require__(228);
+GLSL = __webpack_require__(229);
 
 Graph = __webpack_require__(8);
 
@@ -81343,7 +81493,7 @@ if (typeof window !== 'undefined') {
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Graph, Node, Outlet;
@@ -81589,7 +81739,7 @@ module.exports = Node;
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Program, Snippet, assemble;
@@ -81671,7 +81821,7 @@ module.exports = Program;
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Layout, Snippet, debug, link;
@@ -81752,7 +81902,7 @@ module.exports = Layout;
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Block, Call,
@@ -81825,7 +81975,7 @@ module.exports = Call;
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Block, Callback, Graph,
@@ -81935,7 +82085,7 @@ module.exports = Callback;
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Block, Graph, Isolate,
@@ -82033,7 +82183,7 @@ module.exports = Isolate;
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Block, Join,
@@ -82095,16 +82245,16 @@ module.exports = Join;
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.Factory = __webpack_require__(220);
+exports.Factory = __webpack_require__(221);
 
-exports.Material = __webpack_require__(225);
+exports.Material = __webpack_require__(226);
 
-exports.library = __webpack_require__(226);
+exports.library = __webpack_require__(227);
 
-exports.cache = __webpack_require__(227);
+exports.cache = __webpack_require__(228);
 
 exports.queue = __webpack_require__(67);
 
@@ -82112,7 +82262,7 @@ exports.hash = __webpack_require__(40);
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Block, Factory, Graph, State, Visualize;
@@ -82534,12 +82684,12 @@ module.exports = Factory;
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.Graph = __webpack_require__(39);
 
-exports.Node = __webpack_require__(222);
+exports.Node = __webpack_require__(223);
 
 exports.Outlet = __webpack_require__(66);
 
@@ -82549,7 +82699,7 @@ exports.OUT = exports.Graph.OUT;
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Graph, Node, Outlet;
@@ -82795,7 +82945,7 @@ module.exports = Node;
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Block, isCallback, serialize;
@@ -82901,7 +83051,7 @@ module.exports = serialize;
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _activate, _markup, _order, connect, cssColor, escapeText, hash, hashColor, makeSVG, merge, overlay, path, process, sqr, trim, wrap;
@@ -83218,7 +83368,7 @@ module.exports = {
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Material, Visualize, debug, tick;
@@ -83308,7 +83458,7 @@ module.exports = Material;
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports) {
 
 
@@ -83368,7 +83518,7 @@ module.exports = library;
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -83405,16 +83555,16 @@ module.exports = cache;
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var i, k, len, ref, v;
 
-exports.compile = __webpack_require__(229);
+exports.compile = __webpack_require__(230);
 
-exports.parse = __webpack_require__(230);
+exports.parse = __webpack_require__(231);
 
-exports.generate = __webpack_require__(240);
+exports.generate = __webpack_require__(241);
 
 ref = __webpack_require__(41);
 for (v = i = 0, len = ref.length; i < len; v = ++i) {
@@ -83424,7 +83574,7 @@ for (v = i = 0, len = ref.length; i < len; v = ++i) {
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports) {
 
 
@@ -83526,16 +83676,16 @@ module.exports = compile;
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $, collect, debug, decl, extractSignatures, mapSymbols, parse, parseGLSL, parser, processAST, sortSymbols, tick, tokenizer, walk;
 
-tokenizer = __webpack_require__(231);
+tokenizer = __webpack_require__(232);
 
-parser = __webpack_require__(235);
+parser = __webpack_require__(236);
 
-decl = __webpack_require__(239);
+decl = __webpack_require__(240);
 
 $ = __webpack_require__(41);
 
@@ -83818,16 +83968,16 @@ module.exports = parse;
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = tokenize
 
 var through = __webpack_require__(68)
 
-var literals = __webpack_require__(232)
-  , operators = __webpack_require__(233)
-  , builtins = __webpack_require__(234)
+var literals = __webpack_require__(233)
+  , operators = __webpack_require__(234)
+  , builtins = __webpack_require__(235)
 
 var NORMAL = 999          // <-- never emitted
   , TOKEN = 9999          // <-- never emitted 
@@ -84159,7 +84309,7 @@ function tokenize() {
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports) {
 
 module.exports = [
@@ -84258,7 +84408,7 @@ module.exports = [
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports) {
 
 module.exports = [
@@ -84310,7 +84460,7 @@ module.exports = [
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports) {
 
 module.exports = [
@@ -84460,21 +84610,21 @@ module.exports = [
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(236)
+module.exports = __webpack_require__(237)
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = parser
 
 var through = __webpack_require__(68)
-  , full_parse_expr = __webpack_require__(237)
-  , Scope = __webpack_require__(238)
+  , full_parse_expr = __webpack_require__(238)
+  , Scope = __webpack_require__(239)
 
 // singleton!
 var Advance = new Object
@@ -85432,7 +85582,7 @@ function is_precision(token) {
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports) {
 
 var state
@@ -85703,7 +85853,7 @@ function fail(message) {
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports) {
 
 module.exports = scope
@@ -85747,7 +85897,7 @@ proto.find = function(name, fail) {
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports) {
 
 var Definition, decl, defaults, get, three, threejs, win;
@@ -85969,7 +86119,7 @@ Definition = (function() {
 
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $, Graph, _;
@@ -86302,24 +86452,24 @@ module.exports = _ = {
 
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"arrow.position\":\"uniform float worldUnit;\\r\\nuniform float lineDepth;\\r\\nuniform float lineWidth;\\r\\nuniform float focusDepth;\\r\\n\\r\\nuniform vec4 geometryClip;\\r\\nuniform float arrowSize;\\r\\nuniform float arrowSpace;\\r\\n\\r\\nattribute vec4 position4;\\r\\nattribute vec3 arrow;\\r\\nattribute vec2 attach;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvoid getArrowGeometry(vec4 xyzw, float near, float mid, float far, out vec3 left, out vec3 right, out vec3 middle, out vec3 start) {\\r\\n  right  = getPosition(xyzw, 1.0);\\r\\n  left   = getPosition(vec4(near, xyzw.yzw), 0.0);\\r\\n  middle = getPosition(vec4(mid,  xyzw.yzw), 0.0);\\r\\n  start  = getPosition(vec4(far,  xyzw.yzw), 0.0);\\r\\n}\\r\\n\\r\\nmat4 getArrowMatrix(vec3 left, vec3 right, vec3 middle, vec3 start) {\\r\\n\\r\\n  float depth = focusDepth;\\r\\n  if (lineDepth < 1.0) {\\r\\n    // Depth blending\\r\\n    float z = max(0.00001, -right.z);\\r\\n    depth = mix(z, focusDepth, lineDepth);\\r\\n  }\\r\\n\\r\\n  vec3 diff = left - right;\\r\\n  float l = length(diff);\\r\\n  if (l == 0.0) {\\r\\n    return mat4(1.0, 0.0, 0.0, 0.0,\\r\\n                0.0, 1.0, 0.0, 0.0,\\r\\n                0.0, 0.0, 1.0, 0.0,\\r\\n                0.0, 0.0, 0.0, 1.0);\\r\\n  }\\r\\n\\r\\n  // Construct TBN matrix around shaft\\r\\n  vec3 t = normalize(diff);\\r\\n  vec3 n = normalize(cross(t, t.yzx + vec3(.1, .2, .3)));\\r\\n  vec3 b = cross(n, t);\\r\\n  \\r\\n  // Shrink arrows when vector gets too small\\r\\n  // Approach linear scaling with cubic ease the smaller we get\\r\\n  float size = arrowSize * lineWidth * worldUnit * depth * 1.25;\\r\\n  l = max(length(right - middle), length(middle - start)) * 2.0 * arrowSpace;\\r\\n  float mini = clamp(1.0 - l / size * .333, 0.0, 1.0);\\r\\n  float scale = 1.0 - mini * mini * mini;\\r\\n  float range = size * scale;\\r\\n\\r\\n  // Size to 2.5:1 ratio\\r\\n  float rangeNB = range / 2.5;\\r\\n\\r\\n  // Anchor at end position\\r\\n  return mat4(vec4(n * rangeNB,  0),\\r\\n              vec4(b * rangeNB,  0),\\r\\n              vec4(t * range, 0),\\r\\n              vec4(right,  1.0));\\r\\n}\\r\\n\\r\\nvec3 getArrowPosition() {\\r\\n  vec3 left, right, middle, start;\\r\\n  \\r\\n  // Clip arrow position and attachment anchors to data\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n  vec3 a = vec3(min(geometryClip.x, p.x + attach.x), geometryClip.x / 2.0, min(geometryClip.x, attach.y));\\r\\n\\r\\n  getArrowGeometry(p, a.x, a.y, a.z, left, right, middle, start);\\r\\n  mat4 matrix = getArrowMatrix(left, right, middle, start);\\r\\n  return (matrix * vec4(arrow.xyz, 1.0)).xyz;\\r\\n\\r\\n}\\r\\n\",\"axis.position\":\"uniform vec4 axisStep;\\r\\nuniform vec4 axisPosition;\\r\\n\\r\\nvec4 getAxisPosition(vec4 xyzw, inout vec4 stpq) {\\r\\n  return axisStep * xyzw.x + axisPosition;\\r\\n}\\r\\n\",\"cartesian.position\":\"uniform mat4 viewMatrix;\\r\\n\\r\\nvec4 getCartesianPosition(vec4 position, inout vec4 stpq) {\\r\\n  return viewMatrix * vec4(position.xyz, 1.0);\\r\\n}\\r\\n\",\"cartesian4.position\":\"uniform vec4 basisScale;\\r\\nuniform vec4 basisOffset;\\r\\nuniform vec4 viewScale;\\r\\nuniform vec4 viewOffset;\\r\\n\\r\\nvec4 getCartesian4Position(vec4 position, inout vec4 stpq) {\\r\\n  return position * basisScale + basisOffset;\\r\\n}\\r\\n\",\"clamp.position\":\"uniform vec4 clampLimit;\\r\\n\\r\\nvec4 getClampXYZW(vec4 xyzw) {\\r\\n  return clamp(xyzw, vec4(0.0), clampLimit);\\r\\n}\\r\\n\",\"color.opaque\":\"vec4 opaqueColor(vec4 color) {\\r\\n  return vec4(color.rgb, 1.0);\\r\\n}\\r\\n\",\"face.position\":\"uniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvec3 getFacePosition() {\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n  return getPosition(p, 1.0);\\r\\n}\\r\\n\",\"face.position.normal\":\"attribute vec4 position4;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvarying vec3 vNormal;\\r\\nvarying vec3 vLight;\\r\\nvarying vec3 vPosition;\\r\\n\\r\\nvoid getFaceGeometry(vec4 xyzw, out vec3 pos, out vec3 normal) {\\r\\n  vec3 a, b, c;\\r\\n\\r\\n  a   = getPosition(vec4(xyzw.xyz, 0.0), 0.0);\\r\\n  b   = getPosition(vec4(xyzw.xyz, 1.0), 0.0);\\r\\n  c   = getPosition(vec4(xyzw.xyz, 2.0), 0.0);\\r\\n\\r\\n  pos = getPosition(xyzw, 1.0);\\r\\n  normal = normalize(cross(c - a, b - a));\\r\\n}\\r\\n\\r\\nvec3 getFacePositionNormal() {\\r\\n  vec3 center, normal;\\r\\n\\r\\n  getFaceGeometry(position4, center, normal);\\r\\n  vNormal   = normal;\\r\\n  vLight    = normalize((viewMatrix * vec4(1.0, 2.0, 2.0, 0.0)).xyz);\\r\\n  vPosition = -center;\\r\\n\\r\\n  return center;\\r\\n}\\r\\n\",\"float.encode\":\"/*\\r\\nFloat encoding technique by\\r\\nCarlos Scheidegger\\r\\nhttps://github.com/cscheid/lux/blob/master/src/shade/bits/encode_float.js\\r\\n\\r\\nConversion to GLSL by:\\r\\nhttp://concord-consortium.github.io/lab/experiments/webgl-gpgpu/script.js\\r\\n*/\\r\\n\\r\\nfloat shift_right(float v, float amt) { \\r\\n  v = floor(v) + 0.5; \\r\\n  return floor(v / exp2(amt)); \\r\\n}\\r\\n\\r\\nfloat shift_left(float v, float amt) { \\r\\n  return floor(v * exp2(amt) + 0.5); \\r\\n}\\r\\n\\r\\nfloat mask_last(float v, float bits) { \\r\\n  return mod(v, shift_left(1.0, bits)); \\r\\n}\\r\\n\\r\\nfloat extract_bits(float num, float from, float to) { \\r\\n  from = floor(from + 0.5); to = floor(to + 0.5); \\r\\n  return mask_last(shift_right(num, from), to - from); \\r\\n}\\r\\n\\r\\nvec4 encode_float(float val) { \\r\\n  if (val == 0.0) return vec4(0, 0, 0, 0); \\r\\n  float valuesign = val > 0.0 ? 0.0 : 1.0; \\r\\n  val = abs(val); \\r\\n  float exponent = floor(log2(val)); \\r\\n  float biased_exponent = exponent + 127.0; \\r\\n  float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0; \\r\\n  float t = biased_exponent / 2.0; \\r\\n  float last_bit_of_biased_exponent = fract(t) * 2.0; \\r\\n  float remaining_bits_of_biased_exponent = floor(t); \\r\\n  float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0; \\r\\n  float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0; \\r\\n  float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0; \\r\\n  float byte1 = (valuesign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; \\r\\n  return vec4(byte4, byte3, byte2, byte1); \\r\\n}\\r\\n\",\"float.index.pack\":\"uniform vec4 indexModulus;\\r\\n\\r\\nvec4 getSample(vec4 xyzw);\\r\\nvec4 getIndex(vec4 xyzw);\\r\\n\\r\\nvec4 floatPackIndex(vec4 xyzw) {\\r\\n  vec4 value = getSample(xyzw);\\r\\n  vec4 index = getIndex(xyzw);\\r\\n\\r\\n  vec4 offset = floor(index + .5) * indexModulus;\\r\\n  vec2 sum2 = offset.xy + offset.zw;\\r\\n  float sum = sum2.x + sum2.y;\\r\\n  return vec4(value.xyz, sum);\\r\\n}\",\"float.stretch\":\"vec4 getSample(vec4 xyzw);\\r\\n\\r\\nfloat floatStretch(vec4 xyzw, float channelIndex) {\\r\\n  vec4 sample = getSample(xyzw);\\r\\n  vec2 xy = channelIndex > 1.5 ? sample.zw : sample.xy;\\r\\n  return mod(channelIndex, 2.0) > .5 ? xy.y : xy.x;\\r\\n}\",\"fragment.clip.dashed\":\"varying float vClipStrokeWidth;\\r\\nvarying float vClipStrokeIndex;\\r\\nvarying vec3  vClipStrokeEven;\\r\\nvarying vec3  vClipStrokeOdd;\\r\\nvarying vec3  vClipStrokePosition;\\r\\n\\r\\nvoid clipStrokeFragment() {\\r\\n  bool odd = mod(vClipStrokeIndex, 2.0) >= 1.0;\\r\\n\\r\\n  vec3 tangent;\\r\\n  if (odd) {\\r\\n    tangent = vClipStrokeOdd;\\r\\n  }\\r\\n  else {\\r\\n    tangent = vClipStrokeEven;\\r\\n  }\\r\\n\\r\\n  float travel = dot(vClipStrokePosition, normalize(tangent)) / vClipStrokeWidth;\\r\\n  if (mod(travel, 16.0) > 8.0) {\\r\\n    discard;\\r\\n  }\\r\\n}\\r\\n\",\"fragment.clip.dotted\":\"varying float vClipStrokeWidth;\\r\\nvarying float vClipStrokeIndex;\\r\\nvarying vec3  vClipStrokeEven;\\r\\nvarying vec3  vClipStrokeOdd;\\r\\nvarying vec3  vClipStrokePosition;\\r\\n\\r\\nvoid clipStrokeFragment() {\\r\\n  bool odd = mod(vClipStrokeIndex, 2.0) >= 1.0;\\r\\n\\r\\n  vec3 tangent;\\r\\n  if (odd) {\\r\\n    tangent = vClipStrokeOdd;\\r\\n  }\\r\\n  else {\\r\\n    tangent = vClipStrokeEven;\\r\\n  }\\r\\n\\r\\n  float travel = dot(vClipStrokePosition, normalize(tangent)) / vClipStrokeWidth;\\r\\n  if (mod(travel, 4.0) > 2.0) {\\r\\n    discard;\\r\\n  }\\r\\n}\\r\\n\",\"fragment.clip.ends\":\"varying vec2 vClipEnds;\\r\\n\\r\\nvoid clipEndsFragment() {\\r\\n  if (vClipEnds.x < 0.0 || vClipEnds.y < 0.0) discard;\\r\\n}\\r\\n\",\"fragment.clip.proximity\":\"varying float vClipProximity;\\r\\n\\r\\nvoid clipProximityFragment() {\\r\\n  if (vClipProximity >= 0.5) discard;\\r\\n}\",\"fragment.color\":\"void setFragmentColor(vec4 color) {\\r\\n  gl_FragColor = color;\\r\\n}\",\"fragment.map.rgba\":\"vec4 fragmentRGBA(vec4 rgba, vec4 stpq) {\\r\\n  return rgba;\\r\\n}\",\"fragment.solid\":\"void setFragmentColor(vec4 color) {\\r\\n  if (color.a < 1.0) discard;\\r\\n  gl_FragColor = color;\\r\\n}\",\"fragment.transparent\":\"void setFragmentColor(vec4 color) {\\r\\n  if (color.a >= 1.0) discard;\\r\\n  gl_FragColor = color;\\r\\n}\",\"grid.position\":\"uniform vec4 gridPosition;\\r\\nuniform vec4 gridStep;\\r\\nuniform vec4 gridAxis;\\r\\n\\r\\nvec4 sampleData(vec2 xy);\\r\\n\\r\\nvec4 getGridPosition(vec4 xyzw) {\\r\\n  vec4 onAxis  = gridAxis * sampleData(vec2(xyzw.y, 0.0)).x;\\r\\n  vec4 offAxis = gridStep * xyzw.x + gridPosition;\\r\\n  return onAxis + offAxis;\\r\\n}\\r\\n\",\"grow.position\":\"uniform float growScale;\\r\\nuniform vec4  growMask;\\r\\nuniform vec4  growAnchor;\\r\\n\\r\\nvec4 getSample(vec4 xyzw);\\r\\n\\r\\nvec4 getGrowSample(vec4 xyzw) {\\r\\n  vec4 anchor = xyzw * growMask + growAnchor;\\r\\n\\r\\n  vec4 position = getSample(xyzw);\\r\\n  vec4 center = getSample(anchor);\\r\\n\\r\\n  return mix(center, position, growScale);\\r\\n}\",\"join.position\":\"uniform float joinStride;\\r\\nuniform float joinStrideInv;\\r\\n\\r\\nfloat getIndex(vec4 xyzw);\\r\\nvec4 getRest(vec4 xyzw);\\r\\nvec4 injectIndices(float a, float b);\\r\\n\\r\\nvec4 getJoinXYZW(vec4 xyzw) {\\r\\n\\r\\n  float a = getIndex(xyzw);\\r\\n  float b = a * joinStrideInv;\\r\\n\\r\\n  float integer  = floor(b);\\r\\n  float fraction = b - integer;\\r\\n  \\r\\n  return injectIndices(fraction * joinStride, integer) + getRest(xyzw);\\r\\n}\\r\\n\",\"label.alpha\":\"varying float vPixelSize;\\r\\n\\r\\nvec4 getLabelAlphaColor(vec4 color, vec4 sample) {\\r\\n  float mask = clamp(sample.r * 1000.0, 0.0, 1.0);\\r\\n  float alpha = (sample.r - .5) * vPixelSize + .5;\\r\\n  float a = mask * alpha * color.a;\\r\\n  if (a <= 0.0) discard;\\r\\n  return vec4(color.xyz, a);\\r\\n}\\r\\n\",\"label.map\":\"vec2 mapUV(vec4 uvwo, vec4 stpq) {\\r\\n  return uvwo.xy;\\r\\n}\\r\\n\",\"label.outline\":\"uniform float outlineExpand;\\r\\nuniform float outlineStep;\\r\\nuniform vec3  outlineColor;\\r\\n\\r\\nvarying float vPixelSize;\\r\\n\\r\\nconst float PIXEL_STEP = 255.0 / 16.0;\\r\\n\\r\\nvec4 getLabelOutlineColor(vec4 color, vec4 sample) {\\r\\n  float ps = vPixelSize * PIXEL_STEP;\\r\\n  float os = outlineStep;\\r\\n\\r\\n  float sdf = sample.r - .5 + outlineExpand;\\r\\n  vec2  sdfs = vec2(sdf, sdf + os);\\r\\n  vec2  alpha = clamp(sdfs * ps + .5, 0.0, 1.0);\\r\\n\\r\\n  if (alpha.y <= 0.0) {\\r\\n    discard;\\r\\n  }\\r\\n\\r\\n  vec3 blend = color.xyz;\\r\\n  if (alpha.y > alpha.x) {\\r\\n    blend = sqrt(mix(outlineColor * outlineColor, blend * blend, alpha.x));\\r\\n  }\\r\\n  \\r\\n  return vec4(blend, alpha.y * color.a);\\r\\n}\\r\\n\",\"layer.position\":\"uniform vec4 layerScale;\\r\\nuniform vec4 layerBias;\\r\\n\\r\\n#define PROJECT_ORTHOGONAL\\r\\n\\r\\nvec4 layerPosition(vec4 position, inout vec4 stpq) {\\r\\n  return layerScale * position + layerBias;\\r\\n}\\r\\n\",\"lerp.depth\":\"// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 lerpDepth(vec4 xyzw) {\\r\\n  float x = xyzw.z;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n    \\r\\n  vec4 xyzw1 = vec4(xyzw.xy, i, xyzw.w);\\r\\n  vec4 xyzw2 = vec4(xyzw.xy, i + 1.0, xyzw.w);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, f);\\r\\n}\\r\\n\",\"lerp.height\":\"// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 lerpHeight(vec4 xyzw) {\\r\\n  float x = xyzw.y;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n    \\r\\n  vec4 xyzw1 = vec4(xyzw.x, i, xyzw.zw);\\r\\n  vec4 xyzw2 = vec4(xyzw.x, i + 1.0, xyzw.zw);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, f);\\r\\n}\\r\\n\",\"lerp.items\":\"// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 lerpItems(vec4 xyzw) {\\r\\n  float x = xyzw.w;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n    \\r\\n  vec4 xyzw1 = vec4(xyzw.xyz, i);\\r\\n  vec4 xyzw2 = vec4(xyzw.xyz, i + 1.0);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, f);\\r\\n}\\r\\n\",\"lerp.width\":\"// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 lerpWidth(vec4 xyzw) {\\r\\n  float x = xyzw.x;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n    \\r\\n  vec4 xyzw1 = vec4(i, xyzw.yzw);\\r\\n  vec4 xyzw2 = vec4(i + 1.0, xyzw.yzw);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, f);\\r\\n}\\r\\n\",\"line.position\":\"// Units and calibration\\r\\nuniform float worldUnit;\\r\\nuniform float lineWidth;\\r\\nuniform float lineDepth;\\r\\nuniform float focusDepth;\\r\\n\\r\\n// General data index\\r\\nuniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\n\\r\\n// (Top/bottom -1,1) \\r\\nattribute float line;\\r\\n\\r\\n// 0...1 for round or bevel joins\\r\\n#ifdef LINE_JOIN_DETAIL\\r\\nattribute float joint;\\r\\n#else\\r\\nconst float joint = 0.0;\\r\\n#endif\\r\\n\\r\\n// Knock out excessively long line segments (e.g. for asymtpotes)\\r\\n#ifdef LINE_PROXIMITY\\r\\nuniform float lineProximity;\\r\\nvarying float vClipProximity;\\r\\n#endif\\r\\n\\r\\n// Ghetto line stroking (local only, not global)\\r\\n#ifdef LINE_STROKE\\r\\nvarying float vClipStrokeWidth;\\r\\nvarying float vClipStrokeIndex;\\r\\nvarying vec3  vClipStrokeEven;\\r\\nvarying vec3  vClipStrokeOdd;\\r\\nvarying vec3  vClipStrokePosition;\\r\\n#endif\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\n// Clip line ends for arrows / decoration\\r\\n#ifdef LINE_CLIP\\r\\nuniform float clipRange;\\r\\nuniform vec2  clipStyle;\\r\\nuniform float clipSpace;\\r\\n\\r\\nattribute vec2 strip;\\r\\n\\r\\nvarying vec2 vClipEnds;\\r\\n\\r\\nvoid clipEnds(vec4 xyzw, vec3 center, vec3 pos) {\\r\\n  // Sample start of line strip\\r\\n  vec4 xyzwS = vec4(0.0, xyzw.yzw);\\r\\n  vec3 start = getPosition(xyzwS, 0.0);\\r\\n\\r\\n  // Sample middle of line strip\\r\\n  vec4 xyzwM = vec4(geometryClip.x / 2.0, xyzw.yzw);\\r\\n  vec3 middle = getPosition(xyzwM, 0.0);\\r\\n\\r\\n#ifdef LINE_CLOSED\\r\\n  vec3 end = start;\\r\\n#else\\r\\n  // Sample other end of line strip\\r\\n  vec4 xyzwE = vec4(geometryClip.x, xyzw.yzw);\\r\\n  vec3 end   = getPosition(xyzwE, 0.0);\\r\\n#endif\\r\\n\\r\\n  // Measure length\\r\\n  float l = max(length(end - middle), length(middle - start)) * clipSpace * 2.0;\\r\\n\\r\\n  // Arrow length (=2.5x radius)\\r\\n  float arrowSize = 1.25 * clipRange * lineWidth * worldUnit;\\r\\n\\r\\n#ifdef LINE_CLOSED\\r\\n  // Clip around start/end\\r\\n  end = start;\\r\\n#endif\\r\\n\\r\\n  vClipEnds = vec2(1.0);\\r\\n\\r\\n  if (clipStyle.y > 0.0) {\\r\\n    // Depth blend end\\r\\n    float depth = focusDepth;\\r\\n    if (lineDepth < 1.0) {\\r\\n      float z = max(0.00001, -end.z);\\r\\n      depth = mix(z, focusDepth, lineDepth);\\r\\n    }\\r\\n    \\r\\n    // Absolute arrow length\\r\\n    float size = arrowSize * depth;\\r\\n\\r\\n    // Adjust clip range\\r\\n    // Approach linear scaling with cubic ease the smaller we get\\r\\n    float mini = clamp(1.0 - l / size * .333, 0.0, 1.0);\\r\\n    float scale = 1.0 - mini * mini * mini; \\r\\n    float invrange = 1.0 / (size * scale);\\r\\n  \\r\\n    // Clip end\\r\\n    vec3 diff = end - center;\\r\\n    if(diff == vec3(0.0))\\r\\n      vClipEnds.x = -1.0;\\r\\n    else {\\r\\n      diff = normalize(end - center);\\r\\n      float d = dot(end - pos, diff);\\r\\n      vClipEnds.x = d * invrange - 1.0;\\r\\n    }\\r\\n  }\\r\\n\\r\\n  if (clipStyle.x > 0.0) {\\r\\n    // Depth blend start\\r\\n    float depth = focusDepth;\\r\\n    if (lineDepth < 1.0) {\\r\\n      float z = max(0.00001, -start.z);\\r\\n      depth = mix(z, focusDepth, lineDepth);\\r\\n    }\\r\\n    \\r\\n    // Absolute arrow length\\r\\n    float size = arrowSize * depth;\\r\\n\\r\\n    // Adjust clip range\\r\\n    // Approach linear scaling with cubic ease the smaller we get\\r\\n    float mini = clamp(1.0 - l / size * .333, 0.0, 1.0);\\r\\n    float scale = 1.0 - mini * mini * mini; \\r\\n    float invrange = 1.0 / (size * scale);\\r\\n  \\r\\n    // Clip start \\r\\n    vec3 diff = center - start;\\r\\n    if(diff == vec3(0.0))\\r\\n      vClipEnds.y = -1.0;\\r\\n    else {\\r\\n      diff = normalize(center - start);\\r\\n      float d = dot(pos - start, diff);\\r\\n      vClipEnds.y = d * invrange - 1.0;\\r\\n    }\\r\\n  }\\r\\n}\\r\\n#endif\\r\\n\\r\\n// Adjust left/center/right to be inside near/far z range\\r\\nconst float epsilon = 1e-5;\\r\\nvoid fixCenter(inout vec3 left, inout vec3 center, inout vec3 right) {\\r\\n  if (center.z >= 0.0) {\\r\\n    if (left.z < 0.0) {\\r\\n      float d = (center.z + epsilon) / (center.z - left.z);\\r\\n      center = mix(center, left, d);\\r\\n    }\\r\\n    else if (right.z < 0.0) {\\r\\n      float d = (center.z + epsilon) / (center.z - right.z);\\r\\n      center = mix(center, right, d);\\r\\n    }\\r\\n  }\\r\\n\\r\\n  if (left.z >= 0.0) {\\r\\n    if (center.z < 0.0) {\\r\\n      float d = (left.z + epsilon) / (left.z - center.z);\\r\\n      left = mix(left, center, d);\\r\\n    }\\r\\n  }\\r\\n\\r\\n  if (right.z >= 0.0) {\\r\\n    if (center.z < 0.0) {\\r\\n      float d = (right.z + epsilon) / (right.z - center.z);\\r\\n      right = mix(right, center, d);\\r\\n    }\\r\\n  }\\r\\n}\\r\\n\\r\\nvec4 wrapAround(vec4 xyzw) {\\r\\n#ifdef LINE_CLOSED\\r\\n  float gx = geometryClip.x;\\r\\n  if (xyzw.x < 0.0) xyzw.x += gx;\\r\\n  if (xyzw.x >= gx) xyzw.x -= gx;\\r\\n#endif\\r\\n  return xyzw;\\r\\n}\\r\\n\\r\\n// Sample the source data in an edge-aware manner\\r\\nvoid getLineGeometry(vec4 xyzw, float edge, out vec3 left, out vec3 center, out vec3 right) {\\r\\n  vec4 delta = vec4(1.0, 0.0, 0.0, 0.0);\\r\\n\\r\\n  center = getPosition(xyzw, 1.0);\\r\\n  left   = (edge > -0.5) ? getPosition(wrapAround(xyzw - delta), 0.0) : center;\\r\\n  right  = (edge < 0.5)  ? getPosition(wrapAround(xyzw + delta), 0.0) : center;\\r\\n}\\r\\n\\r\\n// Calculate the position for a vertex along the line, including joins\\r\\nvec3 getLineJoin(float edge, bool odd, vec3 left, vec3 center, vec3 right, float width, float offset, float joint) {\\r\\n  vec2 join = vec2(1.0, 0.0);\\r\\n\\r\\n  fixCenter(left, center, right);\\r\\n\\r\\n  vec4 a = vec4(left.xy, right.xy);\\r\\n  vec4 b = a / vec4(left.zz, right.zz);\\r\\n\\r\\n  vec2 l = b.xy;\\r\\n  vec2 r = b.zw;\\r\\n  vec2 c = center.xy / center.z;\\r\\n\\r\\n  vec4 d = vec4(l, c) - vec4(c, r);\\r\\n  float l1 = dot(d.xy, d.xy);\\r\\n  float l2 = dot(d.zw, d.zw);\\r\\n\\r\\n  if (l1 + l2 > 0.0) {\\r\\n    \\r\\n    if (edge > 0.5 || l2 == 0.0) {\\r\\n      vec2 nl = normalize(d.xy);\\r\\n      vec2 tl = vec2(nl.y, -nl.x);\\r\\n\\r\\n#ifdef LINE_PROXIMITY\\r\\n      vClipProximity = 1.0;\\r\\n#endif\\r\\n\\r\\n#ifdef LINE_STROKE\\r\\n      vClipStrokeEven = vClipStrokeOdd = normalize(left - center);\\r\\n#endif\\r\\n      join = tl;\\r\\n    }\\r\\n    else if (edge < -0.5 || l1 == 0.0) {\\r\\n      vec2 nr = normalize(d.zw);\\r\\n      vec2 tr = vec2(nr.y, -nr.x);\\r\\n\\r\\n#ifdef LINE_PROXIMITY\\r\\n      vClipProximity = 1.0;\\r\\n#endif\\r\\n\\r\\n#ifdef LINE_STROKE\\r\\n      vClipStrokeEven = vClipStrokeOdd = normalize(center - right);\\r\\n#endif\\r\\n      join = tr;\\r\\n    }\\r\\n    else {\\r\\n      // Limit join stretch for tiny segments\\r\\n      float lmin2 = min(l1, l2) / (width * width);\\r\\n\\r\\n      // Hide line segment if ratio of leg lengths exceeds promixity threshold\\r\\n#ifdef LINE_PROXIMITY\\r\\n      float lr     = l1 / l2;\\r\\n      float rl     = l2 / l1;\\r\\n      float ratio  = max(lr, rl);\\r\\n      float thresh = lineProximity + 1.0;\\r\\n      vClipProximity = (ratio > thresh * thresh) ? 1.0 : 0.0;\\r\\n#endif\\r\\n\\r\\n      // Calculate normals/tangents\\r\\n      vec2 nl = normalize(d.xy);\\r\\n      vec2 nr = normalize(d.zw);\\r\\n\\r\\n      // Calculate tangents\\r\\n      vec2 tl = vec2(nl.y, -nl.x);\\r\\n      vec2 tr = vec2(nr.y, -nr.x);\\r\\n\\r\\n#ifdef LINE_PROXIMITY\\r\\n      // Mix tangents according to leg lengths\\r\\n      vec2 tc = normalize(mix(tl, tr, l1/(l1+l2)));\\r\\n#else\\r\\n      // Average tangent\\r\\n      vec2 tc = normalize(tl + tr);\\r\\n#endif\\r\\n    \\r\\n      // Miter join\\r\\n      float cosA   = dot(nl, tc);\\r\\n      float sinA   = max(0.1, abs(dot(tl, tc)));\\r\\n      float factor = cosA / sinA;\\r\\n      float scale  = sqrt(1.0 + min(lmin2, factor * factor));\\r\\n\\r\\n      // Stroke normals\\r\\n#ifdef LINE_STROKE\\r\\n      vec3 stroke1 = normalize(left - center);\\r\\n      vec3 stroke2 = normalize(center - right);\\r\\n\\r\\n      if (odd) {\\r\\n        vClipStrokeEven = stroke1;\\r\\n        vClipStrokeOdd  = stroke2;\\r\\n      }\\r\\n      else {\\r\\n        vClipStrokeEven = stroke2;\\r\\n        vClipStrokeOdd  = stroke1;\\r\\n      }\\r\\n#endif\\r\\n\\r\\n#ifdef LINE_JOIN_MITER\\r\\n      // Apply straight up miter\\r\\n      join = tc * scale;\\r\\n#endif\\r\\n\\r\\n#ifdef LINE_JOIN_ROUND\\r\\n      // Slerp bevel join into circular arc\\r\\n      float dotProduct = dot(nl, nr);\\r\\n      float angle = acos(dotProduct);\\r\\n      float sinT  = sin(angle);\\r\\n      join = (sin((1.0 - joint) * angle) * tl + sin(joint * angle) * tr) / sinT;\\r\\n#endif\\r\\n\\r\\n#ifdef LINE_JOIN_BEVEL\\r\\n      // Direct bevel join between two flat ends\\r\\n      float dotProduct = dot(nl, nr);\\r\\n      join = mix(tl, tr, joint);\\r\\n#endif\\r\\n\\r\\n#ifdef LINE_JOIN_DETAIL\\r\\n      // Check if on inside or outside of joint\\r\\n      float crossProduct = nl.x * nr.y - nl.y * nr.x;\\r\\n      if (offset * crossProduct < 0.0) {\\r\\n        // For near-180-degree bends, correct back to a miter to avoid discontinuities\\r\\n        float ratio = clamp(-dotProduct * 2.0 - 1.0, 0.0, 1.0);\\r\\n        // Otherwise collapse the inside vertices into one.\\r\\n        join = mix(tc * scale, join, ratio * ratio * ratio);\\r\\n      }\\r\\n#endif\\r\\n\\r\\n    }\\r\\n    return vec3(join, 0.0);\\r\\n  }\\r\\n  else {\\r\\n    return vec3(0.0);\\r\\n  }\\r\\n\\r\\n}\\r\\n\\r\\n// Calculate final line position\\r\\nvec3 getLinePosition() {\\r\\n  vec3 left, center, right, join;\\r\\n\\r\\n  // Up/down along segment\\r\\n  float offset = line;\\r\\n\\r\\n  // Clip data\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n\\r\\n  // Left/center/right\\r\\n  float edge = 0.0;\\r\\n#ifdef LINE_CLOSED\\r\\n  if (p.x == geometryClip.x) p.x = 0.0;\\r\\n#else\\r\\n  if (p.x == geometryClip.x) edge = 1.0;\\r\\n  if (p.x == 0.0) edge = -1.0;\\r\\n#endif\\r\\n\\r\\n  // Get position + adjacent neighbours\\r\\n  getLineGeometry(p, edge, left, center, right);\\r\\n\\r\\n#ifdef LINE_STROKE\\r\\n  // Set parameters for line stroke fragment shader\\r\\n  vClipStrokePosition = center;\\r\\n  vClipStrokeIndex = p.x;\\r\\n  bool odd = mod(p.x, 2.0) >= 1.0;\\r\\n#else\\r\\n  bool odd = true;\\r\\n#endif\\r\\n\\r\\n  // Divide line width up/down\\r\\n  float width = lineWidth * 0.5;\\r\\n\\r\\n  float depth = focusDepth;\\r\\n  if (lineDepth < 1.0) {\\r\\n    // Depth blending\\r\\n    float z = max(0.00001, -center.z);\\r\\n    depth = mix(z, focusDepth, lineDepth);\\r\\n  }\\r\\n  width *= depth;\\r\\n\\r\\n  // Convert to world units\\r\\n  width *= worldUnit;\\r\\n\\r\\n  // Calculate line join\\r\\n#ifdef LINE_CLOSED\\r\\n  join = getLineJoin(0.0, odd, left, center, right, width, offset, joint);\\r\\n#else\\r\\n  join = getLineJoin(edge, odd, left, center, right, width, offset, joint);\\r\\n#endif\\r\\n  vec3 pos = center + join * offset * width;\\r\\n\\r\\n#ifdef LINE_STROKE\\r\\n  vClipStrokeWidth = width;\\r\\n#endif\\r\\n\\r\\n#ifdef LINE_CLIP\\r\\n  clipEnds(p, center, pos);\\r\\n#endif\\r\\n\\r\\n  return pos;\\r\\n}\\r\\n\",\"map.2d.data\":\"uniform vec2 dataResolution;\\r\\nuniform vec2 dataPointer;\\r\\n\\r\\nvec2 map2DData(vec2 xy) {\\r\\n  return fract((xy + dataPointer) * dataResolution);\\r\\n}\\r\\n\",\"map.2d.data.wrap\":\"uniform vec2 dataResolution;\\r\\nuniform vec2 dataPointer;\\r\\n\\r\\nvec2 map2DData(vec2 xy) {\\r\\n  return fract((xy + dataPointer) * dataResolution);\\r\\n}\\r\\n\",\"map.xyzw.2dv\":\"void mapXyzw2DV(vec4 xyzw, out vec2 xy, out float z) {\\r\\n  xy = xyzw.xy;\\r\\n  z  = xyzw.z;\\r\\n}\\r\\n\\r\\n\",\"map.xyzw.align\":\"vec4 alignXYZW(vec4 xyzw) {\\r\\n  return floor(xyzw + .5);\\r\\n}\\r\\n\\r\\n\",\"map.xyzw.texture\":\"uniform float textureItems;\\r\\nuniform float textureHeight;\\r\\n\\r\\nvec2 mapXyzwTexture(vec4 xyzw) {\\r\\n  \\r\\n  float x = xyzw.x;\\r\\n  float y = xyzw.y;\\r\\n  float z = xyzw.z;\\r\\n  float i = xyzw.w;\\r\\n  \\r\\n  return vec2(i, y) + vec2(x, z) * vec2(textureItems, textureHeight);\\r\\n}\\r\\n\\r\\n\",\"mesh.fragment.color\":\"varying vec4 vColor;\\r\\n\\r\\nvec4 getColor() {\\r\\n  if (vColor.a <= 0.0) discard;\\r\\n  return vColor;\\r\\n}\\r\\n\",\"mesh.fragment.map\":\"#ifdef POSITION_STPQ\\r\\nvarying vec4 vSTPQ;\\r\\n#endif\\r\\n#ifdef POSITION_U\\r\\nvarying float vU;\\r\\n#endif\\r\\n#ifdef POSITION_UV\\r\\nvarying vec2 vUV;\\r\\n#endif\\r\\n#ifdef POSITION_UVW\\r\\nvarying vec3 vUVW;\\r\\n#endif\\r\\n#ifdef POSITION_UVWO\\r\\nvarying vec4 vUVWO;\\r\\n#endif\\r\\n\\r\\nvec4 getSample(vec4 uvwo, vec4 stpq);\\r\\n\\r\\nvec4 getMapColor() {\\r\\n  #ifdef POSITION_STPQ\\r\\n  vec4 stpq = vSTPQ;\\r\\n  #else\\r\\n  vec4 stpq = vec4(0.0);\\r\\n  #endif\\r\\n\\r\\n  #ifdef POSITION_U\\r\\n  vec4 uvwo = vec4(vU, 0.0, 0.0, 0.0);\\r\\n  #endif\\r\\n  #ifdef POSITION_UV\\r\\n  vec4 uvwo = vec4(vUV, 0.0, 0.0);\\r\\n  #endif\\r\\n  #ifdef POSITION_UVW\\r\\n  vec4 uvwo = vec4(vUVW, 0.0);\\r\\n  #endif\\r\\n  #ifdef POSITION_UVWO\\r\\n  vec4 uvwo = vec4(vUVWO);\\r\\n  #endif\\r\\n\\r\\n  return getSample(uvwo, stpq);\\r\\n}\\r\\n\",\"mesh.fragment.mask\":\"varying float vMask;\\r\\n\\r\\nfloat ease(float t) {\\r\\n  t = clamp(t, 0.0, 1.0);\\r\\n  return t * t * (3.0 - 2.0 * t);\\r\\n}\\r\\n\\r\\nvec4 maskColor() {\\r\\n  if (vMask <= 0.0) discard;\\r\\n  return vec4(vec3(1.0), ease(vMask));\\r\\n}\\r\\n\",\"mesh.fragment.material\":\"#ifdef POSITION_STPQ\\r\\nvarying vec4 vSTPQ;\\r\\n#endif\\r\\n#ifdef POSITION_U\\r\\nvarying float vU;\\r\\n#endif\\r\\n#ifdef POSITION_UV\\r\\nvarying vec2 vUV;\\r\\n#endif\\r\\n#ifdef POSITION_UVW\\r\\nvarying vec3 vUVW;\\r\\n#endif\\r\\n#ifdef POSITION_UVWO\\r\\nvarying vec4 vUVWO;\\r\\n#endif\\r\\n\\r\\nvec4 getSample(vec4 rgba, vec4 stpq);\\r\\n\\r\\nvec4 getMaterialColor(vec4 rgba) {\\r\\n  vec4 stpq = vec4(0.0);\\r\\n\\r\\n  #ifdef POSITION_U\\r\\n  stpq.x = vU;\\r\\n  #endif\\r\\n  #ifdef POSITION_UV\\r\\n  stpq.xy = vUV;\\r\\n  #endif\\r\\n  #ifdef POSITION_UVW\\r\\n  stpq.xyz = vUVW;\\r\\n  #endif\\r\\n  #ifdef POSITION_UVWO\\r\\n  stpq = vUVWO;\\r\\n  #endif\\r\\n\\r\\n  #ifdef POSITION_STPQ\\r\\n  stpq = vSTPQ;\\r\\n  #endif\\r\\n\\r\\n  return getSample(rgba, stpq);\\r\\n}\\r\\n\",\"mesh.fragment.shaded\":\"varying vec3 vNormal;\\r\\nvarying vec3 vLight;\\r\\nvarying vec3 vPosition;\\r\\n\\r\\nvec3 offSpecular(vec3 color) {\\r\\n  vec3 c = 1.0 - color;\\r\\n  return 1.0 - c * c;\\r\\n}\\r\\n\\r\\nvec4 getShadedColor(vec4 rgba) {\\r\\n  \\r\\n  vec3 color = rgba.xyz;\\r\\n  vec3 color2 = offSpecular(rgba.xyz);\\r\\n\\r\\n  vec3 normal = normalize(vNormal);\\r\\n  vec3 light = normalize(vLight);\\r\\n  vec3 position = normalize(vPosition);\\r\\n  \\r\\n  float side    = gl_FrontFacing ? -1.0 : 1.0;\\r\\n  float cosine  = side * dot(normal, light);\\r\\n  float diffuse = mix(max(0.0, cosine), .5 + .5 * cosine, .1);\\r\\n  \\r\\n  vec3  halfLight = normalize(light + position);\\r\\n\\tfloat cosineHalf = max(0.0, side * dot(normal, halfLight));\\r\\n\\tfloat specular = pow(cosineHalf, 16.0);\\r\\n\\t\\r\\n\\treturn vec4(color * (diffuse * .9 + .05) + .25 * color2 * specular, rgba.a);\\r\\n}\\r\\n\",\"mesh.fragment.texture\":\"\",\"mesh.gamma.in\":\"vec4 getGammaInColor(vec4 rgba) {\\r\\n  return vec4(rgba.rgb * rgba.rgb, rgba.a);\\r\\n}\\r\\n\",\"mesh.gamma.out\":\"vec4 getGammaOutColor(vec4 rgba) {\\r\\n  return vec4(sqrt(rgba.rgb), rgba.a);\\r\\n}\\r\\n\",\"mesh.map.uvwo\":\"vec4 mapUVWO(vec4 uvwo, vec4 stpq) {\\r\\n  return uvwo;\\r\\n}\\r\\n\",\"mesh.position\":\"uniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvec3 getMeshPosition() {\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n  return getPosition(p, 1.0);\\r\\n}\\r\\n\",\"mesh.vertex.color\":\"attribute vec4 position4;\\r\\nuniform vec4 geometryClip;\\r\\nvarying vec4 vColor;\\r\\n\\r\\n// External\\r\\nvec4 getSample(vec4 xyzw);\\r\\n\\r\\nvoid vertexColor() {\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n  vColor = getSample(p);\\r\\n}\\r\\n\",\"mesh.vertex.mask\":\"attribute vec4 position4;\\r\\nuniform vec4 geometryResolution;\\r\\nuniform vec4 geometryClip;\\r\\nvarying float vMask;\\r\\n\\r\\n// External\\r\\nfloat getSample(vec4 xyzw);\\r\\n\\r\\nvoid maskLevel() {\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n  vMask = getSample(p * geometryResolution);\\r\\n}\\r\\n\",\"mesh.vertex.position\":\"uniform vec4 geometryResolution;\\r\\n\\r\\n#ifdef POSITION_STPQ\\r\\nvarying vec4 vSTPQ;\\r\\n#endif\\r\\n#ifdef POSITION_U\\r\\nvarying float vU;\\r\\n#endif\\r\\n#ifdef POSITION_UV\\r\\nvarying vec2 vUV;\\r\\n#endif\\r\\n#ifdef POSITION_UVW\\r\\nvarying vec3 vUVW;\\r\\n#endif\\r\\n#ifdef POSITION_UVWO\\r\\nvarying vec4 vUVWO;\\r\\n#endif\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, in vec4 stpqIn, out vec4 stpqOut);\\r\\n\\r\\nvec3 getMeshPosition(vec4 xyzw, float canonical) {\\r\\n  vec4 stpqOut, stpqIn = xyzw * geometryResolution;\\r\\n  vec3 xyz = getPosition(xyzw, stpqIn, stpqOut);\\r\\n\\r\\n  #ifdef POSITION_MAP\\r\\n  if (canonical > 0.5) {\\r\\n    #ifdef POSITION_STPQ\\r\\n    vSTPQ = stpqOut;\\r\\n    #endif\\r\\n    #ifdef POSITION_U\\r\\n    vU = stpqOut.x;\\r\\n    #endif\\r\\n    #ifdef POSITION_UV\\r\\n    vUV = stpqOut.xy;\\r\\n    #endif\\r\\n    #ifdef POSITION_UVW\\r\\n    vUVW = stpqOut.xyz;\\r\\n    #endif\\r\\n    #ifdef POSITION_UVWO\\r\\n    vUVWO = stpqOut;\\r\\n    #endif\\r\\n  }\\r\\n  #endif\\r\\n  return xyz;\\r\\n}\\r\\n\",\"move.position\":\"uniform float transitionEnter;\\r\\nuniform float transitionExit;\\r\\nuniform vec4  transitionScale;\\r\\nuniform vec4  transitionBias;\\r\\nuniform float transitionSkew;\\r\\nuniform float transitionActive;\\r\\n\\r\\nuniform vec4  moveFrom;\\r\\nuniform vec4  moveTo;\\r\\n\\r\\nfloat ease(float t) {\\r\\n  t = clamp(t, 0.0, 1.0);\\r\\n  return 1.0 - (2.0 - t) * t;\\r\\n}\\r\\n\\r\\nvec4 getTransitionPosition(vec4 xyzw, inout vec4 stpq) {\\r\\n  if (transitionActive < 0.5) return xyzw;\\r\\n\\r\\n  float enter   = transitionEnter;\\r\\n  float exit    = transitionExit;\\r\\n  float skew    = transitionSkew;\\r\\n  vec4  scale   = transitionScale;\\r\\n  vec4  bias    = transitionBias;\\r\\n\\r\\n  float factor  = 1.0 + skew;\\r\\n  float offset  = dot(vec4(1.0), stpq * scale + bias);\\r\\n\\r\\n  float a1 = ease(enter * factor - offset);\\r\\n  float a2 = ease(exit  * factor + offset - skew);\\r\\n\\r\\n  return xyzw + a1 * moveFrom + a2 * moveTo;\\r\\n}\",\"object.mask.default\":\"vec4 getMask(vec4 xyzw) {\\r\\n  return vec4(1.0);\\r\\n}\",\"point.alpha.circle\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getDiscAlpha(float mask) {\\r\\n  // Approximation: 1 - x*x is approximately linear around x = 1 with slope 2\\r\\n  return vPixelSize * (1.0 - mask);\\r\\n  //  return vPixelSize * 2.0 * (1.0 - sqrt(mask));\\r\\n}\\r\\n\",\"point.alpha.circle.hollow\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getDiscHollowAlpha(float mask) {\\r\\n  return vPixelSize * (0.5 - 2.0 * abs(sqrt(mask) - .75));\\r\\n}\\r\\n\",\"point.alpha.generic\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getGenericAlpha(float mask) {\\r\\n  return vPixelSize * 2.0 * (1.0 - mask);\\r\\n}\\r\\n\",\"point.alpha.generic.hollow\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getGenericHollowAlpha(float mask) {\\r\\n  return vPixelSize * (0.5 - 2.0 * abs(mask - .75));\\r\\n}\\r\\n\",\"point.edge\":\"varying vec2 vSprite;\\r\\n\\r\\nfloat getSpriteMask(vec2 xy);\\r\\nfloat getSpriteAlpha(float mask);\\r\\n\\r\\nvoid setFragmentColorFill(vec4 color) {\\r\\n  float mask = getSpriteMask(vSprite);\\r\\n  if (mask > 1.0) {\\r\\n    discard;\\r\\n  }\\r\\n  float alpha = getSpriteAlpha(mask);\\r\\n  if (alpha >= 1.0) {\\r\\n    discard;\\r\\n  }\\r\\n  gl_FragColor = vec4(color.rgb, alpha * color.a);\\r\\n}\\r\\n\",\"point.fill\":\"varying vec2 vSprite;\\r\\n\\r\\nfloat getSpriteMask(vec2 xy);\\r\\nfloat getSpriteAlpha(float mask);\\r\\n\\r\\nvoid setFragmentColorFill(vec4 color) {\\r\\n  float mask = getSpriteMask(vSprite);\\r\\n  if (mask > 1.0) {\\r\\n    discard;\\r\\n  }\\r\\n  float alpha = getSpriteAlpha(mask);\\r\\n  if (alpha < 1.0) {\\r\\n    discard;\\r\\n  }\\r\\n  gl_FragColor = color;\\r\\n}\\r\\n\\r\\n\",\"point.mask.circle\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getCircleMask(vec2 uv) {\\r\\n  return dot(uv, uv);\\r\\n}\\r\\n\",\"point.mask.diamond\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getDiamondMask(vec2 uv) {\\r\\n  vec2 a = abs(uv);\\r\\n  return a.x + a.y;\\r\\n}\\r\\n\",\"point.mask.down\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getTriangleDownMask(vec2 uv) {\\r\\n  uv.y += .25;\\r\\n  return max(uv.y, abs(uv.x) * .866 - uv.y * .5 + .6);\\r\\n}\\r\\n\",\"point.mask.left\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getTriangleLeftMask(vec2 uv) {\\r\\n  uv.x += .25;\\r\\n  return max(uv.x, abs(uv.y) * .866 - uv.x * .5 + .6);\\r\\n}\\r\\n\",\"point.mask.right\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getTriangleRightMask(vec2 uv) {\\r\\n  uv.x -= .25;\\r\\n  return max(-uv.x, abs(uv.y) * .866 + uv.x * .5 + .6);\\r\\n}\\r\\n\",\"point.mask.square\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getSquareMask(vec2 uv) {\\r\\n  vec2 a = abs(uv);\\r\\n  return max(a.x, a.y);\\r\\n}\\r\\n\",\"point.mask.up\":\"varying float vPixelSize;\\r\\n\\r\\nfloat getTriangleUpMask(vec2 uv) {\\r\\n  uv.y -= .25;\\r\\n  return max(-uv.y, abs(uv.x) * .866 + uv.y * .5 + .6);\\r\\n}\\r\\n\",\"point.position\":\"uniform float pointDepth;\\r\\n\\r\\nuniform float pixelUnit;\\r\\nuniform float renderScale;\\r\\nuniform float renderScaleInv;\\r\\nuniform float focusDepth;\\r\\n\\r\\nuniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\nattribute vec2 sprite;\\r\\n\\r\\nvarying vec2 vSprite;\\r\\nvarying float vPixelSize;\\r\\n\\r\\nconst float pointScale = POINT_SHAPE_SCALE;\\r\\n\\r\\n// External\\r\\nfloat getPointSize(vec4 xyzw);\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvec3 getPointPosition() {\\r\\n  // Discard out-of-range points by generating degenerate face\\r\\n  if (\\r\\n    position4.x > geometryClip.x ||\\r\\n    position4.y > geometryClip.y ||\\r\\n    position4.z > geometryClip.z ||\\r\\n    position4.w > geometryClip.w\\r\\n  ) return vec3(0.0, 0.0, 0.0);\\r\\n  vec4 p = position4;\\r\\n\\r\\n  vec3 center = getPosition(p, 1.0);\\r\\n\\r\\n  // Depth blending\\r\\n  // TODO: orthographic camera\\r\\n  // Workaround: set depth = 0\\r\\n  float z = -center.z;\\r\\n  float depth = mix(z, focusDepth, pointDepth);\\r\\n  \\r\\n  // Match device/unit mapping \\r\\n  // Sprite goes from -1..1, width = 2.\\r\\n  float pointSize = getPointSize(p);\\r\\n  float size = pointScale * pointSize * pixelUnit * .5;\\r\\n  float depthSize = depth * size;\\r\\n  \\r\\n  // Pad sprite by half a pixel to make the anti-aliasing straddle the pixel edge\\r\\n  // Note: pixelsize measures radius\\r\\n  float pixelSize = .5 * (pointDepth > 0.0 ? depthSize / z : size);\\r\\n  float paddedSize = pixelSize + 0.5;\\r\\n  float padFactor = paddedSize / pixelSize;\\r\\n\\r\\n  vPixelSize = paddedSize;\\r\\n  vSprite    = sprite;\\r\\n\\r\\n  return center + vec3(sprite * depthSize * renderScaleInv * padFactor, 0.0);\\r\\n}\\r\\n\",\"point.size.uniform\":\"uniform float pointSize;\\r\\n\\r\\nfloat getPointSize(vec4 xyzw) {\\r\\n  return pointSize;\\r\\n}\",\"point.size.varying\":\"uniform float pointSize;\\r\\n\\r\\nvec4 getSample(vec4 xyzw);\\r\\n\\r\\nfloat getPointSize(vec4 xyzw) {\\r\\n  return pointSize * getSample(xyzw).x;\\r\\n}\",\"polar.position\":\"uniform float polarBend;\\r\\nuniform float polarFocus;\\r\\nuniform float polarAspect;\\r\\nuniform float polarHelix;\\r\\n\\r\\nuniform mat4 viewMatrix;\\r\\n\\r\\nvec4 getPolarPosition(vec4 position, inout vec4 stpq) {\\r\\n  if (polarBend > 0.0) {\\r\\n\\r\\n    if (polarBend < 0.001) {\\r\\n      // Factor out large addition/subtraction of polarFocus\\r\\n      // to avoid numerical error\\r\\n      // sin(x) ~ x\\r\\n      // cos(x) ~ 1 - x * x / 2\\r\\n      vec2 pb = position.xy * polarBend;\\r\\n      float ppbbx = pb.x * pb.x;\\r\\n      return viewMatrix * vec4(\\r\\n        position.x * (1.0 - polarBend + (pb.y * polarAspect)),\\r\\n        position.y * (1.0 - .5 * ppbbx) - (.5 * ppbbx) * polarFocus / polarAspect,\\r\\n        position.z + position.x * polarHelix * polarBend,\\r\\n        1.0\\r\\n      );\\r\\n    }\\r\\n    else {\\r\\n      vec2 xy = position.xy * vec2(polarBend, polarAspect);\\r\\n      float radius = polarFocus + xy.y;\\r\\n      return viewMatrix * vec4(\\r\\n        sin(xy.x) * radius,\\r\\n        (cos(xy.x) * radius - polarFocus) / polarAspect,\\r\\n        position.z + position.x * polarHelix * polarBend,\\r\\n        1.0\\r\\n      );\\r\\n    }\\r\\n  }\\r\\n  else {\\r\\n    return viewMatrix * vec4(position.xyz, 1.0);\\r\\n  }\\r\\n}\",\"project.position\":\"uniform float styleZBias;\\r\\nuniform float styleZIndex;\\r\\n\\r\\nvoid setPosition(vec3 position) {\\r\\n\\r\\n  #ifdef PROJECT_ORTHOGONAL\\r\\n  // Orthogonal projection with depth preservation around z = 1\\r\\n  vec4 pos = projectionMatrix * vec4(position, 1.0);\\r\\n  pos.xy *= -position.z;\\r\\n  #else\\r\\n  // Normal perspective projection\\r\\n  vec4 pos = projectionMatrix * vec4(position, 1.0);\\r\\n  #endif\\r\\n\\r\\n  // Apply relative Z bias\\r\\n  float bias  = (1.0 - styleZBias / 32768.0);\\r\\n  pos.z *= bias;\\r\\n  \\r\\n  // Apply large scale Z index changes\\r\\n  if (styleZIndex > 0.0) {\\r\\n    float z = pos.z / pos.w;\\r\\n    pos.z = ((z + 1.0) / (styleZIndex + 1.0) - 1.0) * pos.w;\\r\\n  }\\r\\n  \\r\\n  gl_Position = pos;\\r\\n}\",\"project.readback\":\"// This is three.js' global uniform, missing from fragment shaders.\\r\\nuniform mat4 projectionMatrix;\\r\\n\\r\\nvec4 readbackPosition(vec3 position, vec4 stpq) {\\r\\n  vec4 pos = projectionMatrix * vec4(position, 1.0);\\r\\n  vec3 final = pos.xyz / pos.w;\\r\\n  if (final.z < -1.0) {\\r\\n    return vec4(0.0, 0.0, 0.0, -1.0);\\r\\n  }\\r\\n  else {\\r\\n    return vec4(final, -position.z);\\r\\n  }\\r\\n}\\r\\n\",\"raw.position.scale\":\"uniform vec4 geometryScale;\\r\\nattribute vec4 position4;\\r\\n\\r\\nvec4 getRawPositionScale() {\\r\\n  return geometryScale * position4;\\r\\n}\\r\\n\",\"repeat.position\":\"uniform vec4 repeatModulus;\\r\\n\\r\\nvec4 getRepeatXYZW(vec4 xyzw) {\\r\\n  return mod(xyzw + .5, repeatModulus) - .5;\\r\\n}\\r\\n\",\"resample.padding\":\"uniform vec4 resampleBias;\\r\\n\\r\\nvec4 resamplePadding(vec4 xyzw) {\\r\\n  return xyzw + resampleBias;\\r\\n}\",\"resample.relative\":\"uniform vec4 resampleFactor;\\r\\n\\r\\nvec4 resampleRelative(vec4 xyzw) {\\r\\n  return xyzw * resampleFactor;\\r\\n}\",\"reveal.mask\":\"uniform float transitionEnter;\\r\\nuniform float transitionExit;\\r\\nuniform vec4  transitionScale;\\r\\nuniform vec4  transitionBias;\\r\\nuniform float transitionSkew;\\r\\nuniform float transitionActive;\\r\\n\\r\\nfloat getTransitionSDFMask(vec4 stpq) {\\r\\n  if (transitionActive < 0.5) return 1.0;\\r\\n\\r\\n  float enter   = transitionEnter;\\r\\n  float exit    = transitionExit;\\r\\n  float skew    = transitionSkew;\\r\\n  vec4  scale   = transitionScale;\\r\\n  vec4  bias    = transitionBias;\\r\\n\\r\\n  float factor  = 1.0 + skew;\\r\\n  float offset  = dot(vec4(1.0), stpq * scale + bias);\\r\\n\\r\\n  vec2 d = vec2(enter, exit) * factor + vec2(-offset, offset - skew);\\r\\n  if (exit  == 1.0) return d.x;\\r\\n  if (enter == 1.0) return d.y;\\r\\n  return min(d.x, d.y);\\r\\n}\",\"reverse.position\":\"uniform vec4 reverseScale;\\r\\nuniform vec4 reverseOffset;\\r\\n\\r\\nvec4 getReverseOffset(vec4 xyzw) {\\r\\n  return xyzw * reverseScale + reverseOffset;\\r\\n}\\r\\n\",\"root.position\":\"vec3 getRootPosition(vec4 position, in vec4 stpqIn, out vec4 stpqOut) {\\r\\n  stpqOut = stpqIn; // avoid inout confusion\\r\\n  return position.xyz;\\r\\n}\",\"sample.2d\":\"uniform sampler2D dataTexture;\\r\\n\\r\\nvec4 sample2D(vec2 uv) {\\r\\n  return texture2D(dataTexture, uv);\\r\\n}\\r\\n\",\"scale.position\":\"uniform vec4 scaleAxis;\\r\\nuniform vec4 scaleOffset;\\r\\n\\r\\nvec4 sampleData(float x);\\r\\n\\r\\nvec4 getScalePosition(vec4 xyzw) {\\r\\n  return scaleAxis * sampleData(xyzw.x).x + scaleOffset;\\r\\n}\\r\\n\",\"screen.map.stpq\":\"uniform vec4 remapSTPQScale;\\r\\n\\r\\nvec4 screenMapSTPQ(vec4 xyzw, out vec4 stpq) {\\r\\n  stpq = xyzw * remapSTPQScale;\\r\\n  return xyzw;\\r\\n}\\r\\n\",\"screen.map.xy\":\"uniform vec2 remapUVScale;\\r\\n\\r\\nvec4 screenMapXY(vec4 uvwo, vec4 stpq) {\\r\\n  return vec4(floor(remapUVScale * uvwo.xy), 0.0, 0.0);\\r\\n}\\r\\n\",\"screen.map.xyzw\":\"uniform vec2 remapUVScale;\\r\\nuniform vec2 remapModulus;\\r\\nuniform vec2 remapModulusInv;\\r\\n\\r\\nvec4 screenMapXYZW(vec4 uvwo, vec4 stpq) {\\r\\n  vec2 st = floor(remapUVScale * uvwo.xy);\\r\\n  vec2 xy = st * remapModulusInv;\\r\\n  vec2 ixy = floor(xy);\\r\\n  vec2 fxy = xy - ixy;\\r\\n  vec2 zw = fxy * remapModulus;\\r\\n  return vec4(ixy.x, zw.y, ixy.y, zw.x);\\r\\n}\\r\\n\",\"screen.pass.uv\":\"vec2 screenPassUV(vec4 uvwo, vec4 stpq) {\\r\\n  return uvwo.xy;\\r\\n}\\r\\n\",\"screen.position\":\"void setScreenPosition(vec4 position) {\\r\\n  gl_Position = vec4(position.xy * 2.0 - 1.0, 0.5, 1.0);\\r\\n}\\r\\n\",\"slice.position\":\"uniform vec4 sliceOffset;\\r\\n\\r\\nvec4 getSliceOffset(vec4 xyzw) {\\r\\n  return xyzw + sliceOffset;\\r\\n}\\r\\n\",\"spherical.position\":\"uniform float sphericalBend;\\r\\nuniform float sphericalFocus;\\r\\nuniform float sphericalAspectX;\\r\\nuniform float sphericalAspectY;\\r\\nuniform float sphericalScaleY;\\r\\n\\r\\nuniform mat4 viewMatrix;\\r\\n\\r\\nvec4 getSphericalPosition(vec4 position, inout vec4 stpq) {\\r\\n  if (sphericalBend > 0.0001) {\\r\\n\\r\\n    vec3 xyz = position.xyz * vec3(sphericalBend, sphericalBend / sphericalAspectY * sphericalScaleY, sphericalAspectX);\\r\\n    float radius = sphericalFocus + xyz.z;\\r\\n    float cosine = cos(xyz.y) * radius;\\r\\n\\r\\n    return viewMatrix * vec4(\\r\\n      sin(xyz.x) * cosine,\\r\\n      sin(xyz.y) * radius * sphericalAspectY,\\r\\n      (cos(xyz.x) * cosine - sphericalFocus) / sphericalAspectX,\\r\\n      1.0\\r\\n    );\\r\\n  }\\r\\n  else {\\r\\n    return viewMatrix * vec4(position.xyz, 1.0);\\r\\n  }\\r\\n}\",\"split.position\":\"uniform float splitStride;\\r\\n\\r\\nvec2 getIndices(vec4 xyzw);\\r\\nvec4 getRest(vec4 xyzw);\\r\\nvec4 injectIndex(float v);\\r\\n\\r\\nvec4 getSplitXYZW(vec4 xyzw) {\\r\\n  vec2 uv = getIndices(xyzw);\\r\\n  float offset = uv.x + uv.y * splitStride;\\r\\n  return injectIndex(offset) + getRest(xyzw);\\r\\n}\\r\\n\",\"spread.position\":\"uniform vec4 spreadOffset;\\r\\nuniform mat4 spreadMatrix;\\r\\n\\r\\n// External\\r\\nvec4 getSample(vec4 xyzw);\\r\\n\\r\\nvec4 getSpreadSample(vec4 xyzw) {\\r\\n  vec4 sample = getSample(xyzw);\\r\\n  return sample + spreadMatrix * (spreadOffset + xyzw);\\r\\n}\\r\\n\",\"sprite.fragment\":\"varying vec2 vSprite;\\r\\n\\r\\nvec4 getSample(vec2 xy);\\r\\n\\r\\nvec4 getSpriteColor() {\\r\\n  return getSample(vSprite);\\r\\n}\",\"sprite.position\":\"uniform vec2 spriteOffset;\\r\\nuniform float spriteScale;\\r\\nuniform float spriteDepth;\\r\\nuniform float spriteSnap;\\r\\n\\r\\nuniform vec2 renderOdd;\\r\\nuniform float renderScale;\\r\\nuniform float renderScaleInv;\\r\\nuniform float pixelUnit;\\r\\nuniform float focusDepth;\\r\\n\\r\\nuniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\nattribute vec2 sprite;\\r\\n\\r\\nvarying float vPixelSize;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\nvec4 getSprite(vec4 xyzw);\\r\\n\\r\\nvec3 getSpritePosition() {\\r\\n  // Clip points\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n  float diff = length(position4 - p);\\r\\n  if (diff > 0.0) {\\r\\n    return vec3(0.0, 0.0, 1000.0);\\r\\n  }\\r\\n\\r\\n  // Make sprites\\r\\n  vec3 center = getPosition(p, 1.0);\\r\\n  vec4 atlas = getSprite(p);\\r\\n\\r\\n  // Sprite goes from -1..1, width = 2.\\r\\n  // -1..1 -> -0.5..0.5\\r\\n  vec2 halfSprite = sprite * .5;\\r\\n  vec2 halfFlipSprite = vec2(halfSprite.x, -halfSprite.y);\\r\\n\\r\\n#ifdef POSITION_UV\\r\\n  // Assign UVs\\r\\n  vUV = atlas.xy + atlas.zw * (halfFlipSprite + .5);\\r\\n#endif\\r\\n\\r\\n  // Depth blending\\r\\n  // TODO: orthographic camera\\r\\n  // Workaround: set depth = 0\\r\\n  float depth = focusDepth, z;\\r\\n  z = -center.z;\\r\\n  if (spriteDepth < 1.0) {\\r\\n    depth = mix(z, focusDepth, spriteDepth);\\r\\n  }\\r\\n  \\r\\n  // Match device/unit mapping \\r\\n  float size = pixelUnit * spriteScale;\\r\\n  float depthSize = depth * size;\\r\\n\\r\\n  // Calculate pixelSize for anti-aliasing\\r\\n  float pixelSize = (spriteDepth > 0.0 ? depthSize / z : size);\\r\\n  vPixelSize = pixelSize;\\r\\n\\r\\n  // Position sprite\\r\\n  vec2 atlasOdd = fract(atlas.zw / 2.0);\\r\\n  vec2 offset = (spriteOffset + halfSprite * atlas.zw) * depthSize;\\r\\n  if (spriteSnap > 0.5) {\\r\\n    // Snap to pixel (w/ epsilon shift to avoid jitter)\\r\\n    return vec3(((floor(center.xy / center.z * renderScale + 0.001) + renderOdd + atlasOdd) * center.z + offset) * renderScaleInv, center.z);\\r\\n  }\\r\\n  else {\\r\\n    // Place directly\\r\\n    return center + vec3(offset * renderScaleInv, 0.0);\\r\\n  }\\r\\n\\r\\n}\\r\\n\",\"stereographic.position\":\"uniform float stereoBend;\\r\\n\\r\\nuniform mat4 viewMatrix;\\r\\n\\r\\nvec4 getStereoPosition(vec4 position, inout vec4 stpq) {\\r\\n  if (stereoBend > 0.0001) {\\r\\n\\r\\n    vec3 pos = position.xyz;\\r\\n    float r = length(pos);\\r\\n    float z = r + pos.z;\\r\\n    vec3 project = vec3(pos.xy / z, r);\\r\\n    \\r\\n    vec3 lerped = mix(pos, project, stereoBend);\\r\\n\\r\\n    return viewMatrix * vec4(lerped, 1.0);\\r\\n  }\\r\\n  else {\\r\\n    return viewMatrix * vec4(position.xyz, 1.0);\\r\\n  }\\r\\n}\",\"stereographic4.position\":\"uniform float stereoBend;\\r\\nuniform vec4 basisScale;\\r\\nuniform vec4 basisOffset;\\r\\nuniform mat4 viewMatrix;\\r\\nuniform vec2 view4D;\\r\\n\\r\\nvec4 getStereographic4Position(vec4 position, inout vec4 stpq) {\\r\\n  \\r\\n  vec4 transformed;\\r\\n  if (stereoBend > 0.0001) {\\r\\n\\r\\n    float r = length(position);\\r\\n    float w = r + position.w;\\r\\n    vec4 project = vec4(position.xyz / w, r);\\r\\n    \\r\\n    transformed = mix(position, project, stereoBend);\\r\\n  }\\r\\n  else {\\r\\n    transformed = position;\\r\\n  }\\r\\n\\r\\n  vec4 pos4 = transformed * basisScale - basisOffset;\\r\\n  vec3 xyz = (viewMatrix * vec4(pos4.xyz, 1.0)).xyz;\\r\\n  return vec4(xyz, pos4.w * view4D.y + view4D.x);\\r\\n}\\r\\n\",\"stpq.sample.2d\":\"varying vec2 vST;\\r\\n\\r\\nvec4 getSample(vec2 st);\\r\\n\\r\\nvec4 getSTSample() {\\r\\n  return getSample(vST);\\r\\n}\\r\\n\",\"stpq.xyzw.2d\":\"varying vec2 vUV;\\r\\n\\r\\nvoid setRawUV(vec4 xyzw) {\\r\\n  vUV = xyzw.xy;\\r\\n}\\r\\n\",\"strip.position.normal\":\"uniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\nattribute vec3 strip;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvarying vec3 vNormal;\\r\\nvarying vec3 vLight;\\r\\nvarying vec3 vPosition;\\r\\n\\r\\nvoid getStripGeometry(vec4 xyzw, vec3 strip, out vec3 pos, out vec3 normal) {\\r\\n  vec3 a, b, c;\\r\\n\\r\\n  a   = getPosition(xyzw, 1.0);\\r\\n  b   = getPosition(vec4(xyzw.xyz, strip.x), 0.0);\\r\\n  c   = getPosition(vec4(xyzw.xyz, strip.y), 0.0);\\r\\n\\r\\n  normal = normalize(cross(c - a, b - a)) * strip.z;\\r\\n  \\r\\n  pos = a;\\r\\n}\\r\\n\\r\\nvec3 getStripPositionNormal() {\\r\\n  vec3 center, normal;\\r\\n\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n\\r\\n  getStripGeometry(p, strip, center, normal);\\r\\n  vNormal   = normal;\\r\\n  vLight    = normalize((viewMatrix * vec4(1.0, 2.0, 2.0, 0.0)).xyz);\\r\\n  vPosition = -center;\\r\\n\\r\\n  return center;\\r\\n}\\r\\n\",\"style.color\":\"uniform vec3 styleColor;\\r\\nuniform float styleOpacity;\\r\\n\\r\\nvec4 getStyleColor() {\\r\\n  return vec4(styleColor, styleOpacity);\\r\\n}\\r\\n\",\"subdivide.depth\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideDepth(vec4 xyzw) {\\r\\n  float x = xyzw.z;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  return sampleData(vec4(xyzw.xy, i + g, xyzw.w));\\r\\n}\\r\\n\",\"subdivide.depth.lerp\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideDepthLerp(vec4 xyzw) {\\r\\n  float x = xyzw.z;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  vec4 xyzw1 = vec4(xyzw.xy, i, xyzw.w);\\r\\n  vec4 xyzw2 = vec4(xyzw.xy, i + 1.0, xyzw.w);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, g);\\r\\n}\\r\\n\",\"subdivide.height\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideHeight(vec4 xyzw) {\\r\\n  float x = xyzw.y;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  return sampleData(vec4(xyzw.x, i + g, xyzw.zw));\\r\\n}\\r\\n\",\"subdivide.height.lerp\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideHeightLerp(vec4 xyzw) {\\r\\n  float x = xyzw.y;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  vec4 xyzw1 = vec4(xyzw.x, i, xyzw.zw);\\r\\n  vec4 xyzw2 = vec4(xyzw.x, i + 1.0, xyzw.zw);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, g);\\r\\n}\\r\\n\",\"subdivide.items\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideItems(vec4 xyzw) {\\r\\n  float x = xyzw.w;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  return sampleData(vec4(xyzw.xyz, i + g));\\r\\n}\\r\\n\",\"subdivide.items.lerp\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideItemsLerp(vec4 xyzw) {\\r\\n  float x = xyzw.w;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  vec4 xyzw1 = vec4(xyzw.xyz, i);\\r\\n  vec4 xyzw2 = vec4(xyzw.xyz, i + 1.0);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, g);\\r\\n}\\r\\n\",\"subdivide.width\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideWidth(vec4 xyzw) {\\r\\n  float x = xyzw.x;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  return sampleData(vec4(i + g, xyzw.yzw));\\r\\n}\\r\\n\",\"subdivide.width.lerp\":\"uniform float subdivideBevel;\\r\\n\\r\\n// External\\r\\nvec4 sampleData(vec4 xyzw);\\r\\n\\r\\nvec4 subdivideWidthLerp(vec4 xyzw) {\\r\\n  float x = xyzw.x;\\r\\n  float i = floor(x);\\r\\n  float f = x - i;\\r\\n\\r\\n  float minf = subdivideBevel * min(f, 1.0 - f);\\r\\n  float g = (f > 0.5) ? 1.0 - minf : (f < 0.5) ? minf : 0.5;\\r\\n\\r\\n  vec4 xyzw1 = vec4(i, xyzw.yzw);\\r\\n  vec4 xyzw2 = vec4(i + 1.0, xyzw.yzw);\\r\\n  \\r\\n  vec4 a = sampleData(xyzw1);\\r\\n  vec4 b = sampleData(xyzw2);\\r\\n\\r\\n  return mix(a, b, g);\\r\\n}\\r\\n\",\"surface.mask.hollow\":\"attribute vec4 position4;\\r\\n\\r\\nfloat getSurfaceHollowMask(vec4 xyzw) {\\r\\n  vec4 df = abs(fract(position4) - .5);\\r\\n  vec2 df2 = min(df.xy, df.zw);\\r\\n  float df3 = min(df2.x, df2.y);\\r\\n  return df3;\\r\\n}\",\"surface.position\":\"uniform vec4 geometryClip;\\r\\nuniform vec4 geometryResolution;\\r\\nuniform vec4 mapSize;\\r\\n\\r\\nattribute vec4 position4;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvec3 getSurfacePosition() {\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n\\r\\n#ifdef SURFACE_CLOSED_X\\r\\n  if (p.x == geometryClip.x) p.x = 0.0;\\r\\n#endif\\r\\n#ifdef SURFACE_CLOSED_Y\\r\\n  if (p.y == geometryClip.y) p.y = 0.0;\\r\\n#endif\\r\\n\\r\\n  vec3 xyz = getPosition(p, 1.0);\\r\\n\\r\\n  // Overwrite UVs\\r\\n#ifdef POSITION_UV\\r\\n#ifdef POSITION_UV_INT\\r\\n  vUV = -.5 + (position4.xy * geometryResolution.xy) * mapSize.xy;\\r\\n#else\\r\\n  vUV = position4.xy * geometryResolution.xy;\\r\\n#endif\\r\\n#endif\\r\\n\\r\\n  return xyz;\\r\\n}\\r\\n\",\"surface.position.normal\":\"uniform vec4 mapSize;\\r\\nuniform vec4 geometryResolution;\\r\\nuniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\nvec3 getNormal(vec4 xyzw);\\r\\n\\r\\nvarying vec3 vNormal;\\r\\nvarying vec3 vLight;\\r\\nvarying vec3 vPosition;\\r\\n\\r\\nvec3 getSurfacePositionNormal() {\\r\\n\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n#ifdef SURFACE_CLOSED_X\\r\\n  if (p.x == geometryClip.x) p.x = 0.0;\\r\\n#endif\\r\\n#ifdef SURFACE_CLOSED_Y\\r\\n  if (p.y == geometryClip.y) p.y = 0.0;\\r\\n#endif\\r\\n\\r\\n  vec3 center = getPosition(p, 1.0);\\r\\n  vNormal   = normalMatrix * normalize(getNormal(p));\\r\\n  vLight    = normalize((viewMatrix * vec4(1.0, 2.0, 2.0, 0.0)).xyz); // hardcoded directional light\\r\\n  vPosition = -center;\\r\\n\\r\\n#ifdef POSITION_UV\\r\\n#ifdef POSITION_UV_INT\\r\\n  vUV = -.5 + (position4.xy * geometryResolution.xy) * mapSize.xy;\\r\\n#else\\r\\n  vUV = position4.xy * geometryResolution.xy;\\r\\n#endif\\r\\n#endif\\r\\n  \\r\\n  return center;\\r\\n}\\r\\n\",\"surface.position.shaded\":\"uniform vec4 mapSize;\\r\\nuniform vec4 geometryResolution;\\r\\nuniform vec4 geometryClip;\\r\\nattribute vec4 position4;\\r\\n\\r\\n// External\\r\\nvec3 getPosition(vec4 xyzw, float canonical);\\r\\n\\r\\nvec4 wrapAround(vec4 xyzw) {\\r\\n#ifdef SURFACE_CLOSED_X\\r\\n  float gx = geometryClip.x;\\r\\n  if (xyzw.x < 0.0) xyzw.x += gx;\\r\\n  if (xyzw.x >= gx) xyzw.x -= gx;\\r\\n#endif\\r\\n#ifdef SURFACE_CLOSED_Y\\r\\n  float gy = geometryClip.y;\\r\\n  if (xyzw.y < 0.0) xyzw.y += gy;\\r\\n  if (xyzw.y >= gy) xyzw.y -= gy;\\r\\n#endif\\r\\n  return xyzw;\\r\\n}\\r\\n\\r\\nvoid getSurfaceGeometry(vec4 xyzw, float edgeX, float edgeY, out vec3 left, out vec3 center, out vec3 right, out vec3 up, out vec3 down) {\\r\\n  vec4 deltaX = vec4(1.0, 0.0, 0.0, 0.0);\\r\\n  vec4 deltaY = vec4(0.0, 1.0, 0.0, 0.0);\\r\\n\\r\\n  center =                  getPosition(xyzw, 1.0);\\r\\n  left   =                  center;\\r\\n  down   =                  center;\\r\\n  right  = (edgeX < 0.5)  ? getPosition(wrapAround(xyzw + deltaX), 0.0) : (2.0 * center - getPosition(xyzw - deltaX, 0.0));\\r\\n  up     = (edgeY < 0.5)  ? getPosition(wrapAround(xyzw + deltaY), 0.0) : (2.0 * center - getPosition(xyzw - deltaY, 0.0));\\r\\n}\\r\\n\\r\\nvec3 getSurfaceNormal(vec3 left, vec3 center, vec3 right, vec3 up, vec3 down) {\\r\\n  vec3 dx = right - left;\\r\\n  vec3 dy = up    - down;\\r\\n  vec3 n = cross(dy, dx);\\r\\n  if (length(n) > 0.0) {\\r\\n    return normalize(n);\\r\\n  }\\r\\n  return vec3(0.0, 1.0, 0.0);\\r\\n}\\r\\n\\r\\nvarying vec3 vNormal;\\r\\nvarying vec3 vLight;\\r\\nvarying vec3 vPosition;\\r\\n\\r\\nvec3 getSurfacePositionShaded() {\\r\\n  vec3 left, center, right, up, down;\\r\\n\\r\\n  vec4 p = min(geometryClip, position4);\\r\\n  vec2 surface = vec2(0.0);\\r\\n#ifdef SURFACE_CLOSED_X\\r\\n  if (p.x == geometryClip.x) p.x = 0.0;\\r\\n#else\\r\\n  if (p.x == geometryClip.x) surface.x = 1.0;\\r\\n  //if (p.x == 0.0) surface.x = -1.0;\\r\\n#endif\\r\\n#ifdef SURFACE_CLOSED_Y\\r\\n  if (p.y == geometryClip.y) p.y = 0.0;\\r\\n#else\\r\\n  if (p.y == geometryClip.y) surface.y = 1.0;\\r\\n  //if (p.y == 0.0) surface.y = -1.0;\\r\\n#endif\\r\\n\\r\\n  getSurfaceGeometry(p, surface.x, surface.y, left, center, right, up, down);\\r\\n  vNormal   = getSurfaceNormal(left, center, right, up, down);\\r\\n  vLight    = normalize((viewMatrix * vec4(1.0, 2.0, 2.0, 0.0)).xyz); // hardcoded directional light\\r\\n  vPosition = -center;\\r\\n\\r\\n#ifdef POSITION_UV\\r\\n#ifdef POSITION_UV_INT\\r\\n  vUV = -.5 + (position4.xy * geometryResolution.xy) * mapSize.xy;\\r\\n#else\\r\\n  vUV = position4.xy * geometryResolution.xy;\\r\\n#endif\\r\\n#endif\\r\\n  \\r\\n  return center;\\r\\n}\\r\\n\",\"ticks.position\":\"uniform float worldUnit;\\r\\nuniform float focusDepth;\\r\\nuniform float tickSize;\\r\\nuniform float tickEpsilon;\\r\\nuniform vec3  tickNormal;\\r\\nuniform vec2  tickStrip;\\r\\n\\r\\nvec4 getSample(vec4 xyzw);\\r\\n\\r\\nvec3 transformPosition(vec4 position, in vec4 stpqIn, out vec4 stpqOut);\\r\\n\\r\\nvec3 getTickPosition(vec4 xyzw, in vec4 stpqIn, out vec4 stpqOut) {\\r\\n  float epsilon = tickEpsilon;\\r\\n\\r\\n  // determine tick direction\\r\\n  float leftX  = max(tickStrip.x, xyzw.y - 1.0);\\r\\n  float rightX = min(tickStrip.y, xyzw.y + 1.0);\\r\\n  \\r\\n  vec4 left    = getSample(vec4(leftX,  xyzw.zw, 0.0));\\r\\n  vec4 right   = getSample(vec4(rightX, xyzw.zw, 0.0));\\r\\n  vec4 diff    = right - left;\\r\\n\\r\\n  vec3 normal  = cross(normalize(diff.xyz + vec3(diff.w)), tickNormal);\\r\\n  float bias   = max(0.0, 1.0 - length(normal) * 2.0);\\r\\n       normal  = mix(normal, tickNormal.yzx, bias * bias);\\r\\n  \\r\\n  // transform (point) and (point + delta)\\r\\n  vec4 center  = getSample(vec4(xyzw.yzw, 0.0));\\r\\n  vec4 delta   = vec4(normal, 0.0) * epsilon;\\r\\n\\r\\n  vec4 a = center;\\r\\n  vec4 b = center + delta;\\r\\n\\r\\n  vec4 _;\\r\\n  vec3 c = transformPosition(a, stpqIn, stpqOut);\\r\\n  vec3 d = transformPosition(b, stpqIn, _);\\r\\n  \\r\\n  // sample on either side to create line\\r\\n  float line = xyzw.x - .5;\\r\\n  vec3  mid  = c;\\r\\n  vec3  side = normalize(d - c);\\r\\n\\r\\n  return mid + side * line * tickSize * worldUnit * focusDepth;\\r\\n}\\r\\n\",\"transform3.position\":\"uniform mat4 transformMatrix;\\r\\n\\r\\nvec4 transformPosition(vec4 position, inout vec4 stpq) {\\r\\n  return transformMatrix * vec4(position.xyz, 1.0);\\r\\n}\\r\\n\",\"transform4.position\":\"uniform mat4 transformMatrix;\\r\\nuniform vec4 transformOffset;\\r\\n\\r\\nvec4 transformPosition(vec4 position, inout vec4 stpq) {\\r\\n  return transformMatrix * position + transformOffset;\\r\\n}\\r\\n\",\"view.position\":\"// Implicit three.js uniform\\r\\n// uniform mat4 viewMatrix;\\r\\n\\r\\nvec4 getViewPosition(vec4 position, inout vec4 stpq) {\\r\\n  return (viewMatrix * vec4(position.xyz, 1.0));\\r\\n}\\r\\n\"}");
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.Animator = __webpack_require__(243);
+exports.Animator = __webpack_require__(244);
 
-exports.API = __webpack_require__(244);
+exports.API = __webpack_require__(245);
 
-exports.Controller = __webpack_require__(245);
+exports.Controller = __webpack_require__(246);
 
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Animation, Animator, Ease;
@@ -86598,7 +86748,7 @@ module.exports = Animator;
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var API, Util;
@@ -86940,7 +87090,7 @@ module.exports = API;
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Controller, Util;
@@ -87025,7 +87175,7 @@ module.exports = Controller;
 
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var THREE;
