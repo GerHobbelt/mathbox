@@ -1,6 +1,7 @@
+THREE  = require 'three'
 Buffer = require '../data/buffer'
-Voxel = require '../data/voxel'
-Util = require '../../../util'
+Voxel  = require '../data/voxel'
+Util   = require '../../../util'
 
 class Text extends Voxel
   @traits = ['node', 'buffer', 'active', 'data', 'texture', 'voxel', 'text', 'font']

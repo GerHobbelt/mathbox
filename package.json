@@ -8,37 +8,29 @@
   },
   "main": "build/mathbox-bundle.js",
   "scripts": {
-    "test": "gulp test",
-    "docs": "gulp docs",
-    "build": "gulp"
+    "build:shaders": "node ./src/shaders/buildSnippets.js",
+    "build": "npm run build:shaders && webpack",
+    "test": "build:shaders && karma start karma.conf.js",
+    "docs": "coffee src/docs/generate.coffee > docs/primitives.md"
   },
   "dependencies": {
-    "coffee-script": "^1.12.7",
-    "three": "^0.116.1"
+    "@math3d/threestrap": "0.0.13-prod",
+    "three": "0.84.0"
   },
   "devDependencies": {
-    "browserify": "^16.5.1",
-    "coffeeify": "^3.0.1",
-    "coffeescript": "^2.5.1",
-    "cssauron": "^1.4.0",
-    "gulp": "^4.0.2",
-    "gulp-batch": "^1.0.5",
-    "gulp-browserify": "^0.5.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-karma": "0.0.5",
-    "gulp-plumber": "^1.2.1",
-    "gulp-rename": "^2.0.0",
-    "gulp-shell": "^0.8.0",
-    "gulp-uglify": "^3.0.2",
-    "gulp-util": "^3.0.8",
-    "gulp-watch": "^5.0.1",
-    "jasmine-core": "^3.5.0",
-    "karma": "^5.0.9",
-    "karma-browserify": "^7.0.0",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^1.10.0",
+    "css-loader": "^3.2.1",
+    "cssauron": "^1.2.0",
+    "glob": "^7.1.6",
+    "jasmine-core": "^2.3.4",
+    "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-coffee-preprocessor": "^1.0.1",
-    "karma-jasmine": "^3.1.1",
-    "run-sequence": "^2.2.1"
+    "karma-jasmine": "^2.0.1",
+    "karma-webpack": "^4.0.2",
+    "style-loader": "^1.0.1",
+    "webpack": "^4.41.2",
+    "webpack-shell-plugin-next": "^1.1.5"
   },
   "author": "Steven Wittens",
   "license": "MIT"

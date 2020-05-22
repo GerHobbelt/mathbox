@@ -1,3 +1,4 @@
+THREE = require 'three'
 # Threestrap plugin
 THREE.Bootstrap.registerPlugin 'splash',
   defaults:

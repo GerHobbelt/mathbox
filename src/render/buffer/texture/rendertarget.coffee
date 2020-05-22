@@ -1,3 +1,4 @@
+THREE = require 'three'
 ###
 Virtual RenderTarget that cycles through multiple frames
 Provides easy access to past rendered frames

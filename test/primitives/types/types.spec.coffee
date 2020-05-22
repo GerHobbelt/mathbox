@@ -1,3 +1,4 @@
+MathBox = require '../../../src/index'
 Types = MathBox.Primitives.Types.Types
 
 describe "primitives.types.types", () ->

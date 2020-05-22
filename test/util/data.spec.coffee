@@ -1,3 +1,4 @@
+MathBox = require '../../src/index'
 Data = MathBox.Util.Data
 
 describe "util.data", () ->

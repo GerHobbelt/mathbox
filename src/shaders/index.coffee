@@ -1,2 +1,2 @@
 exports.Factory  = require './factory'
-exports.Snippets = require '../../build/shaders' # Compiled in build step
+exports.Snippets = require './snippets.json' # Compiled in build step

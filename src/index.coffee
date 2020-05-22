@@ -1,5 +1,10 @@
+require './index.css'
+THREE      = require 'three'
+Threestrap = require '@math3d/threestrap'
+Threestrap(THREE)
 # Global constructor
 mathBox = (options) ->
+  # Threestrap(THREE)
   three = THREE.Bootstrap options
 
   if !three.fallback
@@ -9,18 +14,19 @@ mathBox = (options) ->
   three.mathbox ? three
 
 # Just because
-window.π = Math.PI
-window.τ = π * 2
-window.e = Math.E
+#window.π = Math.PI
+#window.τ = π * 2
+#window.e = Math.E
 
 # Namespace
-window.MathBox = exports
-window.mathBox = exports.mathBox = mathBox
+MathBox = exports
+MathBox.version = '0.0.5'
+MathBox.mathBox = mathBox
+MathBox.THREE = THREE
 
 # Load context and export namespace
-exports.Context = Context = require './context'
-exports.version = Context.Version
-exports[k] = v for k, v of Context.Namespace
+MathBox.Context = Context = require './context'
+MathBox[k] = v for k, v of Context.Namespace
 
 # Splash screen plugin
 require './splash'

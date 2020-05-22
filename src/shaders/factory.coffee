@@ -1,4 +1,5 @@
-ShaderGraph = require '../../vendor/shadergraph/src'
+# TODO: replace this with an npm module
+ShaderGraph = require '../vendor/shadergraph/src'
 
 Factory = (snippets) ->
   fetch = (name) ->

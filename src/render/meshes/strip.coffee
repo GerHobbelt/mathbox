@@ -1,4 +1,5 @@
-Base         = require './base'
+THREE         = require 'three'
+Base          = require './base'
 StripGeometry = require('../geometry').StripGeometry
 
 class Strip extends Base

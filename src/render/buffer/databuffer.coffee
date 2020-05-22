@@ -1,3 +1,4 @@
+THREE       = require 'three'
 Buffer      = require './buffer'
 DataTexture = require './texture/datatexture'
 Util        = require '../../util'

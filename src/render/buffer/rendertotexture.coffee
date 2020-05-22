@@ -1,3 +1,4 @@
+THREE        = require 'three'
 Renderable   = require '../renderable'
 RenderTarget = require './texture/rendertarget'
 Util         = require '../../util'

@@ -1,3 +1,4 @@
+const THREE = require('three')
 // Recycled from threestrap
 
 module.exports = self = {

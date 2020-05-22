@@ -1,3 +1,4 @@
+THREE           = require 'three'
 Base            = require './base'
 ScreenGeometry  = require('../geometry').ScreenGeometry
 Util            = require '../../util'

@@ -1,3 +1,4 @@
+THREE           = require 'three'
 SurfaceGeometry = require './surfacegeometry'
 
 ###

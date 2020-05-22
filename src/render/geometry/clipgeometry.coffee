@@ -1,3 +1,4 @@
+THREE    = require 'three'
 Geometry = require './geometry'
 
 debug = false

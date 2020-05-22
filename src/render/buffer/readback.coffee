@@ -1,3 +1,4 @@
+THREE           = require 'three'
 Renderable      = require '../renderable'
 Buffer          = require './buffer'
 Memo            = require './memo'
