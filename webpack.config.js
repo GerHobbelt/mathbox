@@ -21,6 +21,10 @@ const sharedConfig = {
   },
   resolve: {
     extensions: [ '.js', '.coffee' ]
+  },
+  optimization: {
+    // We no not want to minimize our code.
+    minimize: false
   }
 }
 
