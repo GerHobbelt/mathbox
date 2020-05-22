@@ -15,22 +15,22 @@
   },
   "dependencies": {
     "@math3d/threestrap": "0.0.13-prod",
-    "three": "0.84.0"
+    "three": "0.116.1"
   },
   "devDependencies": {
     "coffee-loader": "^0.9.0",
     "coffeescript": "^1.10.0",
-    "css-loader": "^3.2.1",
-    "cssauron": "^1.2.0",
+    "css-loader": "^3.5.3",
+    "cssauron": "^1.4.0",
     "glob": "^7.1.6",
-    "jasmine-core": "^2.3.4",
-    "karma": "^4.4.1",
+    "jasmine-core": "^3.5.0",
+    "karma": "^5.0.9",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-jasmine": "^2.0.1",
+    "karma-jasmine": "^3.1.1",
     "karma-webpack": "^4.0.2",
-    "style-loader": "^1.0.1",
-    "webpack": "^4.41.2",
-    "webpack-shell-plugin-next": "^1.1.5"
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-shell-plugin-next": "^1.1.9"
   },
   "author": "Steven Wittens",
   "license": "MIT"
