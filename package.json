@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@math3d/threestrap": "0.0.13-prod",
-    "three": "^0.116.1"
+    "three": "0.85.2"
   },
   "devDependencies": {
     "autoprefixer": "^9.8.0",
