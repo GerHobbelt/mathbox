@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MathBox - Empty</title>
+  <script src="../build/mathbox-bundle.js"></script>
+  <link rel="stylesheet" href="../build/mathbox.css">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+</head>
+<body>
+  <script>
+
+class ComboSet {
+  constructor(size, funk) {
+    this.arr = [];
+    for (let i=0; i < size; i++) {
+      this.arr.push(funk(i));
+    }
+  }
+}
+class Combo {
+  constructor(previous, set, pointIndex) {
+    if (!previous.boolArray) this.boolArray = [...previous];
+    else {
+      this.boolArray = [...previous.boolArray];
+      this.shiftArray(0);
+    }
+    this.updateVal(set);
+    this.pointIndex = pointIndex;
+  }
+
+  updateVal(set) {
+    this.val = 0;
+    for (let i=0; i < this.boolArray.length; i++) {
+      if (this.boolArray[i]) this.val += set[i];
+    }
+    return this.val;
+  }
+  shiftArray(i) {
+    if (this.boolArray[i]) {
+      if(i == this.boolArray.length-1) this.boolArray.push(false);
+      if(this.boolArray[i+1]) {
+        this.shiftArray(i+1);
+      } else {
+        this.boolArray[i+1] = true;
+        this.boolArray[i] = false;
+        if (i > 0) this.fillBackArray(i-1);
+      }
+    } else if (i < this.boolArray.length-1){
+      this.shiftArray(i+1);
+    }
+  }
+  fillBackArray(i) {
+    let filled=0;
+    while (i >=0 && this.boolArray[i]) {
+      this.boolArray[i] = false;
+      i--;
+      filled++;
+    }
+    for(i=0;i<filled; i++) this.boolArray[i] = true;
+  }
+
+  toBoolString() {
+    let result = '';
+    for (let i=0; i<this.boolArray.length; i++) result += this.boolArray[i] ? '1' : '0';
+    return result;
+  }
+
+}
+
+class ThreeCombinationGraph {
+
+  constructor(view) {
+    this.view = view;
+  }
+
+}
+
+let combos = [];
+let arbitraryPowBase = Math.random()* 2;
+let funk = (x) => Math.pow(arbitraryPowBase,x);
+let comboSet = new ComboSet(13, funk ); // Math.pow(2,x)
+comboSet.arr.sort((a,b)=>a-b);
+combos.push(new Combo([true, true, true], comboSet.arr, 0));
+
+
+    var mathbox = mathBox({
+      plugins: ['core', 'controls', 'cursor', 'mathbox'],
+      controls: {
+        // Orbit controls, i.e. Euler angles, with gimbal lock
+        klass: THREE.OrbitControls,
+
+        // Trackball controls, i.e. Free quaternion rotation
+        //klass: THREE.TrackballControls,
+      },
+    });
+    if (mathbox.fallback) throw "WebGL not supported"
+
+    var three = mathbox.three;
+    three.renderer.setClearColor(new THREE.Color(0xFFFFFF), 1.0);
+
+
+
+    // Do stuff with mathbox,
+    // for example: (see docs/intro.md)
+    
+
+    // Place camera
+    var camera =
+      mathbox
+      .camera({
+        proxy: true,
+        position: [0, -0.9, 0.6], //[0, -0.9, 0.6],
+        // [0.20497403742066023, -0.6133419429168323, 0.6211015089889746]
+      });
+
+    // 2D cartesian
+    var view =
+      mathbox
+      .cartesian({
+        range: [[-7, 15], [-7, 15], [-7, 15]],
+        scale: [1, 1],
+      });
+
+        // Axes + grid
+        // view
+        //   .axis({
+        //     axis: 1,
+        //     width: 4,
+        //   })
+        //   .axis({
+        //     axis: 2,
+        //     width: 4,
+        //   })
+        //   .grid({
+        //     width: 1,
+        //     divideX: 10,
+        //     divideY: 10,
+        //   });
+
+            // Make axes black
+            mathbox.select('axis').set('color', 'black');
+
+            // Calibrate focus distance for units
+            //mathbox.set('focus', 3);
+
+            // Add some data
+            // var data =
+            //   view
+            //   .interval({
+            //     expr: function (emit, x, i, t) {
+            //       emit(x, Math.sin(x + t));
+            //     },
+            //     width: 64,
+            //     channels: 2,
+            //   });
+
+    // create points
+    var nPoints = 0;
+    var points = [];
+    let div = 1.0;
+    let started = false;
+
+    for (let y=0; y < 10; y++) {
+      for (let x=0; x <=y; x++) {
+        for (let z=0; z<=x; z++) {
+          if (!started) started = true;
+          else combos.push(new Combo(combos[nPoints-1], comboSet.arr, nPoints));
+          points.push([x / div, y / div, z / div]);
+          nPoints++;
+        }
+      }
+
+    }
+    let baseCombos = [... combos];
+    combos.sort((a,b)=> b.val-a.val);
+
+    let links = [];
+    let eqLinks = [];
+    for (var i = 1; i < nPoints; i++){
+      if (combos[i-1].val == combos[i].val) eqLinks.push(points[combos[i-1].pointIndex], points[combos[i].pointIndex]);
+      else links.push(points[combos[i-1].pointIndex], points[combos[i].pointIndex]);
+
+    }
+
+
+
+
+
+    let textTest = 0;
+
+    // draw the points
+    view.array({
+      width: nPoints,
+      items: 1,
+      channels: 3,
+      data: points,
+      live: false,
+    })/*
+    .point({
+      color: 0xff4444,
+      size: 5,
+    })*/
+
+
+            .text({
+      font: 'Helvetica',
+      style: 'bold',
+      width:  nPoints,
+      height: 5,
+      depth:  2,
+      expr: function (emit, i, j, k, time) {
+        emit(baseCombos[i].toBoolString());  //+ '\n' + baseCombos[i].val);
+      },
+              live: false
+    }).label({
+      color: '#000000',
+      snap: false,
+      outline: 0.3,
+      size: 8,
+      offset: [0, 0],
+      depth: 1,
+      zIndex: 0,
+    });
+
+
+
+    // draw the links
+    view.array({
+      width: links.length/2,
+      items: 2,
+      channels: 3,
+      data: links,
+      live: false,
+    })
+    .vector({
+      color: 0x4444ff,
+      width: 2,
+    });
+
+    view.array({
+      width: eqLinks.length/2,
+      items: 2,
+      channels: 3,
+      data: eqLinks,
+      live: false,
+    })
+    .vector({
+      color: 0xff0000,
+      width: 2,
+    });
+
+    
+  </script>
+</body>
+</html>
