@@ -9,11 +9,23 @@
 
 ## Graphics
 * RTT - Render To Texture. Rather than drawing directly to the screen, renders to an image that can be processed further.
+* Selection - A subset of the DOM. Can be the entire DOM or all nodes matching a selector.
 * Shader - A program written in GLSL that runs on the GPU. GLSL syntax is similar to C++.
 * [ShaderGraph](https://github.com/unconed/shadergraph) - A component/dependency of MathBox that dynamically compiles small GLSL functions (snippets) into a single shader.
 * [Three.js](http://threejs.org/) - A popular library for WebGL. Used by MathBox for cameras and controls.
 * [Threestrap](https://github.com/unconed/threestrap) - A bootstrapping tool to set options for Three.js.
 * WebGL - JavaScript API for rendering 3D scenes, used by MathBox.
+
+## Functions on Selections
+* `bind("propName", function(t, d){ ... })` - A function on selectors to invoke the function every frame and set the prop to its return value. The function's arguments are the time since page load (always?) and the time delta since the last frame, both in seconds.
+* `debug()` - Display a visual representation of all shader snippets, how they are wired, with the GLSL available on mouseover.
+* `end()` - Indicate that subsequent nodes are siblings rather than children of the current node. Also used to return the current selection to be assigned to a variable (??).
+* `get("propName")` - Get the current value of an prop.
+* `inspect()` - Print (in the console) the DOM nodes in this selection.
+* `orig("propName")` - Return the value of the prop as passed in, i.e. without renormalization. Used mostly for pretty-printing.
+* `select("selector")` - A function on `mathbox` that returns a selection of all the nodes matching the selector. Like CSS, the selector may be the name of a primitive (e.g. `"camera"`), an id (e.g. `"#colors"`), or a class (e.g. `".points"`).
+* `set("propName", value)` - Set an prop to the value provided.
+
 
 ## Data
 * `expr` - A prop on data primitives that expects a function, whose arguments are:
@@ -22,6 +34,7 @@
   * `i, j, k` - One to three indices of the current point.
   * `t` - Time elapsed since program start, in seconds.
   * `d` - Time delta since last frame, in seconds.
+* `emit` - A function passed as the first argument to function given to the `expr` prop of data primitives. When called, its arguments become data.
 * Width - The size of the data in the *x* direction, i.e. the number of rows.
 * Height - The size of the data in the *y* direction, i.e. the number of columns.
 * Depth - The size of the data in the *z* direction, i.e. the number of stacks.
